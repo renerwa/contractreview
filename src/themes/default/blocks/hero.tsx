@@ -1,10 +1,16 @@
+'use client';
+
+import { ChangeEvent, DragEvent, useRef, useState } from 'react';
+
 import Image from 'next/image';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, FileText, Upload } from 'lucide-react';
 
 import { Link } from '@/core/i18n/navigation';
-import { SmartIcon } from '@/shared/blocks/common';
 import { Button } from '@/shared/components/ui/button';
 import { Highlighter } from '@/shared/components/ui/highlighter';
+import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group';
+import { Tabs, TabsList, TabsTrigger } from '@/shared/components/ui/tabs';
+import { Textarea } from '@/shared/components/ui/textarea';
 import { cn } from '@/shared/lib/utils';
 import { Section } from '@/shared/types/blocks/landing';
 
@@ -17,17 +23,77 @@ export function Hero({
   section: Section;
   className?: string;
 }) {
+  const [tab, setTab] = useState('upload');
+  const [dragActive, setDragActive] = useState(false);
+  const [fileName, setFileName] = useState('');
+  const [pastedText, setPastedText] = useState('');
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const uploadCard = section.upload_card ?? {};
+  const partyOptions = Array.isArray(uploadCard.party_options)
+    ? uploadCard.party_options
+    : [
+        { value: 'party_a', label: 'Party A' },
+        { value: 'party_b', label: 'Party B' },
+      ];
+  const defaultParty = partyOptions[0]?.value || 'party_a';
+  const [party, setParty] = useState(defaultParty);
+
+  const tabUpload = uploadCard.tab_upload ?? 'Upload';
+  const tabPasteText = uploadCard.tab_paste_text ?? 'Paste Text';
+  const uploadTitle = uploadCard.upload_title ?? 'Upload your contract';
+  const uploadHint =
+    uploadCard.upload_hint ?? 'Click to upload or drag and drop your file here';
+  const uploadAcceptedHint = uploadCard.upload_accepted_hint ?? 'PDF, DOCX, TXT';
+  const iAmLabel = uploadCard.i_am_label ?? 'I am';
+  const pastePlaceholder =
+    uploadCard.paste_placeholder ?? 'Paste your contract text here...';
+  const ctaText =
+    uploadCard.cta_title ?? section.buttons?.[0]?.title ?? 'Free Risk Scan';
+
   const highlightText = section.highlight_text ?? '';
   let texts = null;
   if (highlightText) {
     texts = section.title?.split(highlightText, 2);
   }
 
+  const handleOpenFile = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0];
+    if (!selectedFile) {
+      return;
+    }
+    setFileName(selectedFile.name);
+  };
+
+  const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setDragActive(true);
+  };
+
+  const handleDragLeave = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setDragActive(false);
+  };
+
+  const handleDrop = (event: DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setDragActive(false);
+    const selectedFile = event.dataTransfer.files?.[0];
+    if (!selectedFile) {
+      return;
+    }
+    setFileName(selectedFile.name);
+  };
+
   return (
     <section
       id={section.id}
       className={cn(
-        `pt-24 pb-8 md:pt-36 md:pb-8`,
+        `pt-24 pb-12 md:pt-36 md:pb-16`,
         section.className,
         className
       )}
@@ -56,105 +122,133 @@ export function Hero({
         </Link>
       )}
 
-      <div className="relative mx-auto max-w-full px-4 text-center md:max-w-5xl">
-        {texts && texts.length > 0 ? (
-          <h1 className="text-foreground text-4xl font-semibold text-balance sm:mt-12 sm:text-6xl">
-            {texts[0]}
-            <Highlighter action="underline" color="#FF9800">
-              {highlightText}
-            </Highlighter>
-            {texts[1]}
-          </h1>
-        ) : (
-          <h1 className="text-foreground text-4xl font-semibold text-balance sm:mt-12 sm:text-6xl">
-            {section.title}
-          </h1>
-        )}
+      <div className="relative mx-auto max-w-6xl px-4">
+        <div className="grid items-start gap-8 lg:grid-cols-[1fr_1.1fr] lg:gap-12">
+          <div className="text-center lg:pt-12 lg:text-left">
+            {texts && texts.length > 0 ? (
+              <h1 className="text-foreground text-4xl font-semibold text-balance sm:text-6xl">
+                {texts[0]}
+                <Highlighter action="underline" color="#FF9800">
+                  {highlightText}
+                </Highlighter>
+                {texts[1]}
+              </h1>
+            ) : (
+              <h1 className="text-foreground text-4xl font-semibold text-balance sm:text-6xl">
+                {section.title}
+              </h1>
+            )}
 
-        <p
-          className="text-muted-foreground mt-8 mb-8 text-lg text-balance"
-          dangerouslySetInnerHTML={{ __html: section.description ?? '' }}
-        />
+            <p
+              className="text-muted-foreground mt-8 text-lg text-balance"
+              dangerouslySetInnerHTML={{ __html: section.description ?? '' }}
+            />
 
-        {section.buttons && (
-          <div className="flex items-center justify-center gap-4">
-            {section.buttons.map((button, idx) => (
-              <Button
-                asChild
-                size={button.size || 'default'}
-                variant={button.variant || 'default'}
-                className="px-4 text-sm"
-                key={idx}
-              >
-                <Link href={button.url ?? ''} target={button.target ?? '_self'}>
-                  {button.icon && <SmartIcon name={button.icon as string} />}
-                  <span>{button.title}</span>
-                </Link>
-              </Button>
-            ))}
-          </div>
-        )}
-
-        {section.tip && (
-          <p
-            className="text-muted-foreground mt-6 block text-center text-sm"
-            dangerouslySetInnerHTML={{ __html: section.tip ?? '' }}
-          />
-        )}
-
-        {section.show_avatars && (
-          <SocialAvatars tip={section.avatars_tip || ''} />
-        )}
-      </div>
-
-      {(section.image?.src || section.image_invert?.src) && (
-        <div className="border-foreground/10 relative mt-8 border-y sm:mt-16">
-          <div className="relative z-10 mx-auto max-w-6xl border-x px-3">
-            <div className="border-x">
-              <div
-                aria-hidden
-                className="h-3 w-full bg-[repeating-linear-gradient(-45deg,var(--color-foreground),var(--color-foreground)_1px,transparent_1px,transparent_4px)] opacity-5"
+            {section.tip && (
+              <p
+                className="text-muted-foreground mt-6 block text-sm"
+                dangerouslySetInnerHTML={{ __html: section.tip ?? '' }}
               />
-              {section.image_invert?.src && (
-                <Image
-                  className="border-border/25 relative z-2 hidden w-full border dark:block"
-                  src={section.image_invert.src}
-                  alt={section.image_invert.alt || section.image?.alt || ''}
-                  width={
-                    section.image_invert.width || section.image?.width || 1200
-                  }
-                  height={
-                    section.image_invert.height || section.image?.height || 630
-                  }
-                  sizes="(max-width: 768px) 100vw, 1200px"
-                  loading="lazy"
-                  fetchPriority="high"
-                  quality={75}
-                  unoptimized={section.image_invert.src.startsWith('http')}
+            )}
+
+            {section.show_avatars && (
+              <div className="mt-6">
+                <SocialAvatars tip={section.avatars_tip || ''} />
+              </div>
+            )}
+          </div>
+
+          <div className="bg-background/80 border-border/70 rounded-2xl border p-4 shadow-xl backdrop-blur sm:p-6">
+            <Tabs value={tab} onValueChange={setTab}>
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="upload">{tabUpload}</TabsTrigger>
+                <TabsTrigger value="paste">{tabPasteText}</TabsTrigger>
+              </TabsList>
+            </Tabs>
+
+            {tab === 'upload' ? (
+              <div className="mt-5">
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onClick={handleOpenFile}
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault();
+                      handleOpenFile();
+                    }
+                  }}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                  className={cn(
+                    'group border-border bg-muted/40 hover:bg-muted/70 flex min-h-[260px] cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed p-8 text-center transition',
+                    dragActive && 'border-primary bg-primary/5'
+                  )}
+                >
+                  <Upload className="text-primary mb-5 size-12" />
+                  <h3 className="text-foreground text-xl font-semibold">
+                    {uploadTitle}
+                  </h3>
+                  <p className="text-muted-foreground mt-2 text-sm">{uploadHint}</p>
+                  <p className="text-muted-foreground mt-1 text-xs">
+                    {uploadAcceptedHint}
+                  </p>
+                  {fileName && (
+                    <div className="bg-background text-foreground mt-4 inline-flex max-w-full items-center gap-2 rounded-full px-3 py-1 text-sm">
+                      <FileText className="size-4 shrink-0" />
+                      <span className="truncate">{fileName}</span>
+                    </div>
+                  )}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="mt-5">
+                <Textarea
+                  value={pastedText}
+                  onChange={(event) => setPastedText(event.target.value)}
+                  placeholder={pastePlaceholder}
+                  className="min-h-[260px] resize-none"
                 />
-              )}
-              {section.image?.src && (
-                <Image
-                  className="border-border/25 relative z-2 block w-full border dark:hidden"
-                  src={section.image.src}
-                  alt={section.image.alt || section.image_invert?.alt || ''}
-                  width={
-                    section.image.width || section.image_invert?.width || 1200
+              </div>
+            )}
+
+            <div className="mt-5 flex items-center gap-3">
+              <span className="text-muted-foreground text-sm">{iAmLabel}:</span>
+              <RadioGroup
+                value={party}
+                onValueChange={setParty}
+                className="flex flex-wrap gap-4"
+              >
+                {partyOptions.map(
+                  (option: { label?: string; value?: string }, idx: number) => {
+                    if (!option?.value || !option?.label) {
+                      return null;
+                    }
+                    return (
+                      <label
+                        key={`${option.value}-${idx}`}
+                        className="text-foreground flex cursor-pointer items-center gap-2 text-sm"
+                      >
+                        <RadioGroupItem value={option.value} />
+                        <span>{option.label}</span>
+                      </label>
+                    );
                   }
-                  height={
-                    section.image.height || section.image_invert?.height || 630
-                  }
-                  sizes="(max-width: 768px) 100vw, 1200px"
-                  loading="lazy"
-                  fetchPriority="high"
-                  quality={75}
-                  unoptimized={section.image.src.startsWith('http')}
-                />
-              )}
+                )}
+              </RadioGroup>
             </div>
+
+            <Button className="mt-6 h-11 w-full text-base">{ctaText}</Button>
           </div>
         </div>
-      )}
+      </div>
 
       {section.background_image?.src && (
         <div className="absolute inset-0 -z-10 hidden h-full w-full overflow-hidden md:block">

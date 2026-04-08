@@ -600,3 +600,112 @@ export const chatMessage = table(
     index('idx_chat_message_user_id').on(table.userId, table.status),
   ]
 );
+
+export const document = table(
+  'documents',
+  {
+    id: text('id').primaryKey(),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    status: text('status').notNull(),
+    filePath: text('file_path').notNull(),
+    fileName: text('file_name').notNull(),
+    fileType: text('file_type'),
+    fileSize: integer('file_size'),
+    storageProvider: text('storage_provider').notNull().default('local'),
+    contractType: text('contract_type'),
+    contractSubtype: text('contract_subtype'),
+    userParty: text('user_party'),
+    signingPlace: text('signing_place'),
+    focusPoints: text('focus_points'),
+    sourceLanguage: text('source_language'),
+    metadata: text('metadata'),
+    createdAt: integer('created_at', { mode: 'timestamp_ms' })
+      .default(sqliteNowMs)
+      .notNull(),
+    updatedAt: integer('updated_at', { mode: 'timestamp_ms' })
+      .default(sqliteNowMs)
+      .$onUpdate(() => new Date())
+      .notNull(),
+    deletedAt: integer('deleted_at', { mode: 'timestamp_ms' }),
+  },
+  (table) => [
+    index('idx_document_user_status_created').on(
+      table.userId,
+      table.status,
+      table.createdAt
+    ),
+    index('idx_document_contract_place').on(table.contractType, table.signingPlace),
+  ]
+);
+
+export const analysisResult = table(
+  'analysis_results',
+  {
+    id: text('id').primaryKey(),
+    documentId: text('document_id')
+      .notNull()
+      .references(() => document.id, { onDelete: 'cascade' }),
+    userId: text('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    status: text('status').notNull().default('completed'),
+    version: integer('version').notNull().default(1),
+    markdownContent: text('markdown_content').notNull(),
+    summary: text('summary'),
+    riskScore: integer('risk_score'),
+    riskLevel: text('risk_level'),
+    riskItems: text('risk_items'),
+    findings: text('findings'),
+    modelProvider: text('model_provider'),
+    modelName: text('model_name'),
+    createdAt: integer('created_at', { mode: 'timestamp_ms' })
+      .default(sqliteNowMs)
+      .notNull(),
+    updatedAt: integer('updated_at', { mode: 'timestamp_ms' })
+      .default(sqliteNowMs)
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index('idx_analysis_document_version').on(table.documentId, table.version),
+    index('idx_analysis_user_created').on(table.userId, table.createdAt),
+    index('idx_analysis_risk_level').on(table.riskLevel),
+  ]
+);
+
+export const contractReviewChecklist = table(
+  'contract_review_checklists',
+  {
+    id: text('id').primaryKey(),
+    contractType: text('contract_type').notNull(),
+    contractSubtype: text('contract_subtype'),
+    signingPlace: text('signing_place').notNull(),
+    userParty: text('user_party'),
+    itemCode: text('item_code').notNull(),
+    itemTitle: text('item_title').notNull(),
+    itemDescription: text('item_description').notNull(),
+    severity: text('severity').notNull().default('medium'),
+    weight: integer('weight').notNull().default(50),
+    sort: integer('sort').notNull().default(0),
+    isRequired: integer('is_required', { mode: 'boolean' }).notNull().default(true),
+    isActive: integer('is_active', { mode: 'boolean' }).notNull().default(true),
+    metadata: text('metadata'),
+    createdAt: integer('created_at', { mode: 'timestamp_ms' })
+      .default(sqliteNowMs)
+      .notNull(),
+    updatedAt: integer('updated_at', { mode: 'timestamp_ms' })
+      .default(sqliteNowMs)
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index('idx_checklist_lookup').on(
+      table.contractType,
+      table.signingPlace,
+      table.isActive
+    ),
+    index('idx_checklist_contract_sort').on(table.contractType, table.sort),
+  ]
+);

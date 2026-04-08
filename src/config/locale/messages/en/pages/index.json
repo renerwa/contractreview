@@ -40,6 +40,26 @@
             "variant": "outline"
           }
         ],
+        "upload_card": {
+          "tab_upload": "Upload",
+          "tab_paste_text": "Paste Text",
+          "upload_title": "Upload contract for instant review",
+          "upload_hint": "Click to upload, or drag and drop your contract here",
+          "upload_accepted_hint": "Supports PDF, DOCX, TXT",
+          "i_am_label": "I am",
+          "party_options": [
+            {
+              "value": "party_a",
+              "label": "Party A"
+            },
+            {
+              "value": "party_b",
+              "label": "Party B"
+            }
+          ],
+          "paste_placeholder": "Paste full contract text or key clauses here...",
+          "cta_title": "Free Risk Scan"
+        },
         "show_avatars": true,
         "avatars_tip": "999+ users are using ShipAny",
         "show_award": false,

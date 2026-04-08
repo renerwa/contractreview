@@ -515,3 +515,99 @@ export const chatMessage = table(
     index('idx_chat_message_user_id').on(table.userId, table.status),
   ]
 );
+
+export const document = table(
+  'documents',
+  {
+    id: varchar191('id').primaryKey(),
+    userId: varchar191('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    status: varchar('status', { length: 50 }).notNull(),
+    filePath: text('file_path').notNull(),
+    fileName: varchar('file_name', { length: 255 }).notNull(),
+    fileType: varchar('file_type', { length: 100 }),
+    fileSize: int('file_size'),
+    storageProvider: varchar('storage_provider', { length: 50 })
+      .notNull()
+      .default('local'),
+    contractType: varchar('contract_type', { length: 100 }),
+    contractSubtype: varchar('contract_subtype', { length: 100 }),
+    userParty: varchar('user_party', { length: 100 }),
+    signingPlace: varchar('signing_place', { length: 150 }),
+    focusPoints: longtext('focus_points'),
+    sourceLanguage: varchar('source_language', { length: 20 }),
+    metadata: longtext('metadata'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().onUpdateNow().notNull(),
+    deletedAt: timestamp('deleted_at'),
+  },
+  (table) => [
+    index('idx_document_user_status_created').on(
+      table.userId,
+      table.status,
+      table.createdAt
+    ),
+    index('idx_document_contract_place').on(table.contractType, table.signingPlace),
+  ]
+);
+
+export const analysisResult = table(
+  'analysis_results',
+  {
+    id: varchar191('id').primaryKey(),
+    documentId: varchar191('document_id')
+      .notNull()
+      .references(() => document.id, { onDelete: 'cascade' }),
+    userId: varchar191('user_id')
+      .notNull()
+      .references(() => user.id, { onDelete: 'cascade' }),
+    status: varchar('status', { length: 50 }).notNull().default('completed'),
+    version: int('version').notNull().default(1),
+    markdownContent: longtext('markdown_content').notNull(),
+    summary: longtext('summary'),
+    riskScore: int('risk_score'),
+    riskLevel: varchar('risk_level', { length: 20 }),
+    riskItems: longtext('risk_items'),
+    findings: longtext('findings'),
+    modelProvider: varchar('model_provider', { length: 100 }),
+    modelName: varchar191('model_name'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().onUpdateNow().notNull(),
+  },
+  (table) => [
+    index('idx_analysis_document_version').on(table.documentId, table.version),
+    index('idx_analysis_user_created').on(table.userId, table.createdAt),
+    index('idx_analysis_risk_level').on(table.riskLevel),
+  ]
+);
+
+export const contractReviewChecklist = table(
+  'contract_review_checklists',
+  {
+    id: varchar191('id').primaryKey(),
+    contractType: varchar('contract_type', { length: 100 }).notNull(),
+    contractSubtype: varchar('contract_subtype', { length: 100 }),
+    signingPlace: varchar('signing_place', { length: 150 }).notNull(),
+    userParty: varchar('user_party', { length: 100 }),
+    itemCode: varchar191('item_code').notNull(),
+    itemTitle: varchar('item_title', { length: 255 }).notNull(),
+    itemDescription: longtext('item_description').notNull(),
+    severity: varchar('severity', { length: 20 }).notNull().default('medium'),
+    weight: int('weight').notNull().default(50),
+    sort: int('sort').notNull().default(0),
+    isRequired: boolean('is_required').notNull().default(true),
+    isActive: boolean('is_active').notNull().default(true),
+    metadata: longtext('metadata'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().onUpdateNow().notNull(),
+  },
+  (table) => [
+    index('idx_checklist_lookup').on(
+      table.contractType,
+      table.signingPlace,
+      table.isActive
+    ),
+    index('idx_checklist_contract_sort').on(table.contractType, table.sort),
+  ]
+);

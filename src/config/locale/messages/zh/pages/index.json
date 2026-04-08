@@ -40,6 +40,26 @@
             "variant": "outline"
           }
         ],
+        "upload_card": {
+          "tab_upload": "上传文件",
+          "tab_paste_text": "粘贴文本",
+          "upload_title": "上传合同，立即风险扫描",
+          "upload_hint": "点击上传，或将合同文件拖拽到这里",
+          "upload_accepted_hint": "支持 PDF、DOCX、TXT",
+          "i_am_label": "我是",
+          "party_options": [
+            {
+              "value": "party_a",
+              "label": "甲方（Party A）"
+            },
+            {
+              "value": "party_b",
+              "label": "乙方（Party B）"
+            }
+          ],
+          "paste_placeholder": "请粘贴合同全文或关键条款内容…",
+          "cta_title": "免费风险扫描"
+        },
         "show_avatars": true,
         "avatars_tip": "999+ 用户在使用 ShipAny 上站",
         "show_award": false,
