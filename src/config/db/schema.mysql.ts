@@ -582,10 +582,35 @@ export const analysisResult = table(
   ]
 );
 
+export const contractType = table(
+  'contract_types',
+  {
+    id: varchar191('id').primaryKey(),
+    code: varchar('code', { length: 50 }).notNull().unique(),
+    nameZh: varchar('name_zh', { length: 255 }).notNull(),
+    nameEn: varchar('name_en', { length: 255 }).notNull(),
+    usageScene: longtext('usage_scene'),
+    description: longtext('description'),
+    sort: int('sort').notNull().default(0),
+    isActive: boolean('is_active').notNull().default(true),
+    metadata: longtext('metadata'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at').defaultNow().onUpdateNow().notNull(),
+  },
+  (table) => [
+    index('idx_contract_type_code').on(table.code),
+    index('idx_contract_type_active_sort').on(table.isActive, table.sort),
+  ]
+);
+
 export const contractReviewChecklist = table(
   'contract_review_checklists',
   {
     id: varchar191('id').primaryKey(),
+    contractTypeId: varchar191('contract_type_id')
+      .notNull()
+      .references(() => contractType.id, { onDelete: 'restrict' }),
+    contractTypeName: varchar('contract_type_name', { length: 255 }).notNull(),
     contractType: varchar('contract_type', { length: 100 }).notNull(),
     contractSubtype: varchar('contract_subtype', { length: 100 }),
     signingPlace: varchar('signing_place', { length: 150 }).notNull(),
@@ -604,10 +629,10 @@ export const contractReviewChecklist = table(
   },
   (table) => [
     index('idx_checklist_lookup').on(
-      table.contractType,
+      table.contractTypeId,
       table.signingPlace,
       table.isActive
     ),
-    index('idx_checklist_contract_sort').on(table.contractType, table.sort),
+    index('idx_checklist_contract_sort').on(table.contractTypeId, table.sort),
   ]
 );

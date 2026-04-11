@@ -2,6 +2,10 @@ import { createOpenRouter } from '@openrouter/ai-sdk-provider';
 import { generateText } from 'ai';
 
 import { Configs, getAllConfigs } from '@/shared/models/config';
+import {
+  CanonicalContractType,
+  getCanonicalContractTypes,
+} from '@/shared/models/contract_type';
 
 export interface ContractSummary {
   contractType: string;
@@ -40,7 +44,8 @@ export async function parseContractToMarkdown({
     baseURL: appConfigs.openrouter_base_url || undefined,
   });
 
-  const parserModel = model || appConfigs.contract_parser_model || 'openai/gpt-4o-mini';
+  const parserModel =
+    model || appConfigs.contract_parser_model || 'openai/gpt-4o-mini';
   const systemPrompt = `# Role
 你是一个极其严谨的专业法律文档解析系统。你的唯一任务是将用户提供的合同文档精确、无损地转换为Markdown格式。
 
@@ -105,12 +110,15 @@ export async function analyzeContractSummary({
   const summaryModel =
     model || appConfigs.contract_summary_model || 'openai/gpt-4o-mini';
 
+  const contractTypes = await getCanonicalContractTypes();
+  const canonicalTypeCodes = contractTypes.map((t) => t.code).filter(Boolean);
+
   const { text } = await generateText({
     model: openrouter.chat(summaryModel),
     system: `你是资深合同分析助手。你要基于用户提供的合同内容，输出结构化的合同概要分析。你必须严格按指定JSON结构输出，不要输出Markdown，不要输出解释文本。`,
     prompt: `请分析以下合同内容，并返回JSON：
 {
-  "contractType": "合同类型（如 NDA、Employment Agreement、MSA、SaaS Agreement、Purchase Agreement）",
+  "contractType": "合同类型（需要归一化：如果属于下方给定类型之一，必须严格输出该类型的 code；否则才输出一个新的类型名称）",
   "contractSubtype": "更细分子类型，没有就空字符串",
   "language": "文档主要语言（如 English、Spanish）",
   "signingPlaceCountry": "签约地国家，没有明确则空字符串",
@@ -124,6 +132,15 @@ export async function analyzeContractSummary({
 1. 仅输出JSON对象，不要代码块标记。
 2. keyPoints返回3-8条，短句表达。
 3. 信息不确定时填空字符串，不要编造。
+4. 合同类型归一化规则（非常重要）：
+   - 你将获得一份 <allowed_contract_types> 列表，每一项包含 code/nameEn/nameZh/usageScene。
+   - 如果合同属于其中某一种类型，你必须将 contractType 输出为该类型的 code（完全一致，包括大小写与符号）。
+   - 只有当合同明确不属于列表中的任何类型时，contractType 才能输出其他类型名称（尽量英文短名称，如 "Partnership Agreement"）。
+5. 你输出的 contractType 禁止是 allowed_contract_types 中 code/nameEn/nameZh 的“近似写法”，要么严格用 code，要么输出一个不在列表中的新类型名称。
+
+<allowed_contract_types>
+${JSON.stringify(contractTypes)}
+</allowed_contract_types>
 
 合同内容如下：
 ${contractContent}`,
@@ -131,9 +148,15 @@ ${contractContent}`,
   });
 
   const parsed = parseJsonObject(text);
+  const normalizedContractType = normalizeContractType(
+    String(parsed.contractType || ''),
+    contractTypes
+  );
+  const contractTypeFinal =
+    normalizedContractType || String(parsed.contractType || '');
 
   return {
-    contractType: String(parsed.contractType || ''),
+    contractType: contractTypeFinal,
     contractSubtype: String(parsed.contractSubtype || ''),
     language: String(parsed.language || ''),
     signingPlaceCountry: String(parsed.signingPlaceCountry || ''),
@@ -144,6 +167,40 @@ ${contractContent}`,
       ? parsed.keyPoints.map((item: any) => String(item)).filter(Boolean)
       : [],
   };
+}
+
+function normalizeContractType(
+  raw: string,
+  canonical: CanonicalContractType[]
+): string {
+  const value = String(raw || '').trim();
+  if (!value) return '';
+
+  const byCode = canonical.find(
+    (t) => t.code.toLowerCase() === value.toLowerCase()
+  );
+  if (byCode) return byCode.code;
+
+  const byNameEn = canonical.find(
+    (t) => t.nameEn.toLowerCase() === value.toLowerCase()
+  );
+  if (byNameEn) return byNameEn.code;
+
+  const byNameZh = canonical.find(
+    (t) => t.nameZh.toLowerCase() === value.toLowerCase()
+  );
+  if (byNameZh) return byNameZh.code;
+
+  const collapsed = value.replace(/\s+/g, ' ').toLowerCase();
+  const byPrefix = canonical.find((t) => {
+    const codePrefix = `${t.code.toLowerCase()} `;
+    return (
+      collapsed === t.code.toLowerCase() || collapsed.startsWith(codePrefix)
+    );
+  });
+  if (byPrefix) return byPrefix.code;
+
+  return value;
 }
 
 function parseJsonObject(text: string): Record<string, any> {

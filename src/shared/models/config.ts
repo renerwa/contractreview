@@ -35,7 +35,7 @@ export async function saveConfigs(configs: Record<string, string>) {
     );
 
     const batchResults = queries.length > 0 ? await database.batch(queries) : [];
-    revalidateTag(CACHE_TAG_CONFIGS);
+    revalidateTag(CACHE_TAG_CONFIGS, 'max');
     return batchResults.flat();
   }
 

@@ -1,0 +1,2 @@
+
+D:\code\出海\contractreview>  "D:\code\出海\contractreview\node_modules\.bin\\node.exe"  "D:\code\出海\contractreview\node_modules\.bin\\..\dotenv-cli\cli.js" -e .env.development -- node -e const { db } = require('./src/core/db'); (async()= const rows = await db().select().from((await import('./src/config/db/schema')).contractType).limit(5); console.log(rows); })().catch(e=;process.exit(1);});

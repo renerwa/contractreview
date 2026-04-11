@@ -624,10 +624,37 @@ export const analysisResult = table(
   ]
 );
 
+export const contractType = table(
+  'contract_types',
+  {
+    id: text('id').primaryKey(),
+    code: text('code').notNull().unique(),
+    nameZh: text('name_zh').notNull(),
+    nameEn: text('name_en').notNull(),
+    usageScene: text('usage_scene'),
+    description: text('description'),
+    sort: integer('sort').notNull().default(0),
+    isActive: boolean('is_active').notNull().default(true),
+    metadata: text('metadata'),
+    createdAt: timestamp('created_at').defaultNow().notNull(),
+    updatedAt: timestamp('updated_at')
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index('idx_contract_type_code').on(table.code),
+    index('idx_contract_type_active_sort').on(table.isActive, table.sort),
+  ]
+);
+
 export const contractReviewChecklist = table(
   'contract_review_checklists',
   {
     id: text('id').primaryKey(),
+    contractTypeId: text('contract_type_id')
+      .notNull()
+      .references(() => contractType.id, { onDelete: 'restrict' }),
+    contractTypeName: text('contract_type_name').notNull(),
     contractType: text('contract_type').notNull(),
     contractSubtype: text('contract_subtype'),
     signingPlace: text('signing_place').notNull(),
@@ -648,10 +675,10 @@ export const contractReviewChecklist = table(
   },
   (table) => [
     index('idx_checklist_lookup').on(
-      table.contractType,
+      table.contractTypeId,
       table.signingPlace,
       table.isActive
     ),
-    index('idx_checklist_contract_sort').on(table.contractType, table.sort),
+    index('idx_checklist_contract_sort').on(table.contractTypeId, table.sort),
   ]
 );
