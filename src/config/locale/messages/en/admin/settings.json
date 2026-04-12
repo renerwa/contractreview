@@ -25,7 +25,8 @@
     "crisp": "Crisp",
     "credit": "Credit",
     "appinfo": "App Info",
-    "user_role": "User Role"
+    "user_role": "User Role",
+    "mineru": "MinerU"
   },
   "edit": {
     "title": "Settings",
@@ -41,6 +42,7 @@
       "email": "Email",
       "storage": "Storage",
       "ai": "AI",
+      "document_parsing": "Document Parsing",
       "analytics": "Analytics",
       "ads": "Ads",
       "affiliate": "Affiliate",

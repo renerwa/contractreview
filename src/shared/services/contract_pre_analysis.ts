@@ -54,10 +54,34 @@ export async function preAnalyzeContract({
     now,
   });
 
-  // 根据解析后的Markdown内容，分析合同摘要
-  const summaryResult = await analyzeContractSummary({
-    contractContent: resolved.markdownContent,
-  });
+  let summaryResult: Awaited<ReturnType<typeof analyzeContractSummary>> = {
+    contractType: '',
+    contractSubtype: '',
+    language: '',
+    signingPlaceCountry: '',
+    signingPlaceCity: '',
+    userParty: '',
+    summary: '',
+    keyPoints: [],
+  };
+  let summaryError = '';
+  try {
+    summaryResult = await analyzeContractSummary({
+      contractContent: resolved.markdownContent,
+    });
+  } catch (e: any) {
+    summaryError = e?.message ? String(e.message) : 'contract summary failed';
+    summaryResult = {
+      contractType: input.contractType || '',
+      contractSubtype: '',
+      language: '',
+      signingPlaceCountry: '',
+      signingPlaceCity: '',
+      userParty: input.userParty || '',
+      summary: '',
+      keyPoints: [],
+    };
+  }
 
   // 根据文档ID查询最新分析结果的版本号，版本号加1作为新分析结果的版本号
   const latestResult = await findLatestDocumentAnalysisResult(
@@ -87,6 +111,7 @@ export async function preAnalyzeContract({
     riskLevel: null,
     riskItems: null,
     findings: JSON.stringify({
+      summaryError,
       keyPoints: summaryResult.keyPoints,
       signingPlaceCountry: summaryResult.signingPlaceCountry,
       signingPlaceCity: summaryResult.signingPlaceCity,
@@ -179,7 +204,9 @@ async function resolveContractContent({
     const markdownContent =
       format.toLowerCase() === 'markdown'
         ? content
-        : await parseContractToMarkdown({ contractContent: content });
+        : await parseContractToMarkdown({ contractContent: content }).catch(
+            () => content
+          );
 
     return { documentId: ensuredDocumentId, markdownContent };
   }
@@ -204,7 +231,9 @@ async function resolveContractContent({
 
   const markdownContent = isMarkdown
     ? text
-    : await parseContractToMarkdown({ contractContent: text });
+    : await parseContractToMarkdown({ contractContent: text }).catch(
+        () => text
+      );
 
   return { documentId: ensuredDocumentId, markdownContent };
 }

@@ -1,7 +1,6 @@
 'use client';
 
 import { ChangeEvent, DragEvent, useRef, useState } from 'react';
-
 import Image from 'next/image';
 import { ArrowRight, FileText, Loader2, Upload } from 'lucide-react';
 import { toast } from 'sonner';
@@ -29,6 +28,19 @@ export function Hero({
   const [uploading, setUploading] = useState(false);
   const [uploadedFileUrl, setUploadedFileUrl] = useState('');
   const [uploadedDocumentId, setUploadedDocumentId] = useState('');
+  const [parsing, setParsing] = useState(false);
+  const [parsingHint, setParsingHint] = useState('');
+  const [preAnalyzing, setPreAnalyzing] = useState(false);
+  const [summary, setSummary] = useState<{
+    contractType?: string;
+    contractSubtype?: string;
+    language?: string;
+    signingPlaceCountry?: string;
+    signingPlaceCity?: string;
+    userParty?: string;
+    keyPoints?: string[];
+    summary?: string;
+  } | null>(null);
   const [pastedText, setPastedText] = useState('');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -39,7 +51,8 @@ export function Hero({
   const uploadTitle = uploadCard.upload_title ?? 'Upload your contract';
   const uploadHint =
     uploadCard.upload_hint ?? 'Click to upload or drag and drop your file here';
-  const uploadAcceptedHint = uploadCard.upload_accepted_hint ?? 'PDF, DOCX, TXT';
+  const uploadAcceptedHint =
+    uploadCard.upload_accepted_hint ?? 'PDF, DOCX, TXT';
   const pastePlaceholder =
     uploadCard.paste_placeholder ?? 'Paste your contract text here...';
   const ctaText =
@@ -52,7 +65,7 @@ export function Hero({
   }
 
   const handleOpenFile = () => {
-    if (uploading) {
+    if (uploading || parsing || preAnalyzing) {
       return;
     }
     fileInputRef.current?.click();
@@ -86,6 +99,7 @@ export function Hero({
     setUploading(true);
     setUploadedDocumentId('');
     setUploadedFileUrl('');
+    setSummary(null);
 
     try {
       const uploaded = await uploadContractFile(file);
@@ -130,14 +144,191 @@ export function Hero({
     void handleSelectedFile(selectedFile);
   };
 
-  const hasContractInput =
-    Boolean(uploadedDocumentId && uploadedFileUrl) || Boolean(pastedText.trim());
-  const canScan = hasContractInput && !uploading;
+  const sleep = (ms: number) =>
+    new Promise<void>((resolve) => {
+      setTimeout(resolve, ms);
+    });
 
-  const handleScan = () => {
+  const requestData = async <T,>(
+    url: string,
+    init: RequestInit
+  ): Promise<T> => {
+    const resp = await fetch(url, init);
+    if (!resp.ok) {
+      throw new Error(`request failed with status ${resp.status}`);
+    }
+    const json = await resp.json();
+    if (json.code !== 0) {
+      throw new Error(json.message || 'request failed');
+    }
+    return json.data as T;
+  };
+
+  const startParseTask = async () => {
+    if (!uploadedDocumentId || !uploadedFileUrl) {
+      throw new Error('Please upload a contract file first');
+    }
+    const data = await requestData<{
+      taskId: string;
+      documentId: string;
+      fileUrl: string;
+    }>('/api/contracts/parse/start', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        documentId: uploadedDocumentId,
+        fileUrl: uploadedFileUrl,
+      }),
+    });
+    return data;
+  };
+
+  const pollParseTask = async (documentId: string, taskId: string) => {
+    const startedAt = Date.now();
+    while (true) {
+      if (Date.now() - startedAt > 10 * 60 * 1000) {
+        throw new Error('parse timeout');
+      }
+
+      await sleep(2000);
+      let data: {
+        taskId: string;
+        state: string;
+        errMsg?: string;
+        progress?: {
+          extractedPages: number;
+          totalPages: number;
+          startTime: string;
+        };
+        analysisResultId?: string;
+        markdownContent?: string;
+      } | null = null;
+
+      try {
+        data = await requestData('/api/contracts/parse/query', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ documentId, taskId }),
+        });
+      } catch (e: any) {
+        setParsingHint('Parsing document... (retrying)');
+        continue;
+      }
+
+      if (!data) {
+        setParsingHint('Parsing document... (retrying)');
+        continue;
+      }
+
+      const state = String(data.state || '');
+      if (state === 'failed') {
+        throw new Error(String(data.errMsg || 'parse failed'));
+      }
+
+      if (data.progress?.totalPages) {
+        setParsingHint(
+          `Parsing document... (${data.progress.extractedPages}/${data.progress.totalPages})`
+        );
+      } else {
+        setParsingHint('Parsing document...');
+      }
+
+      if (state === 'done') {
+        const markdown = String(data.markdownContent || '').trim();
+        if (!markdown) {
+          setParsingHint('Finalizing parse result...');
+          continue;
+        }
+        return { markdown };
+      }
+    }
+  };
+
+  const runPreAnalysis = async ({
+    content,
+    format,
+    documentId,
+    fileUrl,
+  }: {
+    content: string;
+    format: 'text' | 'markdown';
+    documentId: string;
+    fileUrl: string;
+  }) => {
+    const data = await requestData<{
+      document: any;
+      analysisResult: any;
+      summary: any;
+    }>('/api/contracts/pre-analysis', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        content,
+        format,
+        contractType: '',
+        userParty: '',
+        signingPlace: '',
+        focusPoints: '',
+        documentId,
+        fileUrl,
+      }),
+    });
+    setSummary(data.summary || null);
+    return data;
+  };
+
+  const hasContractInput =
+    Boolean(uploadedDocumentId && uploadedFileUrl) ||
+    Boolean(pastedText.trim());
+  const canScan = hasContractInput && !uploading && !parsing && !preAnalyzing;
+
+  const handleScan = async () => {
     if (!canScan) {
       toast.error('Please upload a contract file or paste contract text first');
       return;
+    }
+
+    try {
+      setParsingHint('');
+      setPreAnalyzing(false);
+      setSummary(null);
+
+      if (tab === 'upload') {
+        setParsing(true);
+        setParsingHint('Starting parse task...');
+        const started = await startParseTask();
+        const { markdown } = await pollParseTask(
+          started.documentId,
+          started.taskId
+        );
+        setParsing(false);
+        setPreAnalyzing(true);
+        await runPreAnalysis({
+          content: markdown,
+          format: 'markdown',
+          documentId: started.documentId,
+          fileUrl: started.fileUrl,
+        });
+        setPreAnalyzing(false);
+        toast.success('Pre-analysis completed');
+        return;
+      }
+
+      const text = pastedText.trim();
+      setPreAnalyzing(true);
+      await runPreAnalysis({
+        content: text,
+        format: 'text',
+        documentId: '',
+        fileUrl: '',
+      });
+      setPreAnalyzing(false);
+      toast.success('Pre-analysis completed');
+    } catch (e: any) {
+      setParsing(false);
+      setPreAnalyzing(false);
+      setParsingHint('');
+      toast.error(e?.message || 'analysis failed');
     }
   };
 
@@ -213,8 +404,18 @@ export function Hero({
           <div className="bg-background/80 border-border/70 rounded-2xl border p-4 shadow-xl backdrop-blur sm:p-6">
             <Tabs value={tab} onValueChange={setTab}>
               <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="upload">{tabUpload}</TabsTrigger>
-                <TabsTrigger value="paste">{tabPasteText}</TabsTrigger>
+                <TabsTrigger
+                  value="upload"
+                  disabled={uploading || parsing || preAnalyzing}
+                >
+                  {tabUpload}
+                </TabsTrigger>
+                <TabsTrigger
+                  value="paste"
+                  disabled={uploading || parsing || preAnalyzing}
+                >
+                  {tabPasteText}
+                </TabsTrigger>
               </TabsList>
             </Tabs>
 
@@ -234,15 +435,31 @@ export function Hero({
                   onDragLeave={handleDragLeave}
                   onDrop={handleDrop}
                   className={cn(
-                    'group border-border bg-muted/40 hover:bg-muted/70 flex min-h-[260px] cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed p-8 text-center transition',
-                    dragActive && 'border-primary bg-primary/5'
+                    'group border-border bg-muted/40 hover:bg-muted/70 relative flex min-h-[260px] cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed p-8 text-center transition',
+                    dragActive && 'border-primary bg-primary/5',
+                    (uploading || parsing || preAnalyzing) &&
+                      'cursor-not-allowed opacity-70'
                   )}
                 >
+                  {(uploading || parsing || preAnalyzing) && (
+                    <div className="bg-background/60 absolute inset-0 z-10 flex flex-col items-center justify-center gap-2 rounded-2xl backdrop-blur-sm">
+                      <Loader2 className="text-primary size-6 animate-spin" />
+                      <div className="text-foreground text-sm font-medium">
+                        {uploading
+                          ? 'Uploading contract...'
+                          : parsing
+                            ? parsingHint || 'Parsing document...'
+                            : 'Analyzing contract...'}
+                      </div>
+                    </div>
+                  )}
                   <Upload className="text-primary mb-5 size-12" />
                   <h3 className="text-foreground text-xl font-semibold">
                     {uploadTitle}
                   </h3>
-                  <p className="text-muted-foreground mt-2 text-sm">{uploadHint}</p>
+                  <p className="text-muted-foreground mt-2 text-sm">
+                    {uploadHint}
+                  </p>
                   <p className="text-muted-foreground mt-1 text-xs">
                     {uploadAcceptedHint}
                   </p>
@@ -259,7 +476,7 @@ export function Hero({
                   <input
                     ref={fileInputRef}
                     type="file"
-                    accept=".pdf,.docx,.txt"
+                    accept=".pdf,.doc,.docx,.txt"
                     className="hidden"
                     onChange={handleFileChange}
                   />
@@ -284,8 +501,22 @@ export function Hero({
               aria-disabled={!canScan}
               onClick={handleScan}
             >
-              {ctaText}
+              {parsing ? 'Parsing...' : preAnalyzing ? 'Analyzing...' : ctaText}
             </Button>
+
+            {summary?.summary && (
+              <div className="border-border bg-muted/30 text-foreground mt-4 rounded-xl border p-4 text-sm">
+                <div className="font-medium">
+                  {summary.contractType || 'Contract'}{' '}
+                  {summary.contractSubtype
+                    ? `- ${summary.contractSubtype}`
+                    : ''}
+                </div>
+                <div className="text-muted-foreground mt-1 line-clamp-3">
+                  {summary.summary}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

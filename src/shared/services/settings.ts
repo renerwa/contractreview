@@ -67,6 +67,12 @@ export async function getSettingTabs(tab: string) {
       is_active: tab === 'ai',
     },
     {
+      name: 'document_parsing',
+      title: t('edit.tabs.document_parsing'),
+      url: '/admin/settings/document_parsing',
+      is_active: tab === 'document_parsing',
+    },
+    {
       name: 'analytics',
       title: t('edit.tabs.analytics'),
       url: '/admin/settings/analytics',
@@ -115,6 +121,12 @@ export async function getSettingGroups() {
       title: t('groups.credit'),
       description: 'custom credit settings',
       tab: 'general',
+    },
+    {
+      name: 'mineru',
+      title: t('groups.mineru'),
+      description: 'custom your document parsing settings',
+      tab: 'document_parsing',
     },
     {
       name: 'email_auth',
@@ -774,6 +786,24 @@ export async function getSettings() {
       tip: 'Set any OpenAI compatible API URL, leave empty to use the default OpenRouter API URL',
       group: 'openrouter',
       tab: 'ai',
+    },
+    {
+      name: 'mineru_api_token',
+      title: 'MinerU API Token',
+      type: 'password',
+      placeholder: '',
+      tip: 'Used for MinerU 精准解析 API: Authorization: Bearer <token>',
+      group: 'mineru',
+      tab: 'document_parsing',
+    },
+    {
+      name: 'mineru_extract_task_url',
+      title: 'MinerU Extract Task URL',
+      type: 'url',
+      placeholder: 'https://mineru.net/api/v4/extract/task',
+      tip: 'Create task endpoint. Query endpoint will be derived as `${url}/{task_id}`.',
+      group: 'mineru',
+      tab: 'document_parsing',
     },
     {
       name: 'replicate_api_token',

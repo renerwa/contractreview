@@ -1,7 +1,7 @@
 import { and, desc, eq } from 'drizzle-orm';
 
-import { document } from '@/config/db/schema';
 import { db } from '@/core/db';
+import { document } from '@/config/db/schema';
 
 export type Document = typeof document.$inferSelect;
 export type NewDocument = typeof document.$inferInsert;
@@ -23,10 +23,17 @@ export async function createDocument(newDocument: NewDocument) {
  * @returns 合同文档
  */
 export async function findDocumentById(id: string) {
-  const [result] = await db().select().from(document).where(eq(document.id, id));
+  const [result] = await db()
+    .select()
+    .from(document)
+    .where(eq(document.id, id));
   return result;
 }
-
+/**
+ * 根据文件路径查找合同文档
+ * @param filePath 合同文档文件路径
+ * @returns 合同文档
+ */
 export async function findDocumentByFilePath(filePath: string) {
   const [result] = await db()
     .select()
@@ -36,7 +43,10 @@ export async function findDocumentByFilePath(filePath: string) {
   return result;
 }
 
-export async function updateDocumentById(id: string, updateDocument: UpdateDocument) {
+export async function updateDocumentById(
+  id: string,
+  updateDocument: UpdateDocument
+) {
   const [result] = await db()
     .update(document)
     .set(updateDocument)

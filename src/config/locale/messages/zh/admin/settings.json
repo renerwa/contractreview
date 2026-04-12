@@ -25,7 +25,8 @@
     "crisp": "Crisp",
     "credit": "积分",
     "appinfo": "应用信息",
-    "user_role": "用户角色"
+    "user_role": "用户角色",
+    "mineru": "MinerU"
   },
   "edit": {
     "title": "设置",
@@ -41,6 +42,7 @@
       "email": "邮箱",
       "storage": "存储",
       "ai": "AI",
+      "document_parsing": "文档解析",
       "analytics": "分析",
       "ads": "广告",
       "affiliate": "联盟营销",
