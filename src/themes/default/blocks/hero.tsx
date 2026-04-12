@@ -3,12 +3,12 @@
 import { ChangeEvent, DragEvent, useRef, useState } from 'react';
 
 import Image from 'next/image';
-import { ArrowRight, FileText, Upload } from 'lucide-react';
+import { ArrowRight, FileText, Loader2, Upload } from 'lucide-react';
+import { toast } from 'sonner';
 
 import { Link } from '@/core/i18n/navigation';
 import { Button } from '@/shared/components/ui/button';
 import { Highlighter } from '@/shared/components/ui/highlighter';
-import { RadioGroup, RadioGroupItem } from '@/shared/components/ui/radio-group';
 import { Tabs, TabsList, TabsTrigger } from '@/shared/components/ui/tabs';
 import { Textarea } from '@/shared/components/ui/textarea';
 import { cn } from '@/shared/lib/utils';
@@ -26,18 +26,13 @@ export function Hero({
   const [tab, setTab] = useState('upload');
   const [dragActive, setDragActive] = useState(false);
   const [fileName, setFileName] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const [uploadedFileUrl, setUploadedFileUrl] = useState('');
+  const [uploadedDocumentId, setUploadedDocumentId] = useState('');
   const [pastedText, setPastedText] = useState('');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const uploadCard = section.upload_card ?? {};
-  const partyOptions = Array.isArray(uploadCard.party_options)
-    ? uploadCard.party_options
-    : [
-        { value: 'party_a', label: 'Party A' },
-        { value: 'party_b', label: 'Party B' },
-      ];
-  const defaultParty = partyOptions[0]?.value || 'party_a';
-  const [party, setParty] = useState(defaultParty);
 
   const tabUpload = uploadCard.tab_upload ?? 'Upload';
   const tabPasteText = uploadCard.tab_paste_text ?? 'Paste Text';
@@ -45,7 +40,6 @@ export function Hero({
   const uploadHint =
     uploadCard.upload_hint ?? 'Click to upload or drag and drop your file here';
   const uploadAcceptedHint = uploadCard.upload_accepted_hint ?? 'PDF, DOCX, TXT';
-  const iAmLabel = uploadCard.i_am_label ?? 'I am';
   const pastePlaceholder =
     uploadCard.paste_placeholder ?? 'Paste your contract text here...';
   const ctaText =
@@ -58,15 +52,64 @@ export function Hero({
   }
 
   const handleOpenFile = () => {
+    if (uploading) {
+      return;
+    }
     fileInputRef.current?.click();
+  };
+
+  const uploadContractFile = async (file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    const resp = await fetch('/api/contracts/upload', {
+      method: 'POST',
+      body: formData,
+    });
+    if (!resp.ok) {
+      throw new Error(`request failed with status ${resp.status}`);
+    }
+    const result = await resp.json();
+    if (result.code !== 0) {
+      throw new Error(result.message || 'upload failed');
+    }
+    const document = result.data?.document;
+    const fileInfo = result.data?.file;
+    return {
+      documentId: String(document?.id || ''),
+      fileUrl: String(fileInfo?.url || document?.filePath || ''),
+      fileName: String(fileInfo?.name || document?.fileName || file.name || ''),
+    };
+  };
+
+  const handleSelectedFile = async (file: File) => {
+    setFileName(file.name);
+    setUploading(true);
+    setUploadedDocumentId('');
+    setUploadedFileUrl('');
+
+    try {
+      const uploaded = await uploadContractFile(file);
+      setFileName(uploaded.fileName);
+      setUploadedDocumentId(uploaded.documentId);
+      setUploadedFileUrl(uploaded.fileUrl);
+      toast.success('Uploaded');
+    } catch (e: any) {
+      toast.error(e?.message || 'upload failed');
+      setFileName('');
+      setUploadedDocumentId('');
+      setUploadedFileUrl('');
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
   };
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const selectedFile = event.target.files?.[0];
-    if (!selectedFile) {
-      return;
-    }
-    setFileName(selectedFile.name);
+    if (!selectedFile) return;
+    void handleSelectedFile(selectedFile);
   };
 
   const handleDragOver = (event: DragEvent<HTMLDivElement>) => {
@@ -83,10 +126,19 @@ export function Hero({
     event.preventDefault();
     setDragActive(false);
     const selectedFile = event.dataTransfer.files?.[0];
-    if (!selectedFile) {
+    if (!selectedFile) return;
+    void handleSelectedFile(selectedFile);
+  };
+
+  const hasContractInput =
+    Boolean(uploadedDocumentId && uploadedFileUrl) || Boolean(pastedText.trim());
+  const canScan = hasContractInput && !uploading;
+
+  const handleScan = () => {
+    if (!canScan) {
+      toast.error('Please upload a contract file or paste contract text first');
       return;
     }
-    setFileName(selectedFile.name);
   };
 
   return (
@@ -196,13 +248,18 @@ export function Hero({
                   </p>
                   {fileName && (
                     <div className="bg-background text-foreground mt-4 inline-flex max-w-full items-center gap-2 rounded-full px-3 py-1 text-sm">
-                      <FileText className="size-4 shrink-0" />
+                      {uploading ? (
+                        <Loader2 className="size-4 shrink-0 animate-spin" />
+                      ) : (
+                        <FileText className="size-4 shrink-0" />
+                      )}
                       <span className="truncate">{fileName}</span>
                     </div>
                   )}
                   <input
                     ref={fileInputRef}
                     type="file"
+                    accept=".pdf,.docx,.txt"
                     className="hidden"
                     onChange={handleFileChange}
                   />
@@ -219,33 +276,16 @@ export function Hero({
               </div>
             )}
 
-            <div className="mt-5 flex items-center gap-3">
-              <span className="text-muted-foreground text-sm">{iAmLabel}:</span>
-              <RadioGroup
-                value={party}
-                onValueChange={setParty}
-                className="flex flex-wrap gap-4"
-              >
-                {partyOptions.map(
-                  (option: { label?: string; value?: string }, idx: number) => {
-                    if (!option?.value || !option?.label) {
-                      return null;
-                    }
-                    return (
-                      <label
-                        key={`${option.value}-${idx}`}
-                        className="text-foreground flex cursor-pointer items-center gap-2 text-sm"
-                      >
-                        <RadioGroupItem value={option.value} />
-                        <span>{option.label}</span>
-                      </label>
-                    );
-                  }
-                )}
-              </RadioGroup>
-            </div>
-
-            <Button className="mt-6 h-11 w-full text-base">{ctaText}</Button>
+            <Button
+              className={cn(
+                'mt-6 h-11 w-full text-base',
+                !canScan && 'cursor-not-allowed opacity-50'
+              )}
+              aria-disabled={!canScan}
+              onClick={handleScan}
+            >
+              {ctaText}
+            </Button>
           </div>
         </div>
       </div>
