@@ -81,7 +81,7 @@ export async function parseContractToMarkdown({
 }
 
 /**
- * 分析合同概要
+ * 调用AI模型，分析合同概要
  * @param contractContent 合同内容
  * @param model 模型名称
  * @param configs 配置项
