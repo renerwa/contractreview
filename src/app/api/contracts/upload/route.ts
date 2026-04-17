@@ -12,6 +12,7 @@ export async function POST(req: Request) {
       return respErr('no auth, please sign in');
     }
 
+    // 从请求体中获取文件
     const formData = await req.formData();
     const file = formData.get('file') as File | null;
     if (!file) {

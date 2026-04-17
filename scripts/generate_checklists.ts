@@ -324,7 +324,7 @@ export async function generateChecklists() {
   console.log(`Found ${types.length} contract types.`);
 
   // 先用第一个类型来测试一下
-  types = [types[0]];
+  // types = [types[0]];
 
   for (const type of types) {
     const typeName = `${type.nameZh} (${type.nameEn})`;
@@ -371,81 +371,81 @@ export async function generateChecklists() {
         );
       }
 
-      // console.log(`  - Calling GPT-5-2...`);
-      // const gpt5Draft = await fetchFromOpenAICompat(
-      //   basePrompt,
-      //   token,
-      //   'gpt-5-2',
-      //   'https://api.kie.ai/gpt-5-2/v1/chat/completions'
-      // );
-      // console.log(`  - GPT-5-2 Draft: ${gpt5Draft}`);
+      console.log(`  - Calling GPT-5-2...`);
+      const gpt5Draft = await fetchFromOpenAICompat(
+        basePrompt,
+        token,
+        'gpt-5-2',
+        'https://api.kie.ai/gpt-5-2/v1/chat/completions'
+      );
+      console.log(`  - GPT-5-2 Draft: ${gpt5Draft}`);
 
-      // console.log(`  - Calling Gemini-3.1-Pro...`);
-      // const geminiDraft = await fetchFromOpenAICompat(
-      //   basePrompt,
-      //   token,
-      //   'gemini-3.1-pro-openai',
-      //   'https://api.kie.ai/gemini-3.1-pro/v1/chat/completions'
-      // );
-      // console.log(`  - Gemini-3.1-Pro Draft: ${geminiDraft}`);
+      console.log(`  - Calling Gemini-3.1-Pro...`);
+      const geminiDraft = await fetchFromOpenAICompat(
+        basePrompt,
+        token,
+        'gemini-3.1-pro-openai',
+        'https://api.kie.ai/gemini-3.1-pro/v1/chat/completions'
+      );
+      console.log(`  - Gemini-3.1-Pro Draft: ${geminiDraft}`);
 
-      // console.log(`  - Aggregating...`);
-      // const aggregated = await aggregateWithFallback({
-      //   token,
-      //   typeName,
-      //   gpt5Draft,
-      //   geminiDraft,
-      //   claudeDraft,
-      // });
-      // console.log(`  - Aggregated by ${aggregated.model}`);
+      console.log(`  - Aggregating...`);
+      const aggregated = await aggregateWithFallback({
+        token,
+        typeName,
+        gpt5Draft,
+        geminiDraft,
+        claudeDraft,
+      });
+      console.log(`  - Aggregated by ${aggregated.model}`);
 
-      // let items: any[] = [];
-      // try {
-      //   items = extractJson(aggregated.text);
-      // } catch (err) {
-      //   console.error(
-      //     `  - Failed to parse aggregated JSON for ${typeName}:`,
-      //     err
-      //   );
-      //   continue;
-      // }
+      let items: any[] = [];
+      try {
+        items = extractJson(aggregated.text);
+      } catch (err) {
+        console.error(
+          `  - Failed to parse aggregated JSON for ${typeName}:`,
+          err
+        );
+        continue;
+      }
 
-      // if (Array.isArray(items) && items.length > 0) {
-      //   console.log(`  - Inserting ${items.length} items to database...`);
-      //   await db()
-      //     .delete(contractReviewChecklist)
-      //     .where(
-      //       and(
-      //         eq(contractReviewChecklist.contractTypeId, type.id),
-      //         eq(contractReviewChecklist.signingPlace, 'global')
-      //       )
-      //     );
+      if (Array.isArray(items) && items.length > 0) {
+        console.log(`  - Inserting ${items.length} items to database...`);
+        await db()
+          .delete(contractReviewChecklist)
+          .where(
+            and(
+              eq(contractReviewChecklist.contractTypeId, type.id),
+              eq(contractReviewChecklist.signingPlace, 'global')
+            )
+          );
 
-      //   const insertData = items.map((item, index) => ({
-      //     id: getUuid(),
-      //     contractTypeId: type.id,
-      //     contractTypeName: type.nameZh,
-      //     contractType: type.code,
-      //     contractSubtype: '',
-      //     signingPlace: 'global',
-      //     userParty: null,
-      //     itemCode: `CHK_${type.code}_${String(index + 1).padStart(3, '0')}`,
-      //     itemTitle: item.element_name || 'Unnamed',
-      //     itemDescription: `【${item.category || '未分类'}】\n描述：${item.description || ''}\n提取指令：${item.audit_focus || ''}`,
-      //     severity: 'medium',
-      //     weight: 50,
-      //     sort: index,
-      //     isRequired: true,
-      //     isActive: true,
-      //     createdAt: new Date(),
-      //     updatedAt: new Date(),
-      //   }));
+        const insertData = items.map((item, index) => ({
+          id: getUuid(),
+          contractTypeId: type.id,
+          contractTypeName: type.nameZh,
+          contractType: type.code,
+          contractSubtype: '',
+          signingPlace: 'global',
+          userParty: null,
+          itemCode: `CHK_${type.code}_${String(index + 1).padStart(3, '0')}`,
+          itemTitle: item.element_name || 'Unnamed',
+          itemDescription: `【${item.category || '未分类'}】\n描述：${item.description || ''}\n提取指令：${item.audit_focus || ''}`,
+          severity: 'medium',
+          weight: 50,
+          sort: index,
+          isRequired: true,
+          isActive: true,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        }));
 
-      //   await db().insert(contractReviewChecklist).values(insertData);
-      //   console.log(`  - Successfully saved checklists for ${typeName}.`);
-      // } else {
-      //   console.warn(`  - No items found in aggregated JSON for ${typeName}.`);
-      // }
+        await db().insert(contractReviewChecklist).values(insertData);
+        console.log(`  - Successfully saved checklists for ${typeName}.`);
+      } else {
+        console.warn(`  - No items found in aggregated JSON for ${typeName}.`);
+      }
     } catch (e) {
       console.error(`  - Error processing ${typeName}:`, e);
     }
