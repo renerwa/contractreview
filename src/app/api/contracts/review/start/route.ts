@@ -6,6 +6,7 @@ import { createAITask, NewAITask } from '@/shared/models/ai_task';
 import { getContractReviewChecklistsWithFallback } from '@/shared/models/contract_review_checklist';
 import { findDocumentById, updateDocumentById } from '@/shared/models/document';
 import { getUserInfo } from '@/shared/models/user';
+import { safeParseJsonObject, withContractAccessMetadata } from '@/shared/services/contract_access';
 
 export async function POST(req: Request) {
   try {
@@ -21,6 +22,7 @@ export async function POST(req: Request) {
     const signingPlace = String(body.signingPlace || '').trim();
     const perspective = String(body.perspective || body.userParty || '').trim();
     const focusPoints = String(body.focusPoints || '').trim();
+    const outputLanguage = String(body.outputLanguage || '').trim();
     const contractMarkdown = String(body.contractMarkdown || body.markdownContent || '');
 
     if (!documentId) {
@@ -37,6 +39,9 @@ export async function POST(req: Request) {
     if (!document || document.userId !== user.id) {
       return respErr('document not found');
     }
+    if (document.status === 'non_contract') {
+      return respErr('this document is not a contract');
+    }
 
     let markdownContent = contractMarkdown;
     let summary = '';
@@ -51,6 +56,11 @@ export async function POST(req: Request) {
     if (!markdownContent) {
       return respErr('contractMarkdown is required');
     }
+
+    const documentMetadata = safeParseJsonObject(document.metadata);
+    const resolvedOutputLanguage =
+      outputLanguage ||
+      String(documentMetadata?.contractAccess?.reviewSetup?.outputLanguage || '').trim();
 
     const { checklists, resolvedSigningPlace } =
       await getContractReviewChecklistsWithFallback({
@@ -83,19 +93,12 @@ export async function POST(req: Request) {
         resolvedSigningPlace,
         perspective,
         focusPoints,
+        outputLanguage: resolvedOutputLanguage,
         checklistCount: checklists.length,
       }),
       modelProvider: 'openrouter',
       modelName: '',
       createdAt: now,
-      updatedAt: now,
-    });
-
-    await updateDocumentById(documentId, {
-      contractType,
-      userParty: perspective,
-      signingPlace: signingPlace || document.signingPlace || '',
-      focusPoints: focusPoints || document.focusPoints || '',
       updatedAt: now,
     });
 
@@ -108,6 +111,7 @@ export async function POST(req: Request) {
       resolvedSigningPlace,
       perspective,
       focusPoints,
+      outputLanguage: resolvedOutputLanguage,
     };
 
     const model = String(body.model || '').trim() || 'openai/gpt-4o-mini';
@@ -125,6 +129,29 @@ export async function POST(req: Request) {
     };
 
     await createAITask(newTask);
+
+    await updateDocumentById(documentId, {
+      contractType,
+      userParty: perspective,
+      signingPlace: signingPlace || document.signingPlace || '',
+      focusPoints: focusPoints || document.focusPoints || '',
+      status: 'reviewing',
+      metadata: withContractAccessMetadata(document.metadata, {
+        reviewSetup: {
+          perspective,
+          signingPlace: signingPlace || document.signingPlace || '',
+          outputLanguage: resolvedOutputLanguage,
+          focusPoints: focusPoints || document.focusPoints || '',
+        },
+        reviewTask: {
+          taskId: newTask.id,
+          analysisResultId: reviewAnalysisResult.id,
+          status: newTask.status,
+          startedAt: now.toISOString(),
+        },
+      }),
+      updatedAt: now,
+    });
 
     return respData({
       taskId: newTask.id,

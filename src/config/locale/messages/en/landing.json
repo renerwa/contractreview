@@ -92,6 +92,11 @@
       "show_sign_out": true,
       "items": [
         {
+          "title": "My Contracts",
+          "url": "/contracts",
+          "icon": "FileText"
+        },
+        {
           "title": "Billing",
           "url": "/settings/billing",
           "icon": "CreditCard"

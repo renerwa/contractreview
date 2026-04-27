@@ -14,6 +14,10 @@ import {
   analyzeContractSummary,
   parseContractToMarkdown,
 } from '@/shared/services/contract';
+import {
+  canAccessDocument,
+  withContractAccessMetadata,
+} from '@/shared/services/contract_access';
 
 export type ContractPreAnalysisInput = {
   content: string;
@@ -34,15 +38,18 @@ export type ContractPreAnalysisInput = {
  */
 export async function preAnalyzeContract({
   userId,
+  sessionToken,
   input,
 }: {
   userId: string;
+  sessionToken?: string;
   input: ContractPreAnalysisInput;
 }) {
   const now = new Date();
   // 解析合同内容或URL的合同文档（传了 content 就解析 content，否则解析 fileUrl）为Markdown格式
   const resolved = await resolveContractContent({
     userId,
+    sessionToken,
     documentId: input.documentId,
     fileUrl: input.fileUrl,
     content: input.content,
@@ -55,6 +62,8 @@ export async function preAnalyzeContract({
   });
 
   let summaryResult: Awaited<ReturnType<typeof analyzeContractSummary>> = {
+    isContract: true,
+    nonContractReason: '',
     contractType: '',
     contractSubtype: '',
     language: '',
@@ -72,6 +81,8 @@ export async function preAnalyzeContract({
   } catch (e: any) {
     summaryError = e?.message ? String(e.message) : 'contract summary failed';
     summaryResult = {
+      isContract: true,
+      nonContractReason: '',
       contractType: input.contractType || '',
       contractSubtype: '',
       language: '',
@@ -112,6 +123,8 @@ export async function preAnalyzeContract({
     riskItems: null,
     findings: JSON.stringify({
       summaryError,
+      isContract: summaryResult.isContract,
+      nonContractReason: summaryResult.nonContractReason,
       keyPoints: summaryResult.keyPoints,
       signingPlaceCountry: summaryResult.signingPlaceCountry,
       signingPlaceCity: summaryResult.signingPlaceCity,
@@ -123,7 +136,7 @@ export async function preAnalyzeContract({
   });
 
   await updateDocumentById(resolved.documentId, {
-    status: 'analyzed',
+    status: summaryResult.isContract ? 'analyzed' : 'non_contract',
     contractType: summaryResult.contractType || input.contractType || '',
     contractSubtype: summaryResult.contractSubtype || '',
     userParty: summaryResult.userParty || input.userParty || '',
@@ -166,6 +179,7 @@ export async function preAnalyzeContract({
  */
 async function resolveContractContent({
   userId,
+  sessionToken,
   documentId,
   fileUrl,
   content,
@@ -177,6 +191,7 @@ async function resolveContractContent({
   now,
 }: {
   userId: string;
+  sessionToken?: string;
   documentId: string;
   fileUrl: string;
   content: string;
@@ -190,6 +205,7 @@ async function resolveContractContent({
   if (content) {
     const ensuredDocumentId = await ensureDocumentForInlineContent({
       userId,
+      sessionToken,
       documentId,
       content,
       contractType,
@@ -216,6 +232,7 @@ async function resolveContractContent({
   // 如果不存在，则抛出错误
   const ensuredDocumentId = await ensureDocumentForFileUrl({
     userId,
+    sessionToken,
     documentId,
     fileUrl,
     now,
@@ -252,6 +269,7 @@ async function resolveContractContent({
  */
 async function ensureDocumentForInlineContent({
   userId,
+  sessionToken,
   documentId,
   content,
   contractType,
@@ -261,6 +279,7 @@ async function ensureDocumentForInlineContent({
   now,
 }: {
   userId: string;
+  sessionToken?: string;
   documentId: string;
   content: string;
   contractType: string;
@@ -271,7 +290,13 @@ async function ensureDocumentForInlineContent({
 }) {
   if (documentId) {
     const existingDocument = await findDocumentById(documentId);
-    if (!existingDocument || existingDocument.userId !== userId) {
+    if (
+      !canAccessDocument(existingDocument, {
+        user: null,
+        ownerUserId: userId,
+        sessionToken: sessionToken || '',
+      })
+    ) {
       throw new Error('document not found');
     }
     return documentId;
@@ -290,6 +315,12 @@ async function ensureDocumentForInlineContent({
     userParty,
     signingPlace,
     focusPoints,
+    metadata: sessionToken
+      ? withContractAccessMetadata(undefined, {
+          sessionToken,
+          accessMode: 'anonymous',
+        })
+      : '',
     createdAt: now,
     updatedAt: now,
   });
@@ -309,18 +340,26 @@ async function ensureDocumentForInlineContent({
  */
 async function ensureDocumentForFileUrl({
   userId,
+  sessionToken,
   documentId,
   fileUrl,
   now,
 }: {
   userId: string;
+  sessionToken?: string;
   documentId: string;
   fileUrl: string;
   now: Date;
 }) {
   if (documentId) {
     const existingDocument = await findDocumentById(documentId);
-    if (!existingDocument || existingDocument.userId !== userId) {
+    if (
+      !canAccessDocument(existingDocument, {
+        user: null,
+        ownerUserId: userId,
+        sessionToken: sessionToken || '',
+      })
+    ) {
       throw new Error('document not found');
     }
     if (existingDocument.filePath !== fileUrl) {
@@ -333,7 +372,13 @@ async function ensureDocumentForFileUrl({
   }
 
   const document = await findDocumentByFilePath(fileUrl);
-  if (!document || document.userId !== userId) {
+  if (
+    !canAccessDocument(document, {
+      user: null,
+      ownerUserId: userId,
+      sessionToken: sessionToken || '',
+    })
+  ) {
     throw new Error('document not found');
   }
   return document.id;

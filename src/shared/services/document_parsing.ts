@@ -5,6 +5,7 @@ import {
 } from '@/shared/models/analysis_result';
 import { getAllConfigs } from '@/shared/models/config';
 import { findDocumentById, updateDocumentById } from '@/shared/models/document';
+import { canAccessDocument } from '@/shared/services/contract_access';
 
 type MinerUTaskState = 'done' | 'pending' | 'running' | 'failed' | 'converting';
 
@@ -78,10 +79,12 @@ export async function startMinerUParseByUrl({
  */
 export async function queryMinerUParseAndPersist({
   userId,
+  sessionToken,
   documentId,
   taskId,
 }: {
   userId: string;
+  sessionToken?: string;
   documentId: string;
   taskId: string;
 }): Promise<DocumentParsingQueryResult> {
@@ -142,6 +145,7 @@ export async function queryMinerUParseAndPersist({
     const markdownContent = await fetchFullMdFromMinerUZip(zipUrl);
     const analysisResultId = await persistMarkdownToAnalysisResult({
       userId,
+      sessionToken,
       documentId,
       taskId,
       zipUrl,
@@ -179,12 +183,14 @@ function buildMinerUQueryUrl(createTaskUrl: string, taskId: string) {
  */
 async function persistMarkdownToAnalysisResult({
   userId,
+  sessionToken,
   documentId,
   taskId,
   zipUrl,
   markdownContent,
 }: {
   userId: string;
+  sessionToken?: string;
   documentId: string;
   taskId: string;
   zipUrl: string;
@@ -193,7 +199,13 @@ async function persistMarkdownToAnalysisResult({
   const now = new Date();
 
   const doc = await findDocumentById(documentId);
-  if (!doc || doc.userId !== userId) {
+  if (
+    !canAccessDocument(doc, {
+      user: null,
+      ownerUserId: userId,
+      sessionToken: sessionToken || '',
+    })
+  ) {
     throw new Error('document not found');
   }
 

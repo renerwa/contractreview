@@ -4,15 +4,15 @@ import {
   findDocumentById,
   updateDocumentById,
 } from '@/shared/models/document';
-import { getUserInfo } from '@/shared/models/user';
+import {
+  canAccessDocument,
+  getContractAccessContext,
+} from '@/shared/services/contract_access';
 import { startMinerUParseByUrl } from '@/shared/services/document_parsing';
 
 export async function POST(req: Request) {
   try {
-    const user = await getUserInfo();
-    if (!user) {
-      return respErr('no auth, please sign in');
-    }
+    const access = await getContractAccessContext();
 
     const body = await req.json();
     const documentId = String(body.documentId || '').trim();
@@ -26,7 +26,7 @@ export async function POST(req: Request) {
       ? await findDocumentById(documentId)
       : await findDocumentByFilePath(fileUrl);
 
-    if (!document || document.userId !== user.id) {
+    if (!canAccessDocument(document, access)) {
       return respErr('document not found');
     }
 

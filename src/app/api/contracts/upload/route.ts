@@ -2,15 +2,17 @@ import { getFileExtension } from '@/shared/lib/contract-file';
 import { getUuid, md5 } from '@/shared/lib/hash';
 import { respData, respErr } from '@/shared/lib/resp';
 import { createDocument } from '@/shared/models/document';
-import { getUserInfo } from '@/shared/models/user';
+import {
+  getContractAccessContext,
+  withContractAccessMetadata,
+} from '@/shared/services/contract_access';
 import { getStorageService } from '@/shared/services/storage';
 
 export async function POST(req: Request) {
   try {
-    const user = await getUserInfo();
-    if (!user) {
-      return respErr('no auth, please sign in');
-    }
+    const access = await getContractAccessContext({
+      createAnonymousSession: true,
+    });
 
     // 从请求体中获取文件
     const formData = await req.formData();
@@ -28,7 +30,10 @@ export async function POST(req: Request) {
     const digest = md5(body);
     // 调用自定义方法获取文件后缀名，获取失败就默认用 bin（通用二进制后缀）
     const ext = getFileExtension(file.name) || 'bin';
-    const key = `contracts/${user.id}/${digest}.${ext}`;
+    const storageOwner = access.isAnonymous
+      ? `anonymous/${access.sessionToken}`
+      : access.ownerUserId;
+    const key = `contracts/${storageOwner}/${digest}.${ext}`;
 
     const storageService = await getStorageService();
     // 检查文件是否存在,如果存在就直接返回URL,否则上传文件并获取URL
@@ -60,7 +65,7 @@ export async function POST(req: Request) {
     // 创建文档记录
     const document = await createDocument({
       id: getUuid(),
-      userId: user.id,
+      userId: access.ownerUserId,
       status: 'uploaded',
       filePath: url,
       fileName: file.name,
@@ -71,6 +76,12 @@ export async function POST(req: Request) {
       userParty,
       signingPlace,
       focusPoints,
+      metadata: access.isAnonymous
+        ? withContractAccessMetadata(undefined, {
+            sessionToken: access.sessionToken,
+            accessMode: 'anonymous',
+          })
+        : '',
       createdAt: now,
       updatedAt: now,
     });

@@ -1,9 +1,9 @@
 import { respData, respErr } from '@/shared/lib/resp';
-import { getUserInfo } from '@/shared/models/user';
 import {
   preAnalyzeContract,
   type ContractPreAnalysisInput,
 } from '@/shared/services/contract_pre_analysis';
+import { getContractAccessContext } from '@/shared/services/contract_access';
 
 type AnalyzeInput = ContractPreAnalysisInput;
 
@@ -24,17 +24,20 @@ type AnalyzeInput = ContractPreAnalysisInput;
  */
 export async function POST(req: Request) {
   try {
-    const user = await getUserInfo();
-    if (!user) {
-      return respErr('no auth, please sign in');
-    }
+    const access = await getContractAccessContext({
+      createAnonymousSession: true,
+    });
 
     const input = await parseInput(req);
     if (!input.content && !input.fileUrl) {
       return respErr('content or fileUrl is required');
     }
 
-    const result = await preAnalyzeContract({ userId: user.id, input });
+    const result = await preAnalyzeContract({
+      userId: access.ownerUserId,
+      sessionToken: access.sessionToken,
+      input,
+    });
     return respData(result);
   } catch (e: any) {
     console.log('contract pre-analysis failed:', e);

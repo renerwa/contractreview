@@ -92,6 +92,11 @@
       "show_sign_out": true,
       "items": [
         {
+          "title": "我的合同",
+          "url": "/contracts",
+          "icon": "FileText"
+        },
+        {
           "title": "账单",
           "url": "/settings/billing",
           "icon": "CreditCard"

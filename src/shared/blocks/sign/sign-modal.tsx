@@ -28,7 +28,12 @@ import { SignUpForm } from './sign-up-form';
 
 export function SignModal({ callbackUrl = '/' }: { callbackUrl?: string }) {
   const t = useTranslations('common.sign');
-  const { isShowSignModal, setIsShowSignModal } = useAppContext();
+  const {
+    isShowSignModal,
+    setIsShowSignModal,
+    signModalCallbackUrl,
+    setSignModalCallbackUrl,
+  } = useAppContext();
   const [mode, setMode] = useState<'sign-in' | 'sign-up'>('sign-in');
 
   const isDesktop = useMediaQuery('(min-width: 768px)');
@@ -37,8 +42,11 @@ export function SignModal({ callbackUrl = '/' }: { callbackUrl?: string }) {
     setIsShowSignModal(open);
     if (!open) {
       setMode('sign-in');
+      setSignModalCallbackUrl('/');
     }
   };
+
+  const effectiveCallbackUrl = signModalCallbackUrl || callbackUrl || '/';
 
   const title =
     mode === 'sign-in' ? t('sign_in_title') : t('sign_up_title');
@@ -48,12 +56,12 @@ export function SignModal({ callbackUrl = '/' }: { callbackUrl?: string }) {
   const formContent =
     mode === 'sign-in' ? (
       <SignInForm
-        callbackUrl={callbackUrl}
+        callbackUrl={effectiveCallbackUrl}
         onSwitchToSignUp={() => setMode('sign-up')}
       />
     ) : (
       <SignUpForm
-        callbackUrl={callbackUrl}
+        callbackUrl={effectiveCallbackUrl}
         onSwitchToSignIn={() => setMode('sign-in')}
       />
     );
@@ -81,13 +89,13 @@ export function SignModal({ callbackUrl = '/' }: { callbackUrl?: string }) {
         </DrawerHeader>
         {mode === 'sign-in' ? (
           <SignInForm
-            callbackUrl={callbackUrl}
+            callbackUrl={effectiveCallbackUrl}
             className="mt-8 px-4"
             onSwitchToSignUp={() => setMode('sign-up')}
           />
         ) : (
           <SignUpForm
-            callbackUrl={callbackUrl}
+            callbackUrl={effectiveCallbackUrl}
             className="mt-8 px-4"
             onSwitchToSignIn={() => setMode('sign-in')}
           />
