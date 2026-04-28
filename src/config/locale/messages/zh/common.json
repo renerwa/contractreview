@@ -52,5 +52,234 @@
   "locale_detector": {
     "title": "检测到浏览器语言是: {locale}，是否切换？",
     "switch_to": "切换到{locale}"
+  },
+  "contracts": {
+    "my_contracts": {
+      "title": "我的合同",
+      "description": "查看工作区中的全部合同，跟踪当前处理状态，并打开对应的审核详情页。",
+      "stats": {
+        "total": "合同总数",
+        "in_progress": "进行中",
+        "completed": "已完成"
+      },
+      "hero": {
+        "badge": "合同工作区",
+        "latest_activity": "最近活动",
+        "latest_activity_description": "显示当前列表中最近一次合同更新时间。",
+        "workspace_status": "工作区状态",
+        "workspace_status_value": "进行中 {inProgress} · 已完成 {completed}",
+        "workspace_status_description": "快速掌握本轮合同审核推进情况。"
+      },
+      "workspace": {
+        "title": "合同工作台",
+        "description": "打开任一合同以继续初步分析、审核设置或查看最终审核结果。"
+      },
+      "empty": {
+        "title": "还没有合同",
+        "description": "从首页上传第一份合同，即可开始解析、初步分析和完整审核流程。",
+        "action": "上传第一份合同"
+      },
+      "table": {
+        "contract": "合同",
+        "status": "状态",
+        "review_insights": "审核关键信息",
+        "contract_type": "合同类型",
+        "updated_at": "更新时间",
+        "action": "操作",
+        "open": "打开",
+        "untitled_contract": "未命名合同"
+      },
+      "review_insights": {
+        "risk_count": "风险点 {count} 个",
+        "risk_level": "风险等级：{level}",
+        "risk_score": "风险分：{score}",
+        "risk_score_label": "风险分",
+        "no_structured_risk": "未发现结构化风险",
+        "high_risk_short": "高",
+        "medium_risk_short": "中",
+        "low_risk_short": "低"
+      },
+      "status": {
+        "uploaded": "已上传",
+        "parsing": "解析中",
+        "parsed": "已解析",
+        "analyzed": "已分析",
+        "review_setup_ready": "待设置审核",
+        "reviewing": "审核中",
+        "reviewed": "已审核",
+        "review_failed": "审核失败",
+        "non_contract": "非合同"
+      },
+      "risk_level": {
+        "high": "高风险",
+        "medium": "中风险",
+        "low": "低风险"
+      }
+    },
+    "detail": {
+      "fallback": {
+        "document_name": "合同文档",
+        "pending": "待生成",
+        "not_identified": "未识别",
+        "summary_unavailable": "暂未生成摘要。"
+      },
+      "toast": {
+        "start_review_success": "已开始完整合同审核",
+        "start_review_failed": "启动合同审核失败",
+        "sign_in_required": "请先登录，再开始完整合同审核",
+        "save_and_start_success": "审核设置已保存，正在启动完整审核...",
+        "save_review_setup_failed": "保存审核设置失败"
+      },
+      "loading": {
+        "workspace": "正在加载合同工作台..."
+      },
+      "preparing": {
+        "title": "正在准备审核...",
+        "description": "我们正在保存您的审核偏好，并准备进入下一步。"
+      },
+      "non_contract": {
+        "title": "这个文件看起来不是合同",
+        "description": "我们未能将该文档识别为合同或协议，因此法律审核流程将在此停止。",
+        "upload_another": "上传其他文件",
+        "paste_instead": "改为粘贴合同文本"
+      },
+      "parsing": {
+        "title": "AI 正在理解您的合同",
+        "description": "系统正在抽取合同结构、条款和法律上下文。复杂文件可能需要更长处理时间。",
+        "progress": "已解析 {extracted} / {total} 页"
+      },
+      "review_state": {
+        "reviewed_title": "审核结果已就绪",
+        "failed_title": "审核未能完成",
+        "reviewing_title": "完整审核进行中",
+        "reviewed_description": "打开审核结果页，可查看总体风险等级、详细发现和导出选项。",
+        "failed_description": "审核任务未成功完成。您可以打开结果页查看最新状态。",
+        "reviewing_description": "我们正在生成完整合同审核报告。打开结果页可跟踪进度。",
+        "open_result": "打开审核结果"
+      },
+      "summary_card": {
+        "title": "合同摘要",
+        "description": "在设置审核方向前，先查看抽取出的摘要内容。"
+      },
+      "summary_fields": {
+        "contract_type": "合同类型",
+        "language": "语言",
+        "signing_place": "签署地",
+        "review_stance": "审核立场",
+        "summary": "摘要",
+        "key_points": "关键点"
+      },
+      "setup_card": {
+        "title": "审核设置",
+        "description": "确认完整审核应如何执行。"
+      },
+      "setup_fields": {
+        "review_perspective": "审核视角",
+        "review_perspective_placeholder": "请选择一个视角",
+        "signing_country": "签署国家/地区",
+        "signing_country_placeholder": "例如：美国",
+        "output_language": "输出语言",
+        "output_language_placeholder": "例如：中文",
+        "focus_areas": "关注重点",
+        "focus_areas_placeholder": "告诉我们您最关心什么，AI 会将其转化为审核优先级。"
+      },
+      "setup_actions": {
+        "preparing_review": "正在准备审核...",
+        "start_full_review": "开始完整审核"
+      },
+      "perspective_options": {
+        "neutral": "中立",
+        "buyer": "买方",
+        "seller": "卖方",
+        "employer": "雇主",
+        "employee": "员工",
+        "service_provider": "服务提供方",
+        "service_recipient": "服务接收方"
+      },
+      "status_text": {
+        "parsing": "AI 正在抽取合同结构，并准备初步分析。",
+        "parsed": "文档抽取已完成，正在准备初步分析。",
+        "analyzed": "您的合同已可进入审核设置。",
+        "reviewing": "您的完整合同审核正在运行中。",
+        "reviewed": "您的完整合同审核已完成。",
+        "review_failed": "完整合同审核未成功完成。",
+        "non_contract": "该文件已被识别为非合同文档。",
+        "default": "正在准备您的合同工作台。"
+      }
+    },
+    "result": {
+      "toast": {
+        "load_failed": "加载审核结果失败"
+      },
+      "loading": {
+        "result": "正在加载审核结果..."
+      },
+      "fallback": {
+        "document_name": "合同文档",
+        "generated_on_demand": "按需生成",
+        "processing": "处理中",
+        "summary_generating": "审核摘要正在生成中。",
+        "no_summary": "暂无摘要。",
+        "not_available": "暂无内容。"
+      },
+      "title": {
+        "completed": "合同审核结果",
+        "failed": "合同审核失败",
+        "processing": "审核进行中"
+      },
+      "print": {
+        "header_badge": "AI 合同审核报告",
+        "header_title": "合同审核报告",
+        "report_number": "报告编号：{value}",
+        "document": "文档：{value}",
+        "generated_at": "生成时间：{value}",
+        "overall_risk": "总体风险：{value}",
+        "total_risk_score": "总风险分：{value}",
+        "output_language": "输出语言：{value}"
+      },
+      "hero": {
+        "console_badge": "合同审核控制台",
+        "description_completed": "您的完整合同审核已生成。",
+        "description_failed": "审核未成功完成。",
+        "description_processing": "我们正在为您的合同生成完整法律审核。",
+        "report_chip": "报告 #{value}",
+        "print": "打印",
+        "snapshot_title": "审核快照",
+        "snapshot_description": "面向法务团队设计：先看总体风险，再看条款级发现与修订建议。"
+      },
+      "summary": {
+        "risk_score": "风险分",
+        "overall_risk": "总体风险",
+        "high_risk": "高风险",
+        "medium_risk": "中风险",
+        "low_risk": "低风险",
+        "key_conclusion": "关键结论"
+      },
+      "risk_details": {
+        "title": "风险明细",
+        "description": "风险项按优先级从高到低排序。",
+        "processing": "审核仍在进行中，页面会自动刷新。",
+        "empty": "暂时没有可展示的结构化风险项。",
+        "risk_index": "风险点 {index}"
+      },
+      "risk_sections": {
+        "original_text": "原文",
+        "risk_explanation": "风险说明",
+        "suggested_revision": "修改建议"
+      },
+      "context": {
+        "title": "报告上下文",
+        "description": "报告包含本次运行使用的摘要与审核偏好设置。",
+        "snapshot_title": "上下文快照",
+        "snapshot_description": "导出报告会包含合同摘要以及本次审核使用的设置。",
+        "fields": {
+          "contract_summary": "合同摘要",
+          "perspective": "审核视角",
+          "signing_country": "签署国家/地区",
+          "output_language": "输出语言",
+          "focus_areas": "关注重点"
+        }
+      }
+    }
   }
 }

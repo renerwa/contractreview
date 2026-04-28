@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import {
   CheckCircle2,
   FileSearch,
@@ -50,13 +51,13 @@ type DetailResponse = {
 const STEP_ITEMS = ['Upload', 'Extract', 'Pre-analysis', 'Review setup'];
 
 const PERSPECTIVE_OPTIONS = [
-  { value: 'neutral', label: 'Neutral' },
-  { value: 'buyer', label: 'Buyer' },
-  { value: 'seller', label: 'Seller' },
-  { value: 'employer', label: 'Employer' },
-  { value: 'employee', label: 'Employee' },
-  { value: 'service-provider', label: 'Service Provider' },
-  { value: 'service-recipient', label: 'Service Recipient' },
+  { value: 'neutral', labelKey: 'neutral' },
+  { value: 'buyer', labelKey: 'buyer' },
+  { value: 'seller', labelKey: 'seller' },
+  { value: 'employer', labelKey: 'employer' },
+  { value: 'employee', labelKey: 'employee' },
+  { value: 'service-provider', labelKey: 'service_provider' },
+  { value: 'service-recipient', labelKey: 'service_recipient' },
 ];
 
 export function ContractDetailPage({
@@ -66,6 +67,7 @@ export function ContractDetailPage({
   documentId: string;
   locale: string;
 }) {
+  const t = useTranslations('common.contracts.detail');
   const router = useRouter();
   const { user, setIsShowSignModal, setSignModalCallbackUrl } = useAppContext();
   const [loading, setLoading] = useState(true);
@@ -189,8 +191,8 @@ export function ContractDetailPage({
 
   const progressValue = currentStep * 25;
   const summary = detail?.summary;
-  const fileName = String(detail?.document?.fileName || 'Contract document');
-  const currentStatusText = getStatusText(detail?.document?.status);
+  const fileName = String(detail?.document?.fileName || t('fallback.document_name'));
+  const currentStatusText = getStatusText(detail?.document?.status, t);
   const startFullReview = useCallback(async () => {
     if (!detail?.document?.id || !user) {
       return;
@@ -218,10 +220,10 @@ export function ContractDetailPage({
         throw new Error(json.message || 'start contract review failed');
       }
 
-      toast.success('Full contract review started');
+      toast.success(t('toast.start_review_success'));
       router.push(`/contracts/${detail.document.id}/result`);
     } catch (e: any) {
-      toast.error(e?.message || 'start contract review failed');
+      toast.error(e?.message || t('toast.start_review_failed'));
     }
   }, [
     detail?.analysisResult?.id,
@@ -285,15 +287,15 @@ export function ContractDetailPage({
       if (!user) {
         setSignModalCallbackUrl(`/contracts/${documentId}`);
         setIsShowSignModal(true);
-        toast.info('Sign in to start the full contract review');
+        toast.info(t('toast.sign_in_required'));
         return;
       }
 
-      toast.success('Review settings saved. Starting full review...');
+      toast.success(t('toast.save_and_start_success'));
       await startFullReview();
     } catch (e: any) {
       setPreparing(false);
-      toast.error(e?.message || 'save review setup failed');
+      toast.error(e?.message || t('toast.save_review_setup_failed'));
     } finally {
       setSaving(false);
     }
@@ -305,7 +307,7 @@ export function ContractDetailPage({
         <Card>
           <CardContent className="flex min-h-[240px] items-center justify-center gap-3">
             <Loader2 className="size-5 animate-spin" />
-            <span>Loading contract workspace...</span>
+            <span>{t('loading.workspace')}</span>
           </CardContent>
         </Card>
       </div>
@@ -350,9 +352,9 @@ export function ContractDetailPage({
             <CardContent className="flex min-h-[260px] flex-col items-center justify-center gap-4 text-center">
               <Sparkles className="text-primary size-10 animate-pulse" />
               <div className="space-y-2">
-                <div className="text-lg font-semibold">Preparing your review...</div>
+                <div className="text-lg font-semibold">{t('preparing.title')}</div>
                 <p className="text-muted-foreground max-w-xl text-sm">
-                  We are saving your review preferences and preparing the next step.
+                  {t('preparing.description')}
                 </p>
               </div>
             </CardContent>
@@ -365,17 +367,17 @@ export function ContractDetailPage({
               </div>
               <div className="space-y-2">
                 <div className="text-xl font-semibold">
-                  This file does not look like a contract
+                  {t('non_contract.title')}
                 </div>
                 <p className="text-muted-foreground max-w-2xl">
                   {summary?.nonContractReason ||
                     summary?.summary ||
-                    'We could not identify this document as a contract or agreement, so the legal review flow stops here.'}
+                    t('non_contract.description')}
                 </p>
               </div>
               <div className="flex flex-col gap-3 sm:flex-row">
                 <Button onClick={() => window.location.assign(`/${locale}`)}>
-                  Upload another file
+                  {t('non_contract.upload_another')}
                 </Button>
                 <Button
                   variant="outline"
@@ -383,7 +385,7 @@ export function ContractDetailPage({
                     window.location.assign(`/${locale}#paste-contract-text`)
                   }
                 >
-                  Paste contract text instead
+                  {t('non_contract.paste_instead')}
                 </Button>
               </div>
             </CardContent>
@@ -398,17 +400,18 @@ export function ContractDetailPage({
               </div>
               <div className="space-y-2">
                 <div className="text-xl font-semibold">
-                  AI is understanding your contract
+                  {t('parsing.title')}
                 </div>
                 <p className="text-muted-foreground max-w-2xl">
-                  We are extracting the contract structure, clauses, and legal
-                  context. Complex files can take longer to process.
+                  {t('parsing.description')}
                 </p>
               </div>
               {detail?.parseProgress?.totalPages ? (
                 <div className="text-muted-foreground text-sm">
-                  Parsed {detail.parseProgress.extractedPages || 0} /{' '}
-                  {detail.parseProgress.totalPages || 0} pages
+                  {t('parsing.progress', {
+                    extracted: detail.parseProgress.extractedPages || 0,
+                    total: detail.parseProgress.totalPages || 0,
+                  })}
                 </div>
               ) : null}
             </CardContent>
@@ -424,21 +427,21 @@ export function ContractDetailPage({
               <div className="space-y-2">
                 <div className="text-xl font-semibold">
                   {detail?.document?.status === 'reviewed'
-                    ? 'Your review is ready'
+                    ? t('review_state.reviewed_title')
                     : detail?.document?.status === 'review_failed'
-                      ? 'Review could not be completed'
-                      : 'Full review is in progress'}
+                      ? t('review_state.failed_title')
+                      : t('review_state.reviewing_title')}
                 </div>
                 <p className="text-muted-foreground max-w-2xl">
                   {detail?.document?.status === 'reviewed'
-                    ? 'Open the review result page to see the overall risk level, detailed findings, and export options.'
+                    ? t('review_state.reviewed_description')
                     : detail?.document?.status === 'review_failed'
-                      ? 'The review task did not complete successfully. You can open the result page to inspect the latest status.'
-                      : 'We are generating the full contract review report. Open the result page to follow the progress.'}
+                      ? t('review_state.failed_description')
+                      : t('review_state.reviewing_description')}
                 </p>
               </div>
               <Button onClick={() => router.push(`/contracts/${documentId}/result`)}>
-                Open review result
+                {t('review_state.open_result')}
               </Button>
             </CardContent>
           </Card>
@@ -448,42 +451,42 @@ export function ContractDetailPage({
               <CardHeader>
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="text-primary size-4" />
-                  <CardTitle>Contract Summary</CardTitle>
+                  <CardTitle>{t('summary_card.title')}</CardTitle>
                 </div>
                 <CardDescription>
-                  Review the extracted summary before setting your review direction.
+                  {t('summary_card.description')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-5">
                 <div className="grid gap-3 sm:grid-cols-2">
                   <InfoItem
-                    label="Contract type"
-                    value={summary?.contractType || 'Pending'}
+                    label={t('summary_fields.contract_type')}
+                    value={summary?.contractType || t('fallback.pending')}
                   />
                   <InfoItem
-                    label="Language"
-                    value={summary?.language || 'Pending'}
+                    label={t('summary_fields.language')}
+                    value={summary?.language || t('fallback.pending')}
                   />
                   <InfoItem
-                    label="Signing place"
-                    value={summary?.signingPlace || 'Not identified'}
+                    label={t('summary_fields.signing_place')}
+                    value={summary?.signingPlace || t('fallback.not_identified')}
                   />
                   <InfoItem
-                    label="Review stance"
-                    value={summary?.userParty || 'Neutral'}
+                    label={t('summary_fields.review_stance')}
+                    value={summary?.userParty || t('perspective_options.neutral')}
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <div className="text-sm font-medium">Summary</div>
+                  <div className="text-sm font-medium">{t('summary_fields.summary')}</div>
                   <div className="text-muted-foreground rounded-lg border bg-muted/20 p-4 text-sm leading-6">
-                    {summary?.summary || 'Summary is not available yet.'}
+                    {summary?.summary || t('fallback.summary_unavailable')}
                   </div>
                 </div>
 
                 {!!summary?.keyPoints?.length && (
                   <div className="space-y-2">
-                    <div className="text-sm font-medium">Key points</div>
+                    <div className="text-sm font-medium">{t('summary_fields.key_points')}</div>
                     <div className="flex flex-wrap gap-2">
                       {summary.keyPoints.map((item) => (
                         <Badge key={item} variant="secondary">
@@ -498,22 +501,22 @@ export function ContractDetailPage({
 
             <Card>
               <CardHeader>
-                <CardTitle>Review Setup</CardTitle>
+                <CardTitle>{t('setup_card.title')}</CardTitle>
                 <CardDescription>
-                  Confirm how the full review should be performed.
+                  {t('setup_card.description')}
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <div className="text-sm font-medium">Review perspective</div>
+                  <div className="text-sm font-medium">{t('setup_fields.review_perspective')}</div>
                   <Select value={perspective} onValueChange={setPerspective}>
                     <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select a perspective" />
+                      <SelectValue placeholder={t('setup_fields.review_perspective_placeholder')} />
                     </SelectTrigger>
                     <SelectContent>
                       {PERSPECTIVE_OPTIONS.map((option) => (
                         <SelectItem key={option.value} value={option.value}>
-                          {option.label}
+                          {t(`perspective_options.${option.labelKey}`)}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -521,29 +524,29 @@ export function ContractDetailPage({
                 </div>
 
                 <div className="space-y-2">
-                  <div className="text-sm font-medium">Signing country</div>
+                  <div className="text-sm font-medium">{t('setup_fields.signing_country')}</div>
                   <Input
                     value={signingPlace}
                     onChange={(event) => setSigningPlace(event.target.value)}
-                    placeholder="e.g. United States"
+                    placeholder={t('setup_fields.signing_country_placeholder')}
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <div className="text-sm font-medium">Output language</div>
+                  <div className="text-sm font-medium">{t('setup_fields.output_language')}</div>
                   <Input
                     value={outputLanguage}
                     onChange={(event) => setOutputLanguage(event.target.value)}
-                    placeholder="English"
+                    placeholder={t('setup_fields.output_language_placeholder')}
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <div className="text-sm font-medium">Focus areas</div>
+                  <div className="text-sm font-medium">{t('setup_fields.focus_areas')}</div>
                   <Textarea
                     value={focusPoints}
                     onChange={(event) => setFocusPoints(event.target.value)}
-                    placeholder="Tell us what matters most, and AI will turn it into review priorities."
+                    placeholder={t('setup_fields.focus_areas_placeholder')}
                     className="min-h-[140px]"
                   />
                 </div>
@@ -556,12 +559,12 @@ export function ContractDetailPage({
                   {saving ? (
                     <>
                       <Loader2 className="size-4 animate-spin" />
-                      Preparing review...
+                      {t('setup_actions.preparing_review')}
                     </>
                   ) : (
                     <>
                       <CheckCircle2 className="size-4" />
-                      Start full review
+                      {t('setup_actions.start_full_review')}
                     </>
                   )}
                 </Button>
@@ -585,24 +588,27 @@ function InfoItem({ label, value }: { label: string; value: string }) {
   );
 }
 
-function getStatusText(status: string | undefined) {
+function getStatusText(
+  status: string | undefined,
+  t: ReturnType<typeof useTranslations<'common.contracts.detail'>>
+) {
   switch (status) {
     case 'parsing':
-      return 'AI is extracting your contract structure and preparing the pre-analysis.';
+      return t('status_text.parsing');
     case 'parsed':
-      return 'Document extraction is done. Pre-analysis is being prepared.';
+      return t('status_text.parsed');
     case 'analyzed':
     case 'review_setup_ready':
-      return 'Your contract is ready for review setup.';
+      return t('status_text.analyzed');
     case 'reviewing':
-      return 'Your full contract review is currently running.';
+      return t('status_text.reviewing');
     case 'reviewed':
-      return 'Your full contract review is complete.';
+      return t('status_text.reviewed');
     case 'review_failed':
-      return 'The full contract review did not complete successfully.';
+      return t('status_text.review_failed');
     case 'non_contract':
-      return 'This file was identified as a non-contract document.';
+      return t('status_text.non_contract');
     default:
-      return 'Your contract workspace is being prepared.';
+      return t('status_text.default');
   }
 }

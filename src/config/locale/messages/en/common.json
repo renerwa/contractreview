@@ -52,5 +52,234 @@
   "locale_detector": {
     "title": "We detected your browser language is {locale}. Switch to it?",
     "switch_to": "Switch to {locale}"
+  },
+  "contracts": {
+    "my_contracts": {
+      "title": "My Contracts",
+      "description": "Review all contracts in your workspace, track their current status, and open the corresponding review detail page.",
+      "stats": {
+        "total": "Total contracts",
+        "in_progress": "In progress",
+        "completed": "Completed"
+      },
+      "hero": {
+        "badge": "Contract Workspace",
+        "latest_activity": "Latest activity",
+        "latest_activity_description": "Shows the most recent contract update in the current list.",
+        "workspace_status": "Workspace status",
+        "workspace_status_value": "{inProgress} in progress · {completed} completed",
+        "workspace_status_description": "A quick summary of how your review pipeline is moving."
+      },
+      "workspace": {
+        "title": "Contract workspace",
+        "description": "Open any contract to continue pre-analysis, review setup, or inspect the final review result."
+      },
+      "empty": {
+        "title": "No contracts yet",
+        "description": "Upload your first contract from the landing page to start parsing, pre-analysis, and the full review workflow.",
+        "action": "Upload your first contract"
+      },
+      "table": {
+        "contract": "Contract",
+        "status": "Status",
+        "review_insights": "Review insights",
+        "contract_type": "Contract type",
+        "updated_at": "Updated at",
+        "action": "Action",
+        "open": "Open",
+        "untitled_contract": "Untitled contract"
+      },
+      "review_insights": {
+        "risk_count": "{count} risk items",
+        "risk_level": "Risk level: {level}",
+        "risk_score": "Risk score: {score}",
+        "risk_score_label": "Risk score",
+        "no_structured_risk": "No structured risks found",
+        "high_risk_short": "High",
+        "medium_risk_short": "Medium",
+        "low_risk_short": "Low"
+      },
+      "status": {
+        "uploaded": "Uploaded",
+        "parsing": "Parsing",
+        "parsed": "Parsed",
+        "analyzed": "Analyzed",
+        "review_setup_ready": "Review setup",
+        "reviewing": "Reviewing",
+        "reviewed": "Reviewed",
+        "review_failed": "Review failed",
+        "non_contract": "Not a contract"
+      },
+      "risk_level": {
+        "high": "High",
+        "medium": "Medium",
+        "low": "Low"
+      }
+    },
+    "detail": {
+      "fallback": {
+        "document_name": "Contract document",
+        "pending": "Pending",
+        "not_identified": "Not identified",
+        "summary_unavailable": "Summary is not available yet."
+      },
+      "toast": {
+        "start_review_success": "Full contract review started",
+        "start_review_failed": "Start contract review failed",
+        "sign_in_required": "Sign in to start the full contract review",
+        "save_and_start_success": "Review settings saved. Starting full review...",
+        "save_review_setup_failed": "Save review setup failed"
+      },
+      "loading": {
+        "workspace": "Loading contract workspace..."
+      },
+      "preparing": {
+        "title": "Preparing your review...",
+        "description": "We are saving your review preferences and preparing the next step."
+      },
+      "non_contract": {
+        "title": "This file does not look like a contract",
+        "description": "We could not identify this document as a contract or agreement, so the legal review flow stops here.",
+        "upload_another": "Upload another file",
+        "paste_instead": "Paste contract text instead"
+      },
+      "parsing": {
+        "title": "AI is understanding your contract",
+        "description": "We are extracting the contract structure, clauses, and legal context. Complex files can take longer to process.",
+        "progress": "Parsed {extracted} / {total} pages"
+      },
+      "review_state": {
+        "reviewed_title": "Your review is ready",
+        "failed_title": "Review could not be completed",
+        "reviewing_title": "Full review is in progress",
+        "reviewed_description": "Open the review result page to see the overall risk level, detailed findings, and export options.",
+        "failed_description": "The review task did not complete successfully. You can open the result page to inspect the latest status.",
+        "reviewing_description": "We are generating the full contract review report. Open the result page to follow the progress.",
+        "open_result": "Open review result"
+      },
+      "summary_card": {
+        "title": "Contract Summary",
+        "description": "Review the extracted summary before setting your review direction."
+      },
+      "summary_fields": {
+        "contract_type": "Contract type",
+        "language": "Language",
+        "signing_place": "Signing place",
+        "review_stance": "Review stance",
+        "summary": "Summary",
+        "key_points": "Key points"
+      },
+      "setup_card": {
+        "title": "Review Setup",
+        "description": "Confirm how the full review should be performed."
+      },
+      "setup_fields": {
+        "review_perspective": "Review perspective",
+        "review_perspective_placeholder": "Select a perspective",
+        "signing_country": "Signing country",
+        "signing_country_placeholder": "e.g. United States",
+        "output_language": "Output language",
+        "output_language_placeholder": "English",
+        "focus_areas": "Focus areas",
+        "focus_areas_placeholder": "Tell us what matters most, and AI will turn it into review priorities."
+      },
+      "setup_actions": {
+        "preparing_review": "Preparing review...",
+        "start_full_review": "Start full review"
+      },
+      "perspective_options": {
+        "neutral": "Neutral",
+        "buyer": "Buyer",
+        "seller": "Seller",
+        "employer": "Employer",
+        "employee": "Employee",
+        "service_provider": "Service Provider",
+        "service_recipient": "Service Recipient"
+      },
+      "status_text": {
+        "parsing": "AI is extracting your contract structure and preparing the pre-analysis.",
+        "parsed": "Document extraction is done. Pre-analysis is being prepared.",
+        "analyzed": "Your contract is ready for review setup.",
+        "reviewing": "Your full contract review is currently running.",
+        "reviewed": "Your full contract review is complete.",
+        "review_failed": "The full contract review did not complete successfully.",
+        "non_contract": "This file was identified as a non-contract document.",
+        "default": "Your contract workspace is being prepared."
+      }
+    },
+    "result": {
+      "toast": {
+        "load_failed": "Load review result failed"
+      },
+      "loading": {
+        "result": "Loading review result..."
+      },
+      "fallback": {
+        "document_name": "Contract document",
+        "generated_on_demand": "Generated on demand",
+        "processing": "Processing",
+        "summary_generating": "The review summary is being generated.",
+        "no_summary": "No summary available.",
+        "not_available": "Not available."
+      },
+      "title": {
+        "completed": "Contract review result",
+        "failed": "Contract review failed",
+        "processing": "Review in progress"
+      },
+      "print": {
+        "header_badge": "AI Contract Review Report",
+        "header_title": "Contract review report",
+        "report_number": "Report number: {value}",
+        "document": "Document: {value}",
+        "generated_at": "Generated at: {value}",
+        "overall_risk": "Overall risk: {value}",
+        "total_risk_score": "Total risk score: {value}",
+        "output_language": "Output language: {value}"
+      },
+      "hero": {
+        "console_badge": "Contract Review Console",
+        "description_completed": "Your full contract review is ready.",
+        "description_failed": "The review did not complete successfully.",
+        "description_processing": "We are generating the full legal review for your contract.",
+        "report_chip": "Report #{value}",
+        "print": "Print",
+        "snapshot_title": "Review snapshot",
+        "snapshot_description": "Structured for legal teams: overall risk first, then clause-level findings and revision suggestions."
+      },
+      "summary": {
+        "risk_score": "Risk score",
+        "overall_risk": "Overall risk",
+        "high_risk": "High risk",
+        "medium_risk": "Medium risk",
+        "low_risk": "Low risk",
+        "key_conclusion": "Key conclusion"
+      },
+      "risk_details": {
+        "title": "Risk details",
+        "description": "Risks are ordered from highest priority to lowest.",
+        "processing": "Review is still running. This page will refresh automatically.",
+        "empty": "No structured risk items are available yet.",
+        "risk_index": "Risk {index}"
+      },
+      "risk_sections": {
+        "original_text": "Original text",
+        "risk_explanation": "Risk explanation",
+        "suggested_revision": "Suggested revision"
+      },
+      "context": {
+        "title": "Report context",
+        "description": "The report includes the summary and review preferences used for this run.",
+        "snapshot_title": "Context snapshot",
+        "snapshot_description": "The exported report includes the contract summary and the review settings used for this review run.",
+        "fields": {
+          "contract_summary": "Contract summary",
+          "perspective": "Perspective",
+          "signing_country": "Signing country",
+          "output_language": "Output language",
+          "focus_areas": "Focus areas"
+        }
+      }
+    }
   }
 }

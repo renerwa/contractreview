@@ -9,6 +9,7 @@ import {
   ShieldAlert,
   Sparkles,
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
 import {
@@ -45,6 +46,7 @@ type ResultPayload = {
 };
 
 export function ContractResultPage({ documentId }: { documentId: string }) {
+  const t = useTranslations('common.contracts.result');
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [result, setResult] = useState<ResultPayload | null>(null);
@@ -66,7 +68,7 @@ export function ContractResultPage({ documentId }: { documentId: string }) {
         });
         const json = await resp.json();
         if (!resp.ok || json.code !== 0) {
-          throw new Error(json.message || 'load review result failed');
+          throw new Error(json.message || t('toast.load_failed'));
         }
 
         const data = json.data as ResultPayload;
@@ -95,7 +97,7 @@ export function ContractResultPage({ documentId }: { documentId: string }) {
           }
         }
       } catch (e: any) {
-        toast.error(e?.message || 'load review result failed');
+        toast.error(e?.message || t('toast.load_failed'));
       } finally {
         setLoading(false);
         setRefreshing(false);
@@ -199,7 +201,7 @@ export function ContractResultPage({ documentId }: { documentId: string }) {
         <Card>
           <CardContent className="flex min-h-[260px] items-center justify-center gap-3">
             <Loader2 className="size-5 animate-spin" />
-            <span>Loading review result...</span>
+            <span>{t('loading.result')}</span>
           </CardContent>
         </Card>
       </div>
@@ -208,7 +210,7 @@ export function ContractResultPage({ documentId }: { documentId: string }) {
 
   const reviewStatus = String(result?.analysisResult?.status || '');
   const documentName = String(
-    result?.document?.fileName || 'Contract document'
+    result?.document?.fileName || t('fallback.document_name')
   );
   const reportNumber = String(result?.analysisResult?.id || documentId)
     .slice(0, 12)
@@ -223,36 +225,45 @@ export function ContractResultPage({ documentId }: { documentId: string }) {
   );
   const title =
     reviewStatus === 'completed'
-      ? 'Contract review result'
+      ? t('title.completed')
       : reviewStatus === 'failed'
-        ? 'Contract review failed'
-        : 'Review in progress';
+        ? t('title.failed')
+        : t('title.processing');
 
   return (
     <div className="contract-report-page mx-auto max-w-6xl px-4 pt-24 pb-10 md:pt-32">
       <section className="contract-report-print-header hidden print:block">
         <div className="space-y-2">
           <div className="text-xs font-semibold tracking-[0.2em] text-slate-500 uppercase">
-            AI Contract Review Report
+            {t('print.header_badge')}
           </div>
           <h1 className="text-3xl font-semibold text-slate-950">
-            Contract review report
+            {t('print.header_title')}
           </h1>
           <div className="grid gap-2 text-sm text-slate-600 sm:grid-cols-2">
-            <div>Report number: {reportNumber}</div>
-            <div>Document: {documentName}</div>
-            <div>Generated at: {generatedAt || 'Generated on demand'}</div>
+            <div>{t('print.report_number', { value: reportNumber })}</div>
+            <div>{t('print.document', { value: documentName })}</div>
             <div>
-              Overall risk:{' '}
-              {String(result?.analysisResult?.riskLevel || 'Processing')}
+              {t('print.generated_at', {
+                value: generatedAt || t('fallback.generated_on_demand'),
+              })}
             </div>
             <div>
-              Total risk score:{' '}
-              {Number.isFinite(totalRiskScore) ? totalRiskScore : '-'}
+              {t('print.overall_risk', {
+                value: String(
+                  result?.analysisResult?.riskLevel || t('fallback.processing')
+                ),
+              })}
             </div>
             <div>
-              Output language:{' '}
-              {String(result?.reviewSetup?.outputLanguage || '-')}
+              {t('print.total_risk_score', {
+                value: Number.isFinite(totalRiskScore) ? totalRiskScore : '-',
+              })}
+            </div>
+            <div>
+              {t('print.output_language', {
+                value: String(result?.reviewSetup?.outputLanguage || '-'),
+              })}
             </div>
           </div>
         </div>
@@ -269,7 +280,7 @@ export function ContractResultPage({ documentId }: { documentId: string }) {
                   </div>
                   <div className="space-y-1">
                     <div className="text-muted-foreground text-xs font-medium tracking-[0.18em] uppercase">
-                      Contract Review Console
+                      {t('hero.console_badge')}
                     </div>
                     <CardTitle className="text-2xl tracking-tight">
                       {title}
@@ -282,10 +293,10 @@ export function ContractResultPage({ documentId }: { documentId: string }) {
 
                 <CardDescription className="max-w-2xl text-sm leading-6">
                   {reviewStatus === 'completed'
-                    ? 'Your full contract review is ready.'
+                    ? t('hero.description_completed')
                     : reviewStatus === 'failed'
-                      ? 'The review did not complete successfully.'
-                      : 'We are generating the full legal review for your contract.'}
+                      ? t('hero.description_failed')
+                      : t('hero.description_processing')}
                 </CardDescription>
 
                 <div className="text-muted-foreground flex flex-wrap items-center gap-2 text-xs">
@@ -296,13 +307,13 @@ export function ContractResultPage({ documentId }: { documentId: string }) {
                     {riskLevel.toUpperCase()}
                   </Badge>
                   <span className="border-border/70 bg-background rounded-full border px-3 py-1">
-                    Report #{reportNumber}
+                    {t('hero.report_chip', { value: reportNumber })}
                   </span>
                   <span className="border-border/70 bg-background rounded-full border px-3 py-1">
                     {documentName}
                   </span>
                   <span className="border-border/70 bg-background rounded-full border px-3 py-1">
-                    {generatedAt || 'Generated on demand'}
+                    {generatedAt || t('fallback.generated_on_demand')}
                   </span>
                 </div>
               </div>
@@ -314,16 +325,15 @@ export function ContractResultPage({ documentId }: { documentId: string }) {
                   className="h-11 rounded-xl px-5"
                 >
                   <Download className="size-4" />
-                  Print
+                  {t('hero.print')}
                 </Button>
                 <div className="border-border/70 bg-background/85 rounded-2xl border p-4 text-sm backdrop-blur-sm lg:max-w-[280px]">
                   <div className="flex items-center gap-2 font-medium">
                     <Sparkles className="text-primary size-4" />
-                    Review snapshot
+                    {t('hero.snapshot_title')}
                   </div>
                   <p className="text-muted-foreground mt-2 leading-6">
-                    Structured for legal teams: overall risk first, then
-                    clause-level findings and revision suggestions.
+                    {t('hero.snapshot_description')}
                   </p>
                 </div>
               </div>
@@ -331,29 +341,29 @@ export function ContractResultPage({ documentId }: { documentId: string }) {
 
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
               <SummaryCard
-                title="Risk score"
+                title={t('summary.risk_score')}
                 value={
                   Number.isFinite(totalRiskScore) ? String(totalRiskScore) : '-'
                 }
                 accent="score"
               />
               <SummaryCard
-                title="Overall risk"
+                title={t('summary.overall_risk')}
                 value={riskLevel}
                 accent={riskLevel}
               />
               <SummaryCard
-                title="High risk"
+                title={t('summary.high_risk')}
                 value={String(highCount)}
                 accent="high"
               />
               <SummaryCard
-                title="Medium risk"
+                title={t('summary.medium_risk')}
                 value={String(mediumCount)}
                 accent="medium"
               />
               <SummaryCard
-                title="Low risk"
+                title={t('summary.low_risk')}
                 value={String(lowCount)}
                 accent="low"
               />
@@ -362,10 +372,10 @@ export function ContractResultPage({ documentId }: { documentId: string }) {
             <div className="border-border/70 bg-background/85 rounded-2xl border p-5 shadow-sm">
               <div className="flex items-center gap-2 text-sm font-medium">
                 <ArrowUpRight className="text-primary size-4" />
-                Key conclusion
+                {t('summary.key_conclusion')}
               </div>
               <p className="text-muted-foreground mt-3 text-sm leading-7">
-                {keyConclusion || 'The review summary is being generated.'}
+                {keyConclusion || t('fallback.summary_generating')}
               </p>
             </div>
           </CardHeader>
@@ -375,26 +385,37 @@ export function ContractResultPage({ documentId }: { documentId: string }) {
       <section className="hidden print:block">
         <div className="grid gap-4 md:grid-cols-5">
           <PrintSummaryCard
-            title="Risk score"
+            title={t('summary.risk_score')}
             value={
               Number.isFinite(totalRiskScore) ? String(totalRiskScore) : '-'
             }
           />
           <PrintSummaryCard
-            title="Overall risk"
-            value={String(result?.analysisResult?.riskLevel || 'Processing')}
+            title={t('summary.overall_risk')}
+            value={String(
+              result?.analysisResult?.riskLevel || t('fallback.processing')
+            )}
           />
-          <PrintSummaryCard title="High risk" value={String(highCount)} />
-          <PrintSummaryCard title="Medium risk" value={String(mediumCount)} />
-          <PrintSummaryCard title="Low risk" value={String(lowCount)} />
+          <PrintSummaryCard
+            title={t('summary.high_risk')}
+            value={String(highCount)}
+          />
+          <PrintSummaryCard
+            title={t('summary.medium_risk')}
+            value={String(mediumCount)}
+          />
+          <PrintSummaryCard
+            title={t('summary.low_risk')}
+            value={String(lowCount)}
+          />
         </div>
 
         <div className="mt-6 rounded-xl border border-slate-200 bg-white p-5">
           <div className="text-sm font-semibold text-slate-900">
-            Key conclusion
+            {t('summary.key_conclusion')}
           </div>
           <p className="mt-2 text-sm leading-7 text-slate-700">
-            {keyConclusion || 'The review summary is being generated.'}
+            {keyConclusion || t('fallback.summary_generating')}
           </p>
         </div>
       </section>
@@ -402,23 +423,19 @@ export function ContractResultPage({ documentId }: { documentId: string }) {
       <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_320px] print:grid-cols-1">
         <Card className="border-border/70 bg-background/95 shadow-sm print:border-slate-200 print:shadow-none">
           <CardHeader>
-            <CardTitle>Risk details</CardTitle>
-            <CardDescription>
-              Risks are ordered from highest priority to lowest.
-            </CardDescription>
+            <CardTitle>{t('risk_details.title')}</CardTitle>
+            <CardDescription>{t('risk_details.description')}</CardDescription>
           </CardHeader>
           <CardContent>
             {reviewStatus !== 'completed' ? (
               <div className="text-muted-foreground flex min-h-[320px] flex-col items-center justify-center gap-3 text-sm">
                 <Loader2 className="size-5 animate-spin" />
-                <p>
-                  Review is still running. This page will refresh automatically.
-                </p>
+                <p>{t('risk_details.processing')}</p>
               </div>
             ) : combinedRiskItems.length === 0 ? (
               <div className="text-muted-foreground flex min-h-[220px] flex-col items-center justify-center gap-3 text-sm">
                 <FileWarning className="size-5" />
-                <p>No structured risk items are available yet.</p>
+                <p>{t('risk_details.empty')}</p>
               </div>
             ) : (
               <Accordion
@@ -432,7 +449,7 @@ export function ContractResultPage({ documentId }: { documentId: string }) {
                       item?.checklist_item ||
                       item?.risk_title ||
                       item?.title ||
-                      `Risk ${index + 1}`
+                      t('risk_details.risk_index', { index: index + 1 })
                   );
                   const level = String(
                     item?.status ||
@@ -487,22 +504,25 @@ export function ContractResultPage({ documentId }: { documentId: string }) {
                             </Badge>
                           </div>
                           <p className="text-muted-foreground text-sm leading-6">
-                            {conclusion || 'No summary available.'}
+                            {conclusion || t('fallback.no_summary')}
                           </p>
                         </div>
                       </AccordionTrigger>
                       <AccordionContent className="space-y-4 pt-1">
                         <RiskSection
-                          title="Original text"
+                          title={t('risk_sections.original_text')}
                           content={originalText}
+                          emptyText={t('fallback.not_available')}
                         />
                         <RiskSection
-                          title="Risk explanation"
+                          title={t('risk_sections.risk_explanation')}
                           content={description || conclusion}
+                          emptyText={t('fallback.not_available')}
                         />
                         <RiskSection
-                          title="Suggested revision"
+                          title={t('risk_sections.suggested_revision')}
                           content={suggestion}
+                          emptyText={t('fallback.not_available')}
                         />
                       </AccordionContent>
                     </AccordionItem>
@@ -519,7 +539,7 @@ export function ContractResultPage({ documentId }: { documentId: string }) {
                       item?.checklist_item ||
                       item?.risk_title ||
                       item?.title ||
-                      `Risk ${index + 1}`
+                      t('risk_details.risk_index', { index: index + 1 })
                   );
                   const level = String(
                     item?.status ||
@@ -570,20 +590,23 @@ export function ContractResultPage({ documentId }: { documentId: string }) {
                         </span>
                       </div>
                       <p className="mt-2 text-sm leading-6 text-slate-700">
-                        {conclusion || 'No summary available.'}
+                        {conclusion || t('fallback.no_summary')}
                       </p>
                       <div className="mt-4 grid gap-4">
                         <PrintSection
-                          title="Original text"
+                          title={t('risk_sections.original_text')}
                           content={originalText}
+                          emptyText={t('fallback.not_available')}
                         />
                         <PrintSection
-                          title="Risk explanation"
+                          title={t('risk_sections.risk_explanation')}
                           content={description || conclusion}
+                          emptyText={t('fallback.not_available')}
                         />
                         <PrintSection
-                          title="Suggested revision"
+                          title={t('risk_sections.suggested_revision')}
                           content={suggestion}
+                          emptyText={t('fallback.not_available')}
                         />
                       </div>
                     </div>
@@ -596,29 +619,25 @@ export function ContractResultPage({ documentId }: { documentId: string }) {
 
         <Card className="border-border/70 bg-background/95 shadow-sm print:border-slate-200 print:shadow-none">
           <CardHeader>
-            <CardTitle>Report context</CardTitle>
-            <CardDescription>
-              The report includes the summary and review preferences used for
-              this run.
-            </CardDescription>
+            <CardTitle>{t('context.title')}</CardTitle>
+            <CardDescription>{t('context.description')}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="border-border/70 bg-muted/20 rounded-2xl border p-4">
               <div className="text-muted-foreground text-xs font-medium tracking-[0.16em] uppercase">
-                Context snapshot
+                {t('context.snapshot_title')}
               </div>
               <div className="text-muted-foreground mt-2 text-sm leading-6">
-                The exported report includes the contract summary and the review
-                settings used for this review run.
+                {t('context.snapshot_description')}
               </div>
             </div>
             <ContextItem
-              label="Contract summary"
+              label={t('context.fields.contract_summary')}
               value={String(result?.analysisResult?.summary || '')}
             />
             <Separator />
             <ContextItem
-              label="Perspective"
+              label={t('context.fields.perspective')}
               value={String(
                 result?.reviewSetup?.perspective ||
                   result?.document?.userParty ||
@@ -626,7 +645,7 @@ export function ContractResultPage({ documentId }: { documentId: string }) {
               )}
             />
             <ContextItem
-              label="Signing country"
+              label={t('context.fields.signing_country')}
               value={String(
                 result?.reviewSetup?.signingPlace ||
                   result?.document?.signingPlace ||
@@ -634,11 +653,11 @@ export function ContractResultPage({ documentId }: { documentId: string }) {
               )}
             />
             <ContextItem
-              label="Output language"
+              label={t('context.fields.output_language')}
               value={String(result?.reviewSetup?.outputLanguage || '')}
             />
             <ContextItem
-              label="Focus areas"
+              label={t('context.fields.focus_areas')}
               value={String(
                 result?.reviewSetup?.focusPoints ||
                   result?.document?.focusPoints ||
@@ -686,12 +705,20 @@ function SummaryCard({
   );
 }
 
-function RiskSection({ title, content }: { title: string; content: string }) {
+function RiskSection({
+  title,
+  content,
+  emptyText,
+}: {
+  title: string;
+  content: string;
+  emptyText: string;
+}) {
   return (
     <div className="space-y-2">
       <div className="text-sm font-medium">{title}</div>
       <div className="text-muted-foreground bg-muted/20 rounded-lg border p-3 text-sm leading-6">
-        {content || 'Not available.'}
+        {content || emptyText}
       </div>
     </div>
   );
@@ -737,14 +764,22 @@ function PrintSummaryCard({ title, value }: { title: string; value: string }) {
   );
 }
 
-function PrintSection({ title, content }: { title: string; content: string }) {
+function PrintSection({
+  title,
+  content,
+  emptyText,
+}: {
+  title: string;
+  content: string;
+  emptyText: string;
+}) {
   return (
     <div>
       <div className="text-xs font-semibold tracking-wide text-slate-500 uppercase">
         {title}
       </div>
       <div className="mt-2 rounded-lg border border-slate-200 bg-slate-50 p-3 text-sm leading-7 whitespace-pre-wrap text-slate-700">
-        {content || 'Not available.'}
+        {content || emptyText}
       </div>
     </div>
   );
