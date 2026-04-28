@@ -3,9 +3,28 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { getThemePage } from '@/core/theme';
 import { envConfigs } from '@/config';
+import { localeMessagesPaths } from '@/config/locale';
 import { getLocalPage } from '@/shared/models/post';
 
 export const revalidate = 3600;
+
+const dynamicPageNamespaces = new Set(
+  localeMessagesPaths
+    .filter((path) => path.startsWith('pages/'))
+    .map((path) => path.replace(/\//g, '.'))
+);
+
+function getDynamicPageNamespace(slug: string | string[]) {
+  const dynamicPageSlug =
+    typeof slug === 'string' ? slug : (slug as string[]).join('.') || '';
+  const messageKey = `pages.${dynamicPageSlug}`;
+
+  if (!dynamicPageNamespaces.has(messageKey)) {
+    return null;
+  }
+
+  return messageKey;
+}
 
 // dynamic page metadata
 export async function generateMetadata({
@@ -59,24 +78,24 @@ export async function generateMetadata({
   // src/config/locale/messages/{locale}/pages/**/*.json
 
   // dynamic page slug
-  const dynamicPageSlug =
-    typeof slug === 'string' ? slug : (slug as string[]).join('.') || '';
+  const messageKey = getDynamicPageNamespace(slug);
 
-  const messageKey = `pages.${dynamicPageSlug}`;
-  const t = await getTranslations({ locale, namespace: messageKey });
+  if (messageKey) {
+    const t = await getTranslations({ locale, namespace: messageKey });
 
-  // return dynamic page metadata
-  if (t.has('metadata')) {
-    title = t.raw('metadata.title');
-    description = t.raw('metadata.description');
+    // return dynamic page metadata
+    if (t.has('metadata')) {
+      title = t.raw('metadata.title');
+      description = t.raw('metadata.description');
 
-    return {
-      title,
-      description,
-      alternates: {
-        canonical: canonicalUrl,
-      },
-    };
+      return {
+        title,
+        description,
+        alternates: {
+          canonical: canonicalUrl,
+        },
+      };
+    }
   }
 
   // 3. return common metadata
@@ -129,10 +148,11 @@ export default async function DynamicPage({
   // src/config/locale/messages/{locale}/pages/**/*.json
 
   // dynamic page slug
-  const dynamicPageSlug =
-    typeof slug === 'string' ? slug : (slug as string[]).join('.') || '';
+  const messageKey = getDynamicPageNamespace(slug);
 
-  const messageKey = `pages.${dynamicPageSlug}`;
+  if (!messageKey) {
+    return notFound();
+  }
 
   try {
     const t = await getTranslations({ locale, namespace: messageKey });

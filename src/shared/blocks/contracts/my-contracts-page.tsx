@@ -63,7 +63,7 @@ export async function MyContractsPage() {
   );
 
   return (
-    <div className="mx-auto max-w-6xl space-y-8 px-4 py-10">
+    <div className="mx-auto max-w-6xl space-y-8 px-4 pt-24 pb-10 md:pt-32">
       <div className="space-y-3">
         <h1 className="text-3xl font-semibold tracking-tight">My Contracts</h1>
         <p className="text-muted-foreground max-w-2xl text-sm leading-6">

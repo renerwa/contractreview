@@ -17,3 +17,7 @@ submit your feedbacks on [Github Issues](https://github.com/shipanyai/shipany-te
 !!! Please do not publicly release ShipAny's Code. Illegal use will be prosecuted
 
 [ShipAny LICENSE](./LICENSE)
+
+## Development Notes
+
+Project collaboration rules (AI/dev): see [AGENTS.md](./AGENTS.md)

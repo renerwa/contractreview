@@ -191,13 +191,6 @@ export function ContractDetailPage({
   const summary = detail?.summary;
   const fileName = String(detail?.document?.fileName || 'Contract document');
   const currentStatusText = getStatusText(detail?.document?.status);
-  const canStartReview =
-    !!user &&
-    ['review_setup_ready', 'analyzed'].includes(
-      String(detail?.document?.status || '')
-    ) &&
-    String(detail?.document?.contractType || summary?.contractType || '').trim().length > 0;
-
   const startFullReview = useCallback(async () => {
     if (!detail?.document?.id || !user) {
       return;
@@ -296,7 +289,7 @@ export function ContractDetailPage({
         return;
       }
 
-      toast.success('Review setup saved');
+      toast.success('Review settings saved. Starting full review...');
       await startFullReview();
     } catch (e: any) {
       setPreparing(false);
@@ -320,7 +313,7 @@ export function ContractDetailPage({
   }
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10">
+    <div className="mx-auto max-w-6xl px-4 pt-24 pb-10 md:pt-32">
       <Card className="border-border/70 bg-background/95">
         <CardHeader className="gap-4">
           <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
@@ -563,44 +556,15 @@ export function ContractDetailPage({
                   {saving ? (
                     <>
                       <Loader2 className="size-4 animate-spin" />
-                      Saving...
+                      Preparing review...
                     </>
                   ) : (
                     <>
                       <CheckCircle2 className="size-4" />
-                      Save and continue
+                      Start full review
                     </>
                   )}
                 </Button>
-
-                {!user && detail?.document?.status === 'review_setup_ready' ? (
-                  <div className="rounded-lg border bg-muted/20 p-3 text-sm">
-                    <div className="font-medium">Ready for full review</div>
-                    <p className="text-muted-foreground mt-1">
-                      Sign in whenever you are ready to start the full contract review.
-                    </p>
-                    <Button
-                      variant="outline"
-                      className="mt-3 w-full"
-                      onClick={() => {
-                        setSignModalCallbackUrl(`/contracts/${documentId}`);
-                        setIsShowSignModal(true);
-                      }}
-                    >
-                      Start full review
-                    </Button>
-                  </div>
-                ) : null}
-
-                {canStartReview ? (
-                  <Button
-                    variant="outline"
-                    className="w-full"
-                    onClick={startFullReview}
-                  >
-                    Start full review
-                  </Button>
-                ) : null}
               </CardContent>
             </Card>
           </div>
