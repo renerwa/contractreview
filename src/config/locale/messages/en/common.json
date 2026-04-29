@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "ShipAny Template Two",
-    "description": "ShipAny is a NextJS boilerplate for building AI SaaS startups. Ship Fast with a variety of templates and components.",
-    "keywords": "shipany, shipany-boilerplate, shipany-template-two-demo"
+    "title": "ContractReview AI | AI Contract Review Platform",
+    "description": "ContractReview AI helps legal, procurement, sales, and business teams identify contract risks, understand clause issues, and generate structured revision suggestions.",
+    "keywords": "AI contract review, contract risk analysis, legal AI, contract review software, contract analysis, clause review, legal technology"
   },
   "sign": {
     "sign_in_title": "Sign In",
@@ -37,7 +37,7 @@
     "verify_email_page_title": "Check your email",
     "verify_email_page_description": "To continue, click the link sent to",
     "verify_email_continue": "Continue",
-    "verify_email_tip": "After verifying, click “Continue”.",
+    "verify_email_tip": "After verifying, click \"Continue\".",
     "verify_email_not_verified_yet": "Not verified yet. Please click the link in your email first.",
     "verify_email_account_mismatch": "Signed in as {current}. This page is waiting for {expected}.",
     "resend_verification_countdown": "Resend verification email ({seconds}s)",
@@ -117,6 +117,9 @@
       }
     },
     "detail": {
+      "actions": {
+        "my_contracts": "My Contracts"
+      },
       "fallback": {
         "document_name": "Contract document",
         "pending": "Pending",
@@ -243,6 +246,7 @@
         "description_failed": "The review did not complete successfully.",
         "description_processing": "We are generating the full legal review for your contract.",
         "report_chip": "Report #{value}",
+        "my_contracts": "My Contracts",
         "print": "Print",
         "snapshot_title": "Review snapshot",
         "snapshot_description": "Structured for legal teams: overall risk first, then clause-level findings and revision suggestions."

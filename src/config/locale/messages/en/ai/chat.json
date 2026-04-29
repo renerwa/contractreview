@@ -2,10 +2,10 @@
   "sidebar": {
     "header": {
       "brand": {
-        "title": "ShipAny Chat",
+        "title": "Contract Review Assistant",
         "logo": {
           "src": "/logo.png",
-          "alt": "ShipAny Chat"
+          "alt": "Contract Review Assistant"
         },
         "url": "/chat"
       },
@@ -59,26 +59,8 @@
             "target": "_blank"
           },
           {
-            "title": "GitHub",
-            "url": "https://github.com/your-app-name",
-            "icon": "Github",
-            "target": "_blank"
-          },
-          {
-            "title": "Twitter",
-            "url": "https://twitter.com/your-app-name",
-            "icon": "RiTwitterXFill",
-            "target": "_blank"
-          },
-          {
-            "title": "Discord",
-            "url": "https://discord.gg/your-app-name",
-            "icon": "RiDiscordFill",
-            "target": "_blank"
-          },
-          {
             "title": "Email",
-            "url": "mailto:support@your-domain.com",
+            "url": "mailto:support@contractreview.ai",
             "icon": "Mail",
             "target": "_blank"
           }
@@ -101,8 +83,8 @@
     }
   },
   "generator": {
-    "title": "What can I help you today?",
-    "input_placeholder": "You can ask me anything"
+    "title": "How can I help with this contract?",
+    "input_placeholder": "Ask about clause meaning, risk points, or revision direction"
   },
   "history": {
     "title": "Chat history",

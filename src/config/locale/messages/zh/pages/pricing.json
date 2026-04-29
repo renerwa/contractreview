@@ -1,15 +1,15 @@
 {
   "metadata": {
-    "title": "价格",
-    "description": "选择方案，立即开始"
+    "title": "AI 合同审查价格",
+    "description": "选择适合一次性合同审查、月度合同审核流程或企业级合同运营的 AI 合同审查方案。"
   },
   "page": {
-    "title": "ShipAny 价格表",
+    "title": "AI 合同审查价格",
     "sections": {
       "pricing": {
         "id": "pricing",
-        "title": "价格",
-        "description": "获取 ShipAny 的全部功能，极速交付你的 AI SaaS 创业项目。",
+        "title": "面向合同审查团队的价格方案",
+        "description": "从单份合同审查开始，也可以选择适合法务、采购、销售和商务团队长期使用的团队方案。",
         "groups": [
           {
             "name": "one-time",
@@ -19,7 +19,7 @@
             "name": "monthly",
             "title": "包月",
             "is_featured": true,
-            "label": "立省15%"
+            "label": "团队常用"
           },
           {
             "name": "yearly",
@@ -28,243 +28,227 @@
         ],
         "items": [
           {
-            "title": "入门版",
-            "description": "开启你的第一个 SaaS 创业项目。",
+            "title": "单次审查",
+            "description": "无需订阅，适合单份合同或临时审核需求。",
             "features_title": "包含",
             "features": [
-              "100 积分，有效期 1 个月",
-              "NextJS 项目模板",
-              "SEO 友好结构",
-              "支持 Stripe 支付",
-              "Supabase 数据存储",
-              "Google Oauth & 一键登录",
-              "多语言（i18n）支持"
+              "100 审查积分，有效期 1 个月",
+              "支持合同上传和文本粘贴",
+              "AI 解析与初步分析",
+              "风险等级、条款依据和修改建议",
+              "可导出的审核报告"
             ],
             "interval": "one-time",
             "amount": 9900,
             "currency": "USD",
             "price": "$99",
-            "original_price": "$199",
+            "original_price": "",
             "currencies": [
               {
                 "currency": "CNY",
                 "amount": 69900,
                 "price": "¥699",
-                "original_price": "¥1399",
+                "original_price": "",
                 "payment_providers": ["stripe"]
               }
             ],
             "unit": "",
             "is_featured": false,
-            "tip": "一次付费，畅享无限项目部署！",
+            "tip": "适合临时法律或业务审查需求。",
             "button": {
-              "title": "获取 ShipAny",
-              "url": "/#pricing",
-              "icon": "RiFlashlightFill"
+              "title": "开始审查",
+              "url": "/#hero",
+              "icon": "RiFileCheckLine"
             },
             "product_id": "starter",
-            "product_name": "ShipAny 模板入门版",
+            "product_name": "单次 AI 合同审查",
             "credits": 100,
             "valid_days": 30,
             "group": "one-time"
           },
           {
-            "title": "标准版",
-            "description": "快速交付你的 SaaS 创业项目。",
+            "title": "审查包",
+            "description": "适合需要集中处理多份合同的团队。",
             "label": "热门",
-            "features_title": "包含入门版功能，此外",
+            "features_title": "包含单次审查，此外",
             "features": [
-              "200 积分，有效期 3 个月",
-              "支持 Vercel 或 Cloudflare 部署",
-              "自动生成隐私政策&服务条款",
-              "集成 Google Analytics",
-              "集成 Google Search Console",
-              "Discord 技术社区",
-              "首个上线项目技术支持",
-              "终身免费更新"
+              "300 审查积分，有效期 3 个月",
+              "多合同工作区",
+              "审查立场和签署国家设置",
+              "可复用审核上下文",
+              "优先处理队列"
             ],
             "interval": "one-time",
             "amount": 19900,
             "currency": "USD",
             "price": "$199",
-            "original_price": "$299",
+            "original_price": "",
             "currencies": [
               {
                 "currency": "CNY",
                 "amount": 139900,
                 "price": "¥1399",
-                "original_price": "¥1999",
+                "original_price": "",
                 "payment_providers": ["stripe"]
               }
             ],
             "unit": "",
             "is_featured": true,
-            "tip": "一次付费，畅享无限项目部署！",
+            "tip": "适合阶段性处理多份合同。",
             "button": {
-              "title": "获取 ShipAny",
-              "url": "/#pricing",
-              "icon": "RiFlashlightFill"
+              "title": "选择审查包",
+              "url": "/#hero",
+              "icon": "RiFileCheckLine"
             },
             "product_id": "standard",
-            "product_name": "ShipAny 模板标准版",
-            "credits": 200,
+            "product_name": "AI 合同审查包",
+            "credits": 300,
             "valid_days": 90,
             "group": "one-time"
           },
           {
-            "title": "高级版",
-            "description": "交付任意 AI SaaS 创业项目。",
-            "features_title": "包含标准版功能，此外",
+            "title": "企业审查包",
+            "description": "适合高频合同审查和跨团队协作。",
+            "features_title": "包含审查包，此外",
             "features": [
-              "300 积分，有效期 1 年",
-              "内置 AI 业务功能",
-              "用户中心",
-              "积分系统",
-              "为你的 SaaS 售卖 API",
-              "后台管理系统",
-              "优先技术支持"
+              "600 审查积分，有效期 1 年",
+              "结构化风险报告",
+              "高中低风险分组",
+              "可导出的审核上下文",
+              "优先支持"
             ],
             "interval": "one-time",
             "amount": 29900,
             "currency": "USD",
             "price": "$299",
-            "original_price": "$399",
+            "original_price": "",
             "currencies": [
               {
                 "currency": "CNY",
                 "amount": 199900,
                 "price": "¥1999",
-                "original_price": "¥2799",
+                "original_price": "",
                 "payment_providers": ["stripe", "creem"]
               }
             ],
             "unit": "",
             "is_featured": false,
-            "tip": "一次付费，畅享无限项目部署！",
+            "tip": "适合法务和商业团队的大批量审核。",
             "button": {
-              "title": "获取 ShipAny",
-              "url": "/#pricing",
-              "icon": "RiFlashlightFill"
+              "title": "选择审查包",
+              "url": "/#hero",
+              "icon": "RiFileCheckLine"
             },
             "product_id": "premium",
-            "product_name": "ShipAny 模板高级版",
-            "credits": 300,
+            "product_name": "企业 AI 合同审查包",
+            "credits": 600,
             "valid_days": 365,
             "group": "one-time"
           },
           {
             "title": "入门版",
-            "description": "开启你的第一个 SaaS 创业项目。",
+            "description": "适合小团队和创业团队的月度审查需求。",
             "features_title": "包含",
             "features": [
-              "100 积分，有效期 1 个月",
-              "NextJS 项目模板",
-              "SEO 友好结构",
-              "支持 Stripe 支付",
-              "Supabase 数据存储",
-              "Google Oauth & 一键登录",
-              "多语言（i18n）支持"
+              "每月 150 审查积分",
+              "支持合同上传和文本粘贴",
+              "AI 解析与初步分析",
+              "结构化风险发现",
+              "审核报告导出"
             ],
             "interval": "month",
             "amount": 8900,
             "currency": "USD",
             "price": "$89",
-            "original_price": "$99",
+            "original_price": "",
             "unit": "/ 月",
             "is_featured": false,
-            "tip": "按月付费，畅享无限项目部署！",
+            "tip": "适合常规但轻量的合同审查。",
             "button": {
-              "title": "获取 ShipAny",
-              "url": "/#pricing",
-              "icon": "RiFlashlightFill"
+              "title": "开始包月",
+              "url": "/#hero",
+              "icon": "RiFileCheckLine"
             },
             "product_id": "starter-monthly",
-            "product_name": "ShipAny 模板入门版包月",
-            "credits": 100,
+            "product_name": "ContractReview AI 入门版包月",
+            "credits": 150,
             "valid_days": 30,
             "group": "monthly",
             "plan_name": "入门版"
           },
           {
-            "title": "标准版",
-            "description": "快速交付你的 SaaS 创业项目。",
+            "title": "专业版",
+            "description": "适合活跃的法务、采购、销售和商务团队。",
             "label": "热门",
-            "features_title": "包含入门版功能，此外",
+            "features_title": "包含入门版，此外",
             "features": [
-              "200 积分，有效期 1 个月",
-              "支持 Vercel 或 Cloudflare 部署",
-              "自动生成隐私政策&服务条款",
-              "集成 Google Analytics",
-              "集成 Google Search Console",
-              "Discord 技术社区",
-              "首个上线项目技术支持",
-              "终身免费更新"
+              "每月 400 审查积分",
+              "合同工作区历史",
+              "审查立场和法域上下文",
+              "自定义关注重点",
+              "优先处理"
             ],
             "interval": "month",
             "amount": 16900,
             "currency": "USD",
             "price": "$169",
-            "original_price": "$199",
+            "original_price": "",
             "unit": "/ 月",
             "is_featured": true,
-            "tip": "按月付费，极速上线你的 SaaS 项目。",
+            "tip": "适合法务、采购和销售团队。",
             "button": {
-              "title": "获取 ShipAny",
-              "url": "/#pricing",
-              "icon": "RiFlashlightFill"
+              "title": "开始专业版",
+              "url": "/#hero",
+              "icon": "RiFileCheckLine"
             },
             "product_id": "standard-monthly",
-            "product_name": "ShipAny 模板标准版包月",
-            "credits": 200,
+            "product_name": "ContractReview AI 专业版包月",
+            "credits": 400,
             "valid_days": 30,
             "group": "monthly",
-            "plan_name": "标准版"
+            "plan_name": "专业版"
           },
           {
-            "title": "高级版",
-            "description": "交付任意 AI SaaS 创业项目。",
-            "features_title": "包含标准版功能，此外",
+            "title": "商务版",
+            "description": "适合高频合同审查的业务团队。",
+            "features_title": "包含专业版，此外",
             "features": [
-              "300 积分，有效期 1 个月",
-              "内置 AI 业务功能",
-              "用户中心",
-              "积分系统",
-              "为你的 SaaS 售卖 API",
-              "后台管理系统",
-              "优先技术支持"
+              "每月 800 审查积分",
+              "增强报告上下文",
+              "面向团队的合同流程",
+              "可导出的法律审查材料包",
+              "优先支持"
             ],
             "interval": "month",
             "amount": 24900,
             "currency": "USD",
             "price": "$249",
-            "original_price": "$299",
+            "original_price": "",
             "unit": "/ 月",
             "is_featured": false,
-            "tip": "按月付费，助你交付任何 AI SaaS 项目。",
+            "tip": "适合每周都有合同审核需求的团队。",
             "button": {
-              "title": "获取 ShipAny",
-              "url": "/#pricing",
-              "icon": "RiFlashlightFill"
+              "title": "开始商务版",
+              "url": "/#hero",
+              "icon": "RiFileCheckLine"
             },
             "product_id": "premium-monthly",
-            "product_name": "ShipAny 模板高级版包月",
-            "credits": 300,
+            "product_name": "ContractReview AI 商务版包月",
+            "credits": 800,
             "valid_days": 30,
             "group": "monthly",
-            "plan_name": "高级版"
+            "plan_name": "商务版"
           },
           {
             "title": "入门版",
-            "description": "开启你的第一个 SaaS 创业项目。",
+            "description": "适合小团队年度使用。",
             "features_title": "包含",
             "features": [
-              "100 积分，有效期 1 年",
-              "NextJS 项目模板",
-              "SEO 友好结构",
-              "支持 Stripe 支付",
-              "Supabase 数据存储",
-              "Google Oauth & 一键登录",
-              "多语言（i18n）支持"
+              "每年 1,800 审查积分",
+              "支持合同上传和文本粘贴",
+              "AI 解析与初步分析",
+              "结构化风险发现",
+              "审核报告导出"
             ],
             "interval": "year",
             "amount": 82800,
@@ -273,33 +257,30 @@
             "original_price": "$89",
             "unit": "/ 月",
             "is_featured": false,
-            "tip": "按年付费，畅享无限项目部署！",
+            "tip": "按年付费。",
             "button": {
-              "title": "获取 ShipAny",
-              "url": "/#pricing",
-              "icon": "RiFlashlightFill"
+              "title": "开始包年",
+              "url": "/#hero",
+              "icon": "RiFileCheckLine"
             },
             "product_id": "starter-yearly",
-            "product_name": "ShipAny 模板入门版包年",
-            "credits": 1200,
+            "product_name": "ContractReview AI 入门版包年",
+            "credits": 1800,
             "valid_days": 365,
             "group": "yearly",
             "plan_name": "入门版"
           },
           {
-            "title": "标准版",
-            "description": "快速交付你的 SaaS 创业项目。",
+            "title": "专业版",
+            "description": "适合活跃业务团队年度使用。",
             "label": "热门",
-            "features_title": "包含入门版功能，此外",
+            "features_title": "包含入门版，此外",
             "features": [
-              "200 积分，有效期 1 年",
-              "支持 Vercel 或 Cloudflare 部署",
-              "自动生成隐私政策&服务条款",
-              "集成 Google Analytics",
-              "集成 Google Search Console",
-              "Discord 技术社区",
-              "首个上线项目技术支持",
-              "终身免费更新"
+              "每年 4,800 审查积分",
+              "合同工作区历史",
+              "审查立场和法域上下文",
+              "自定义关注重点",
+              "优先处理"
             ],
             "interval": "year",
             "amount": 154800,
@@ -308,31 +289,29 @@
             "original_price": "$169",
             "unit": "/ 月",
             "is_featured": true,
-            "tip": "按年付费，极速上线你的 SaaS 项目。",
+            "tip": "按年付费。",
             "button": {
-              "title": "获取 ShipAny",
-              "url": "/#pricing",
-              "icon": "RiFlashlightFill"
+              "title": "开始专业版",
+              "url": "/#hero",
+              "icon": "RiFileCheckLine"
             },
             "product_id": "standard-yearly",
-            "product_name": "ShipAny 模板标准版包年",
-            "credits": 2400,
+            "product_name": "ContractReview AI 专业版包年",
+            "credits": 4800,
             "valid_days": 365,
             "group": "yearly",
-            "plan_name": "标准版"
+            "plan_name": "专业版"
           },
           {
-            "title": "高级版",
-            "description": "交付任意 AI SaaS 创业项目。",
-            "features_title": "包含标准版功能，此外",
+            "title": "商务版",
+            "description": "适合高频审查团队年度使用。",
+            "features_title": "包含专业版，此外",
             "features": [
-              "300 积分，有效期 1 年",
-              "内置 AI 业务功能",
-              "用户中心",
-              "积分系统",
-              "为你的 SaaS 售卖 API",
-              "后台管理系统",
-              "优先技术支持"
+              "每年 9,600 审查积分",
+              "增强报告上下文",
+              "面向团队的合同流程",
+              "可导出的法律审查材料包",
+              "优先支持"
             ],
             "interval": "year",
             "amount": 226800,
@@ -341,18 +320,18 @@
             "original_price": "$249",
             "unit": "/ 月",
             "is_featured": false,
-            "tip": "按年付费，助你交付任何 AI SaaS 项目。",
+            "tip": "按年付费。",
             "button": {
-              "title": "获取 ShipAny",
-              "url": "/#pricing",
-              "icon": "RiFlashlightFill"
+              "title": "开始商务版",
+              "url": "/#hero",
+              "icon": "RiFileCheckLine"
             },
             "product_id": "premium-yearly",
-            "product_name": "ShipAny 模板高级版包年",
-            "credits": 3600,
+            "product_name": "ContractReview AI 商务版包年",
+            "credits": 9600,
             "valid_days": 365,
             "group": "yearly",
-            "plan_name": "高级版"
+            "plan_name": "商务版"
           }
         ]
       }

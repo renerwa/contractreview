@@ -29,7 +29,50 @@ const nextConfig = {
     ],
   },
   async redirects() {
-    return [];
+    return [
+      // 将模板自带的通用 AI 工具页永久合并到首页，避免无关页面被用户或搜索引擎继续访问。
+      {
+        source: '/ai-image-generator',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/:locale(en|zh)/ai-image-generator',
+        destination: '/:locale',
+        permanent: true,
+      },
+      {
+        source: '/ai-music-generator',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/:locale(en|zh)/ai-music-generator',
+        destination: '/:locale',
+        permanent: true,
+      },
+      {
+        source: '/ai-video-generator',
+        destination: '/',
+        permanent: true,
+      },
+      {
+        source: '/:locale(en|zh)/ai-video-generator',
+        destination: '/:locale',
+        permanent: true,
+      },
+      // 旧模板文章 slug 改为合同审查关键词 slug，保留外链和历史收录权重。
+      {
+        source: '/blog/what-is-xxx',
+        destination: '/blog/ai-contract-review',
+        permanent: true,
+      },
+      {
+        source: '/:locale(en|zh)/blog/what-is-xxx',
+        destination: '/:locale/blog/ai-contract-review',
+        permanent: true,
+      },
+    ];
   },
   async headers() {
     return [

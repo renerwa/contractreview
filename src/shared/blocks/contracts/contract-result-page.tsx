@@ -5,6 +5,7 @@ import {
   ArrowUpRight,
   Download,
   FileWarning,
+  FolderOpen,
   Loader2,
   ShieldAlert,
   Sparkles,
@@ -12,6 +13,7 @@ import {
 import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 
+import { Link } from '@/core/i18n/navigation';
 import {
   Accordion,
   AccordionContent,
@@ -319,6 +321,16 @@ export function ContractResultPage({ documentId }: { documentId: string }) {
               </div>
 
               <div className="grid min-w-[260px] gap-3 sm:grid-cols-2 lg:grid-cols-1 lg:justify-items-end">
+                <Button
+                  asChild
+                  variant="outline"
+                  className="h-11 rounded-xl px-5"
+                >
+                  <Link href="/contracts">
+                    <FolderOpen className="size-4" />
+                    {t('hero.my_contracts')}
+                  </Link>
+                </Button>
                 <Button
                   onClick={handlePrint}
                   disabled={reviewStatus !== 'completed'}

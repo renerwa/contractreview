@@ -6,13 +6,14 @@ import {
   CheckCircle2,
   FileSearch,
   FileText,
+  FolderOpen,
   Loader2,
   ShieldCheck,
   Sparkles,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { useRouter } from '@/core/i18n/navigation';
+import { Link, useRouter } from '@/core/i18n/navigation';
 import { useAppContext } from '@/shared/contexts/app';
 import { Badge } from '@/shared/components/ui/badge';
 import { Button } from '@/shared/components/ui/button';
@@ -328,7 +329,16 @@ export function ContractDetailPage({
               </div>
               <CardDescription>{currentStatusText}</CardDescription>
             </div>
-            <Badge variant="outline">{String(detail?.document?.status || 'uploaded')}</Badge>
+            <div className="flex flex-wrap items-center gap-2">
+              {/* 合同详情页处在多阶段审核流程中，保留回到合同工作区的显式入口，避免用户丢失列表上下文。 */}
+              <Button asChild variant="outline" size="sm" className="rounded-full">
+                <Link href="/contracts">
+                  <FolderOpen className="size-4" />
+                  {t('actions.my_contracts')}
+                </Link>
+              </Button>
+              <Badge variant="outline">{String(detail?.document?.status || 'uploaded')}</Badge>
+            </div>
           </div>
           <div className="space-y-3">
             <Progress value={progressValue} />

@@ -1,14 +1,14 @@
 {
   "metadata": {
-    "title": "Update Logs",
-    "description": "View product update logs, including latest features and improvements."
+    "title": "ContractReview AI Product Updates",
+    "description": "Follow product updates for AI contract review, risk analysis, document parsing, and report export workflows."
   },
   "page": {
     "sections": {
       "updates": {
         "id": "updates",
-        "title": "Update Logs",
-        "description": "View product update logs, including latest features and improvements."
+        "title": "Product Updates",
+        "description": "Follow improvements to the contract parsing, pre-analysis, review, reporting, and export workflow."
       }
     }
   }

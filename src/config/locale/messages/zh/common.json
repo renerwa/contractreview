@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "title": "ShipAny 模板二",
-    "description": "ShipAny 是用于构建 AI SaaS 创业项目的 NextJS 脚手架。提供丰富模板和组件，助您快速上线产品。",
-    "keywords": "shipany, shipany-boilerplate, shipany-template-two-demo"
+    "title": "ContractReview AI | AI 合同审查平台",
+    "description": "ContractReview AI 帮助法务、采购、销售和商务团队识别合同风险、理解条款问题，并生成结构化修改建议。",
+    "keywords": "AI 合同审查, 合同风险分析, 法务 AI, 合同审核软件, 合同分析, 条款审查, 法律科技"
   },
   "sign": {
     "sign_in_title": "登录",
@@ -117,6 +117,9 @@
       }
     },
     "detail": {
+      "actions": {
+        "my_contracts": "我的合同"
+      },
       "fallback": {
         "document_name": "合同文档",
         "pending": "待生成",
@@ -243,6 +246,7 @@
         "description_failed": "审核未成功完成。",
         "description_processing": "我们正在为您的合同生成完整法律审核。",
         "report_chip": "报告 #{value}",
+        "my_contracts": "我的合同",
         "print": "打印",
         "snapshot_title": "审核快照",
         "snapshot_description": "面向法务团队设计：先看总体风险，再看条款级发现与修订建议。"
