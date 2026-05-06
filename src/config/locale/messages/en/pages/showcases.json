@@ -1,148 +1,125 @@
 {
   "metadata": {
-    "title": "Showcases",
-    "description": "Awesome projects built with ShipAny"
+    "title": "Supported Contract Types for AI Review",
+    "description": "Explore the commercial, employment, technology, data, and partner agreements supported by ContractReview AI."
   },
   "page": {
-    "title": "Showcases",
+    "title": "Supported Contract Types",
     "sections": {
       "showcases": {
         "id": "showcases",
-        "title": "AI SaaS Startups built with ShipAny",
-        "description": "Easy to use and fast to ship.",
+        "title": "AI contract review coverage",
+        "description": "ContractReview AI is designed for common business contracts and structured legal review workflows.",
         "groups": [
           {
             "name": "all",
             "title": "All"
           },
           {
-            "name": "ai-chatbot",
-            "title": "AI Chatbot"
+            "name": "commercial",
+            "title": "Commercial"
           },
           {
-            "name": "ai-image",
-            "title": "AI Image"
+            "name": "employment",
+            "title": "Employment"
           },
           {
-            "name": "ai-video",
-            "title": "AI Video"
+            "name": "technology",
+            "title": "Technology"
           },
           {
-            "name": "ai-audio",
-            "title": "AI Audio"
-          },
-          {
-            "name": "ai-music",
-            "title": "AI Music"
-          },
-          {
-            "name": "ai-coding",
-            "title": "AI Coding"
-          },
-          {
-            "name": "other",
-            "title": "Other"
+            "name": "data",
+            "title": "Data & Privacy"
           }
         ],
         "items": [
           {
-            "title": "ThinkAny",
-            "description": "AI Search Engine",
-            "url": "https://thinkany.ai",
-            "target": "_blank",
+            "title": "Sales and supply agreements",
+            "description": "Review supplier terms, purchase agreements, distribution terms, delivery obligations, and payment clauses.",
+            "url": "/#hero",
+            "target": "_self",
             "image": {
-              "src": "/imgs/cases/7.png",
-              "alt": "showcases"
+              "src": "/imgs/features/1.png",
+              "alt": "Sales and supply agreements"
             },
-            "group": "ai-chatbot"
+            "group": "commercial"
           },
           {
-            "title": "HeyBeauty",
-            "description": "AI Virtual Try On",
-            "url": "https://heybeauty.ai",
-            "target": "_blank",
+            "title": "Services and consulting agreements",
+            "description": "Analyze statements of work, deliverables, acceptance rules, service levels, and liability boundaries.",
+            "url": "/#hero",
+            "target": "_self",
             "image": {
-              "src": "/imgs/cases/5.png",
-              "alt": "showcases"
+              "src": "/imgs/features/2.png",
+              "alt": "Services and consulting agreements"
             },
-            "group": "ai-image"
+            "group": "commercial"
           },
           {
-            "title": "AI Wallpaper",
-            "description": "AI Wallpaper Generator",
-            "url": "https://aiwallpaper.shop",
-            "target": "_blank",
+            "title": "Employment and contractor contracts",
+            "description": "Check employment agreements, contractor terms, compensation provisions, confidentiality, and IP ownership.",
+            "url": "/#hero",
+            "target": "_self",
             "image": {
-              "src": "/imgs/cases/1.png",
-              "alt": "showcases"
+              "src": "/imgs/features/3.png",
+              "alt": "Employment and contractor contracts"
             },
-            "group": "ai-image"
+            "group": "employment"
           },
           {
-            "title": "AI Cover",
-            "description": "AI Cover Generator",
-            "url": "https://aicover.design",
-            "target": "_blank",
+            "title": "SaaS and software agreements",
+            "description": "Review SaaS terms, software licenses, implementation scopes, support duties, and renewal language.",
+            "url": "/#hero",
+            "target": "_self",
             "image": {
-              "src": "/imgs/cases/2.png",
-              "alt": "showcases"
+              "src": "/imgs/features/4.png",
+              "alt": "SaaS and software agreements"
             },
-            "group": "ai-image"
+            "group": "technology"
           },
           {
-            "title": "GPTs Works",
-            "description": "GPTs Directory",
-            "url": "https://gpts.works",
-            "target": "_blank",
+            "title": "NDAs and confidentiality terms",
+            "description": "Assess confidentiality scope, exclusions, permitted disclosure, residual knowledge, and survival periods.",
+            "url": "/#hero",
+            "target": "_self",
             "image": {
-              "src": "/imgs/cases/3.png",
-              "alt": "showcases"
+              "src": "/imgs/features/5.png",
+              "alt": "NDAs and confidentiality terms"
             },
-            "group": "other"
+            "group": "data"
           },
           {
-            "title": "Melodisco",
-            "description": "AI Music Player",
-            "url": "https://melodis.co",
-            "target": "_blank",
+            "title": "Data processing agreements",
+            "description": "Review DPA clauses, security obligations, subprocessors, audit rights, breach notice, and data return terms.",
+            "url": "/#hero",
+            "target": "_self",
             "image": {
-              "src": "/imgs/cases/4.png",
-              "alt": "showcases"
+              "src": "/imgs/features/6.png",
+              "alt": "Data processing agreements"
             },
-            "group": "ai-music"
+            "group": "data"
           },
           {
-            "title": "Pagen",
-            "description": "AI Landing Page Generator",
-            "url": "https://pagen.so",
-            "target": "_blank",
+            "title": "Partner and reseller agreements",
+            "description": "Analyze channel duties, revenue share, territory, exclusivity, customer ownership, and termination rights.",
+            "url": "/#hero",
+            "target": "_self",
             "image": {
-              "src": "/imgs/cases/6.png",
-              "alt": "showcases"
+              "src": "/imgs/features/7.png",
+              "alt": "Partner and reseller agreements"
             },
-            "group": "ai-coding"
+            "group": "commercial"
           },
           {
-            "title": "SoraFM",
-            "description": "AI Video Generator",
-            "url": "https://sorafm.trys.ai",
-            "target": "_blank",
+            "title": "Platform and marketplace terms",
+            "description": "Review platform rules, API usage, listing terms, moderation rights, revenue share, and account suspension clauses.",
+            "url": "/#hero",
+            "target": "_self",
             "image": {
-              "src": "/imgs/cases/8.png",
-              "alt": "showcases"
+              "src": "/imgs/features/8.png",
+              "alt": "Platform and marketplace terms"
             },
-            "group": "ai-video"
-          },
-          {
-            "title": "PodLM",
-            "description": "AI Podcast Generator",
-            "url": "https://podlm.ai",
-            "target": "_blank",
-            "image": {
-              "src": "/imgs/cases/9.png",
-              "alt": "showcases"
-            },
-            "group": "ai-audio"
+            "group": "technology"
           }
         ]
       }

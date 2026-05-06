@@ -22,6 +22,8 @@ export interface ContextValue {
   setIsCheckSign: (isCheckSign: boolean) => void;
   isShowSignModal: boolean;
   setIsShowSignModal: (show: boolean) => void;
+  signModalCallbackUrl: string;
+  setSignModalCallbackUrl: (url: string) => void;
   isShowPaymentModal: boolean;
   setIsShowPaymentModal: (show: boolean) => void;
   configs: Record<string, string>;
@@ -47,6 +49,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
 
   // show sign modal
   const [isShowSignModal, setIsShowSignModal] = useState(false);
+  const [signModalCallbackUrl, setSignModalCallbackUrl] = useState('/');
 
   // show payment modal
   const [isShowPaymentModal, setIsShowPaymentModal] = useState(false);
@@ -155,6 +158,8 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
       setIsCheckSign,
       isShowSignModal,
       setIsShowSignModal,
+      signModalCallbackUrl,
+      setSignModalCallbackUrl,
       isShowPaymentModal,
       setIsShowPaymentModal,
       configs,
@@ -167,6 +172,7 @@ export const AppContextProvider = ({ children }: { children: ReactNode }) => {
       user,
       isCheckSign,
       isShowSignModal,
+      signModalCallbackUrl,
       isShowPaymentModal,
       configs,
       fetchConfigs,

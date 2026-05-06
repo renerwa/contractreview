@@ -1,3 +1,8 @@
+/**
+ * 获取文件扩展名
+ * @param fileName 文件名
+ * @returns 文件扩展名（小写）
+ */
 export function getFileExtension(fileName: string) {
   const idx = fileName.lastIndexOf('.');
   if (idx < 0) return '';

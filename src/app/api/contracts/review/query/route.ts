@@ -3,8 +3,9 @@ import { respData, respErr } from '@/shared/lib/resp';
 import { findAnalysisResultById, updateAnalysisResultById } from '@/shared/models/analysis_result';
 import { findAITaskById, updateAITaskById } from '@/shared/models/ai_task';
 import { getContractReviewChecklistsWithFallback } from '@/shared/models/contract_review_checklist';
-import { findDocumentById } from '@/shared/models/document';
+import { findDocumentById, updateDocumentById } from '@/shared/models/document';
 import { getUserInfo } from '@/shared/models/user';
+import { withContractAccessMetadata } from '@/shared/services/contract_access';
 import { calcRiskLevelFromReport, generateContractReviewReport } from '@/shared/services/contract_review';
 
 export async function POST(req: Request) {
@@ -137,6 +138,18 @@ export async function POST(req: Request) {
         taskResult: JSON.stringify(report),
         updatedAt: now,
       });
+      await updateDocumentById(documentId, {
+        status: 'reviewed',
+        metadata: withContractAccessMetadata(document.metadata, {
+          reviewTask: {
+            taskId: task.id,
+            analysisResultId,
+            status: AITaskStatus.SUCCESS,
+            finishedAt: now.toISOString(),
+          },
+        }),
+        updatedAt: now,
+      });
 
       const updatedAnalysisResult = await findAnalysisResultById(analysisResultId);
 
@@ -158,6 +171,18 @@ export async function POST(req: Request) {
       await updateAITaskById(task.id, {
         status: AITaskStatus.FAILED,
         taskResult: JSON.stringify({ error: e?.message || 'contract review failed' }),
+        updatedAt: now,
+      });
+      await updateDocumentById(documentId, {
+        status: 'review_failed',
+        metadata: withContractAccessMetadata(document.metadata, {
+          reviewTask: {
+            taskId: task.id,
+            analysisResultId,
+            status: AITaskStatus.FAILED,
+            finishedAt: now.toISOString(),
+          },
+        }),
         updatedAt: now,
       });
       return respErr(e?.message || 'contract review failed');

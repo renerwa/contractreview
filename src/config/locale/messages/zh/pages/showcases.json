@@ -1,148 +1,125 @@
 {
   "metadata": {
-    "title": "案例展示",
-    "description": "用 ShipAny 打造的精彩项目"
+    "title": "AI 合同审查支持的合同类型",
+    "description": "了解 ContractReview AI 支持的商业合同、雇佣合同、技术合同、数据隐私协议和合作伙伴协议。"
   },
   "page": {
-    "title": "案例展示",
+    "title": "支持的合同类型",
     "sections": {
       "showcases": {
         "id": "showcases",
-        "title": "用 ShipAny 构建的 AI SaaS 创业项目",
-        "description": "简单、快速、高效。",
+        "title": "AI 合同审查覆盖范围",
+        "description": "ContractReview AI 面向企业常见合同和结构化法律审查流程设计。",
         "groups": [
           {
             "name": "all",
-            "title": "所有项目"
+            "title": "全部"
           },
           {
-            "name": "ai-chatbot",
-            "title": "AI 聊天机器人"
+            "name": "commercial",
+            "title": "商业合同"
           },
           {
-            "name": "ai-image",
-            "title": "AI 图片"
+            "name": "employment",
+            "title": "雇佣合同"
           },
           {
-            "name": "ai-video",
-            "title": "AI 视频"
+            "name": "technology",
+            "title": "技术合同"
           },
           {
-            "name": "ai-audio",
-            "title": "AI 音频"
-          },
-          {
-            "name": "ai-music",
-            "title": "AI 音乐"
-          },
-          {
-            "name": "ai-coding",
-            "title": "AI 编程"
-          },
-          {
-            "name": "other",
-            "title": "其他"
+            "name": "data",
+            "title": "数据与隐私"
           }
         ],
         "items": [
           {
-            "title": "ThinkAny",
-            "description": "AI 搜索引擎",
-            "url": "https://thinkany.ai",
-            "target": "_blank",
+            "title": "销售与采购合同",
+            "description": "审查供应商条款、采购协议、分销条款、交付义务和付款条款。",
+            "url": "/#hero",
+            "target": "_self",
             "image": {
-              "src": "/imgs/cases/7.png",
-              "alt": "案例展示"
+              "src": "/imgs/features/1.png",
+              "alt": "销售与采购合同"
             },
-            "group": "ai-chatbot"
+            "group": "commercial"
           },
           {
-            "title": "HeyBeauty",
-            "description": "AI 虚拟试妆",
-            "url": "https://heybeauty.ai",
-            "target": "_blank",
+            "title": "服务与咨询协议",
+            "description": "分析工作说明书、交付物、验收规则、服务水平和责任边界。",
+            "url": "/#hero",
+            "target": "_self",
             "image": {
-              "src": "/imgs/cases/5.png",
-              "alt": "案例展示"
+              "src": "/imgs/features/2.png",
+              "alt": "服务与咨询协议"
             },
-            "group": "ai-image"
+            "group": "commercial"
           },
           {
-            "title": "AI Wallpaper",
-            "description": "AI 壁纸生成器",
-            "url": "https://aiwallpaper.shop",
-            "target": "_blank",
+            "title": "雇佣与外包合同",
+            "description": "检查劳动合同、顾问协议、薪酬条款、保密义务和知识产权归属。",
+            "url": "/#hero",
+            "target": "_self",
             "image": {
-              "src": "/imgs/cases/1.png",
-              "alt": "案例展示"
+              "src": "/imgs/features/3.png",
+              "alt": "雇佣与外包合同"
             },
-            "group": "ai-image"
+            "group": "employment"
           },
           {
-            "title": "AI Cover",
-            "description": "AI 封面生成器",
-            "url": "https://aicover.design",
-            "target": "_blank",
+            "title": "SaaS 与软件协议",
+            "description": "审查 SaaS 条款、软件许可、实施范围、支持义务和续约语言。",
+            "url": "/#hero",
+            "target": "_self",
             "image": {
-              "src": "/imgs/cases/2.png",
-              "alt": "案例展示"
+              "src": "/imgs/features/4.png",
+              "alt": "SaaS 与软件协议"
             },
-            "group": "ai-image"
+            "group": "technology"
           },
           {
-            "title": "GPTs Works",
-            "description": "GPTs 导航",
-            "url": "https://gpts.works",
-            "target": "_blank",
+            "title": "NDA 与保密条款",
+            "description": "评估保密范围、例外情形、允许披露、残留知识和持续期限。",
+            "url": "/#hero",
+            "target": "_self",
             "image": {
-              "src": "/imgs/cases/3.png",
-              "alt": "案例展示"
+              "src": "/imgs/features/5.png",
+              "alt": "NDA 与保密条款"
             },
-            "group": "other"
+            "group": "data"
           },
           {
-            "title": "Melodisco",
-            "description": "AI 音乐播放器",
-            "url": "https://melodis.co",
-            "target": "_blank",
+            "title": "数据处理协议",
+            "description": "审查 DPA 条款、安全义务、分包处理者、审计权、泄露通知和数据返还约定。",
+            "url": "/#hero",
+            "target": "_self",
             "image": {
-              "src": "/imgs/cases/4.png",
-              "alt": "案例展示"
+              "src": "/imgs/features/6.png",
+              "alt": "数据处理协议"
             },
-            "group": "ai-music"
+            "group": "data"
           },
           {
-            "title": "Pagen",
-            "description": "AI 落地页生成器",
-            "url": "https://pagen.so",
-            "target": "_blank",
+            "title": "合作伙伴与分销协议",
+            "description": "分析渠道义务、收入分成、区域、排他性、客户归属和终止权。",
+            "url": "/#hero",
+            "target": "_self",
             "image": {
-              "src": "/imgs/cases/6.png",
-              "alt": "案例展示"
+              "src": "/imgs/features/7.png",
+              "alt": "合作伙伴与分销协议"
             },
-            "group": "ai-coding"
+            "group": "commercial"
           },
           {
-            "title": "SoraFM",
-            "description": "AI 视频生成器",
-            "url": "https://sorafm.trys.ai",
-            "target": "_blank",
+            "title": "平台与市场条款",
+            "description": "审查平台规则、API 使用、入驻条款、内容治理权、收入分成和账号暂停条款。",
+            "url": "/#hero",
+            "target": "_self",
             "image": {
-              "src": "/imgs/cases/8.png",
-              "alt": "案例展示"
+              "src": "/imgs/features/8.png",
+              "alt": "平台与市场条款"
             },
-            "group": "ai-video"
-          },
-          {
-            "title": "PodLM",
-            "description": "AI 播客生成器",
-            "url": "https://podlm.ai",
-            "target": "_blank",
-            "image": {
-              "src": "/imgs/cases/9.png",
-              "alt": "案例展示"
-            },
-            "group": "ai-audio"
+            "group": "technology"
           }
         ]
       }

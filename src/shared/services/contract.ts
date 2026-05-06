@@ -8,6 +8,8 @@ import {
 } from '@/shared/models/contract_type';
 
 export interface ContractSummary {
+  isContract: boolean;
+  nonContractReason: string;
   contractType: string;
   contractSubtype: string;
   language: string;
@@ -85,7 +87,7 @@ export async function parseContractToMarkdown({
  * @param contractContent 合同内容
  * @param model 模型名称
  * @param configs 配置项
- * @returns 合同概要分析结果，包含合同类型、子类型、语言、签约地国家、签约地城市、用户角色、摘要、重点
+ * @returns 合同概要分析结果，包含是否为合同、合同类型、子类型、语言、签约地国家、签约地城市、用户角色、摘要、重点
  */
 export async function analyzeContractSummary({
   contractContent,
@@ -118,6 +120,8 @@ export async function analyzeContractSummary({
     system: `你是资深合同分析助手。你要基于用户提供的合同内容，输出结构化的合同概要分析。你必须严格按指定JSON结构输出，不要输出Markdown，不要输出解释文本。`,
     prompt: `请分析以下合同内容，并返回JSON：
 {
+  "isContract": true,
+  "nonContractReason": "如果不是合同，解释为什么它不是合同；如果是合同则为空字符串",
   "contractType": "合同类型（需要归一化：如果属于下方给定类型之一，必须严格输出该类型的 code；否则才输出一个新的类型名称）",
   "contractSubtype": "更细分子类型，没有就空字符串",
   "language": "文档主要语言（如 English、Spanish）",
@@ -130,13 +134,15 @@ export async function analyzeContractSummary({
 
 要求：
 1. 仅输出JSON对象，不要代码块标记。
-2. keyPoints返回3-8条，短句表达。
-3. 信息不确定时填空字符串，不要编造。
-4. 合同类型归一化规则（非常重要）：
+2. 先判断这是不是一份合同：如果内容明显不是合同、协议、条款文本、法律约束文件，则 isContract=false，nonContractReason 解释原因。
+3. 如果 isContract=false，则 contractType、contractSubtype、signingPlaceCountry、signingPlaceCity、userParty 可为空，summary 应简要解释该文档内容，keyPoints 返回 1-3 条。
+4. 如果 isContract=true，则 keyPoints返回3-8条，短句表达。
+5. 信息不确定时填空字符串，不要编造。
+6. 合同类型归一化规则（非常重要）：
    - 你将获得一份 <allowed_contract_types> 列表，每一项包含 code/nameEn/nameZh/usageScene。
    - 如果合同属于其中某一种类型，你必须将 contractType 输出为该类型的 code（完全一致，包括大小写与符号）。
    - 只有当合同明确不属于列表中的任何类型时，contractType 才能输出其他类型名称（尽量英文短名称，如 "Partnership Agreement"）。
-5. 你输出的 contractType 禁止是 allowed_contract_types 中 code/nameEn/nameZh 的“近似写法”，要么严格用 code，要么输出一个不在列表中的新类型名称。
+7. 你输出的 contractType 禁止是 allowed_contract_types 中 code/nameEn/nameZh 的“近似写法”，要么严格用 code，要么输出一个不在列表中的新类型名称。
 
 <allowed_contract_types>
 ${JSON.stringify(contractTypes)}
@@ -156,6 +162,13 @@ ${contractContent}`,
     normalizedContractType || String(parsed.contractType || '');
 
   return {
+    isContract:
+      typeof parsed.isContract === 'boolean'
+        ? parsed.isContract
+        : String(parsed.isContract || '')
+            .trim()
+            .toLowerCase() !== 'false',
+    nonContractReason: String(parsed.nonContractReason || ''),
     contractType: contractTypeFinal,
     contractSubtype: String(parsed.contractSubtype || ''),
     language: String(parsed.language || ''),

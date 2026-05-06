@@ -1,15 +1,15 @@
 {
   "metadata": {
-    "title": "Blog",
-    "description": "Read latest product features, solutions, and updates."
+    "title": "AI Contract Review Blog",
+    "description": "Read practical guides on AI contract review, contract risk analysis, clause review, and legal workflow automation."
   },
   "page": {
-    "title": "ShipAny Blog",
+    "title": "AI Contract Review Blog",
     "sections": {
       "blog": {
         "id": "blog",
-        "title": "Blog",
-        "description": "Read latest product features, solutions, and updates."
+        "title": "Contract Review Insights",
+        "description": "Practical articles for legal, procurement, sales, and business teams using AI to review contracts."
       }
     }
   },

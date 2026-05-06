@@ -1,15 +1,15 @@
 import { respData, respErr } from '@/shared/lib/resp';
 import { findAnalysisResultById } from '@/shared/models/analysis_result';
 import { findDocumentById } from '@/shared/models/document';
-import { getUserInfo } from '@/shared/models/user';
+import {
+  canAccessDocument,
+  getContractAccessContext,
+} from '@/shared/services/contract_access';
 import { queryMinerUParseAndPersist } from '@/shared/services/document_parsing';
 
 export async function POST(req: Request) {
   try {
-    const user = await getUserInfo();
-    if (!user) {
-      return respErr('no auth, please sign in');
-    }
+    const access = await getContractAccessContext();
 
     // 从请求体中获取文档 ID 和任务 ID
     const body = await req.json();
@@ -22,7 +22,7 @@ export async function POST(req: Request) {
 
     // 从数据库中查询文档信息，后面会从文档元数据中提取解析任务 ID
     const document = await findDocumentById(documentId);
-    if (!document || document.userId !== user.id) {
+    if (!canAccessDocument(document, access)) {
       return respErr('document not found');
     }
 
@@ -36,13 +36,14 @@ export async function POST(req: Request) {
 
     // 查询MinerU合同文档解析任务状态并持久化结果
     const result = await queryMinerUParseAndPersist({
-      userId: user.id,
+      userId: document.userId,
+      sessionToken: access.sessionToken,
       documentId,
       taskId,
     });
 
     const markdownContent = result.analysisResultId
-      ? await tryGetMarkdownContent(result.analysisResultId, user.id)
+      ? await tryGetMarkdownContent(result.analysisResultId)
       : '';
 
     return respData({
@@ -56,10 +57,10 @@ export async function POST(req: Request) {
   }
 }
 
-async function tryGetMarkdownContent(analysisResultId: string, userId: string) {
+async function tryGetMarkdownContent(analysisResultId: string) {
   try {
     const analysis = await findAnalysisResultById(analysisResultId);
-    if (!analysis || analysis.userId !== userId) {
+    if (!analysis) {
       return '';
     }
     return String(analysis.markdownContent || '');

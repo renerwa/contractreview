@@ -2,51 +2,48 @@
   "page": {
     "show_sections": [
       "hero",
-      "logos",
-      "introduce",
-      "benefits",
+      "contract_types",
+      "trustworthy_review",
+      "sample_output",
       "usage",
-      "features",
-      "stats",
-      "testimonials",
       "faq",
       "cta"
     ],
     "sections": {
       "hero": {
         "id": "hero",
-        "title": "Ship AI Startups in hours, not days",
-        "highlight_text": "in hours",
-        "description": "ShipAny is a NextJS boilerplate for building AI SaaS startups.<br/>Ship Fast with a variety of templates and components.",
+        "title": "AI contract review built to reduce legal risk",
+        "highlight_text": "reduce legal risk",
+        "description": "Jurisdiction-aware contract review for legal and business teams. Upload a contract or paste the text to start a structured review workflow in minutes.",
         "announcement": {
-          "badge": "New",
-          "title": "🎉 ShipAny Template Two",
-          "url": "/pricing"
+          "badge": "AI Legal Review",
+          "title": "Upload a contract and start your review workflow",
+          "url": "/"
         },
-        "tip": "🎁 Special offer for the first 1000 users",
+        "tip": "Professional legal review guidance with secure contract handling",
         "buttons": [
           {
-            "title": "Get Started",
+            "title": "Start contract review",
             "icon": "Zap",
-            "url": "/pricing",
+            "url": "#hero",
             "target": "_self",
             "variant": "default"
           },
           {
-            "title": "Read Document",
+            "title": "See review workflow",
             "icon": "BookOpenText",
-            "url": "/docs",
-            "target": "_blank",
+            "url": "#usage",
+            "target": "_self",
             "variant": "outline"
           }
         ],
         "upload_card": {
-          "tab_upload": "Upload",
-          "tab_paste_text": "Paste Text",
-          "upload_title": "Upload contract for instant review",
-          "upload_hint": "Click to upload, or drag and drop your contract here",
-          "upload_accepted_hint": "Supports PDF, DOCX, TXT",
-          "i_am_label": "I am",
+          "tab_upload": "Upload contract",
+          "tab_paste_text": "Paste text",
+          "upload_title": "Start a professional contract review",
+          "upload_hint": "Upload your contract file to begin a jurisdiction-aware review",
+          "upload_accepted_hint": "Supports PDF, DOCX, DOC, TXT",
+          "i_am_label": "Review side",
           "party_options": [
             {
               "value": "party_a",
@@ -57,152 +54,174 @@
               "label": "Party B"
             }
           ],
-          "paste_placeholder": "Paste full contract text or key clauses here...",
-          "cta_title": "Free Risk Scan"
+          "paste_placeholder": "Paste the full contract text or the clauses you want to review...",
+          "cta_title": "Start review"
         },
         "show_avatars": true,
-        "avatars_tip": "999+ users are using ShipAny",
+        "avatars_tip": "Built for legal, procurement, sales, and business teams",
         "show_award": false,
         "image": {
           "src": "/imgs/features/admin.png",
-          "alt": "hero",
+          "alt": "AI contract review workspace",
           "width": 1200,
           "height": 800
         },
         "image_invert": {
           "src": "/imgs/features/admin-dark.png",
-          "alt": "hero",
+          "alt": "AI contract review workspace",
           "width": 1200,
           "height": 800
         },
         "background_image": {
           "src": "/imgs/bg/tree.jpg",
-          "alt": "hero"
+          "alt": "background"
         }
       },
-      "logos": {
-        "id": "logos",
-        "title": "ShipAny is built on the shoulders of giants",
+      "contract_types": {
+        "block": "showcases",
+        "id": "contract_types",
+        "title": "Supported contract types",
+        "description": "Review the contracts your business handles every day. Contract types are grouped to make the scope clear while also covering high-value SEO categories.",
+        "groups": [
+          {
+            "name": "commercial",
+            "title": "Commercial"
+          },
+          {
+            "name": "employment",
+            "title": "Employment"
+          },
+          {
+            "name": "technology",
+            "title": "Technology"
+          },
+          {
+            "name": "data",
+            "title": "Data & Privacy"
+          }
+        ],
         "items": [
           {
-            "title": "Next.js",
+            "group": "commercial",
+            "title": "Sales and supply agreements",
+            "description": "Review commercial contracts such as supply agreements, distribution agreements, vendor contracts, and procurement terms.",
             "image": {
-              "src": "/imgs/logos/nextjs.svg",
-              "alt": "Next.js"
-            }
+              "src": "/imgs/features/1.png",
+              "alt": "Sales and supply agreements"
+            },
+            "url": "#hero"
           },
           {
-            "title": "React",
+            "group": "commercial",
+            "title": "Services and consulting agreements",
+            "description": "Check consulting agreements, professional services terms, statements of work, and master services arrangements.",
             "image": {
-              "src": "/imgs/logos/react.svg",
-              "alt": "React"
-            }
+              "src": "/imgs/features/2.png",
+              "alt": "Services and consulting agreements"
+            },
+            "url": "#hero"
           },
           {
-            "title": "TailwindCSS",
+            "group": "employment",
+            "title": "Employment and contractor contracts",
+            "description": "Analyze employment agreements, offer letters, contractor agreements, and compensation-related clauses.",
             "image": {
-              "src": "/imgs/logos/tailwindcss.svg",
-              "alt": "TailwindCSS"
-            }
+              "src": "/imgs/features/3.png",
+              "alt": "Employment and contractor contracts"
+            },
+            "url": "#hero"
           },
           {
-            "title": "Shadcn/UI",
+            "group": "technology",
+            "title": "SaaS and software agreements",
+            "description": "Review SaaS agreements, software licensing terms, reseller terms, implementation statements, and support obligations.",
             "image": {
-              "src": "/imgs/logos/shadcn.svg",
-              "alt": "Shadcn/UI"
-            }
+              "src": "/imgs/features/4.png",
+              "alt": "SaaS and software agreements"
+            },
+            "url": "#hero"
           },
           {
-            "title": "Vercel",
+            "group": "data",
+            "title": "Data processing and confidentiality",
+            "description": "Assess DPAs, confidentiality clauses, NDAs, privacy commitments, and information security obligations.",
             "image": {
-              "src": "/imgs/logos/vercel.svg",
-              "alt": "Vercel"
-            }
+              "src": "/imgs/features/5.png",
+              "alt": "Data processing and confidentiality"
+            },
+            "url": "#hero"
+          },
+          {
+            "group": "technology",
+            "title": "Platform and partner terms",
+            "description": "Review platform partner agreements, API terms, marketplace terms, and revenue-sharing clauses with consistent risk structure.",
+            "image": {
+              "src": "/imgs/features/6.png",
+              "alt": "Platform and partner terms"
+            },
+            "url": "#hero"
           }
         ]
       },
-      "introduce": {
-        "block": "features-list",
-        "id": "introduce",
-        "title": "What is ShipAny",
-        "label": "Introduce",
-        "description": "ShipAny is a NextJS boilerplate for building AI SaaS startups, including templates, components, and documentation.",
-        "image": {
-          "src": "/imgs/features/landing-page.png",
-          "alt": "introduce"
-        },
+      "trustworthy_review": {
+        "id": "trustworthy_review",
+        "title": "Why teams trust this contract review",
+        "description": "The product focuses on the outcomes legal and business teams care about most: legal risk visibility, jurisdiction-aware analysis, actionable edits, and secure handling of sensitive agreements.",
         "items": [
           {
-            "title": "Ready-to-use Templates",
-            "description": "Choose from dozens of production-ready AI SaaS templates to quickly start your project.",
-            "icon": "RiNextjsFill",
-            "image": {
-              "src": "/imgs/features/1.png",
-              "alt": "introduce"
-            }
+            "title": "Trained for legal and contract review tasks",
+            "description": "Built on a large base of legal and contract documents to support structured contract analysis instead of generic AI summarization.",
+            "icon": "RiScaleLine"
           },
           {
-            "title": "Infrastructure Setup",
-            "description": "Get instant access to scalable infrastructure with best practices built-in.",
-            "icon": "RiDatabase2Line",
-            "image": {
-              "src": "/imgs/features/2.png",
-              "alt": "introduce"
-            }
+            "title": "Jurisdiction-aware review guidance",
+            "description": "The review takes the signing country into account so the analysis can adapt its focus to local legal expectations and practical risk concerns.",
+            "icon": "RiGlobalLine"
           },
           {
-            "title": "Quick Deployment",
-            "description": "Deploy your AI SaaS application to production in hours, not days.",
-            "icon": "RiCloudyFill",
-            "image": {
-              "src": "/imgs/features/3.png",
-              "alt": "introduce"
-            }
+            "title": "Ranked risks with recommended edits",
+            "description": "Get risk findings from high to low severity, each with the original clause, the legal concern, and a suggested revision path.",
+            "icon": "RiAlarmWarningLine"
           },
           {
-            "title": "AI Integration",
-            "description": "Integrate AI into your project with ease using our built-in AI SDK.",
-            "icon": "RiRobot2Line",
-            "image": {
-              "src": "/imgs/features/4.png",
-              "alt": "introduce"
-            }
+            "title": "Data stays protected",
+            "description": "Sensitive contract data is handled with secure storage practices and is not used to train public models.",
+            "icon": "RiShieldCheckLine"
           }
         ],
         "className": "bg-muted"
       },
-      "benefits": {
+      "sample_output": {
         "block": "features-accordion",
-        "id": "benefits",
-        "title": "Why Choose ShipAny",
-        "label": "Benefits",
-        "description": "Get everything you need to launch your AI startup - from ready-to-use templates to technical support.",
+        "id": "sample_output",
+        "title": "See the review output before you upload",
+        "description": "The output is designed for professional review workflows: overall risk judgment first, then clause-level risk evidence and suggested revisions.",
         "items": [
           {
-            "title": "Complete Framework",
-            "description": "Built on Next.js with authentication, payments, and AI integration - everything works out of the box.",
-            "icon": "RiNextjsFill",
+            "title": "Overall risk summary",
+            "description": "Start with a quick view of the overall risk level, key conclusions, and the distribution of high, medium, and low risks.",
+            "icon": "RiDashboardLine",
             "image": {
-              "src": "/imgs/features/user-billing.png",
-              "alt": "benefits"
+              "src": "/imgs/features/admin.png",
+              "alt": "Overall risk summary"
             }
           },
           {
-            "title": "Rich Templates Library",
-            "description": "Choose from various AI SaaS templates to kickstart your project - chatbots, image generation, and more.",
-            "icon": "RiClapperboardAiLine",
-            "image": {
-              "src": "/imgs/features/admin-settings.png",
-              "alt": "benefits"
-            }
-          },
-          {
-            "title": "Technical Guidance",
-            "description": "Get dedicated support and join our developer community to ensure your successful launch.",
-            "icon": "RiCodeFill",
+            "title": "Clause-level risk findings",
+            "description": "Each issue includes the original clause, a concise legal concern, and a suggested way to revise or renegotiate the language.",
+            "icon": "RiFileSearchLine",
             "image": {
               "src": "/imgs/features/landing-page.png",
-              "alt": "benefits"
+              "alt": "Clause-level risk findings"
+            }
+          },
+          {
+            "title": "Consistent review setup",
+            "description": "Review side, signing country, output language, and custom focus points are preserved as part of the review context for later export.",
+            "icon": "RiSettings3Line",
+            "image": {
+              "src": "/imgs/features/admin-settings.png",
+              "alt": "Consistent review setup"
             }
           }
         ]
@@ -210,233 +229,83 @@
       "usage": {
         "block": "features-step",
         "id": "usage",
-        "title": "How to Launch with ShipAny",
-        "description": "Get your AI SaaS startup running in three simple steps:",
-        "image": {
-          "src": "/imgs/features/1.png",
-          "alt": "usage"
-        },
-        "image_position": "left",
-        "text_align": "center",
+        "label": "Workflow",
+        "title": "How the review workflow works",
+        "description": "The experience is designed to feel lightweight at the start, then progressively collect the right legal review context before the full analysis begins.",
         "items": [
           {
-            "title": "Get ShipAny",
-            "description": "Buy ShipAny with a one-time payment. Check your email for the code and documentation.",
-            "image": {
-              "src": "/imgs/features/5.png",
-              "alt": "usage"
-            }
+            "title": "Upload a contract or paste the text",
+            "description": "Start from a file or raw contract text on the landing page. The system begins parsing and pre-analysis immediately.",
+            "icon": "RiUploadCloud2Line"
           },
           {
-            "title": "Start Your Project",
-            "description": "Read the documentation and clone the code of ShipAny. Start building your AI SaaS startup.",
-            "image": {
-              "src": "/imgs/features/6.png",
-              "alt": "usage"
-            }
+            "title": "AI pre-analysis prepares the workspace",
+            "description": "The contract detail page handles parsing, identifies whether the file is a contract, and summarizes the document for review setup.",
+            "icon": "RiSparkling2Line"
           },
           {
-            "title": "Customize Your Project",
-            "description": "Modify the template with your data and contents. Specific AI functionality needs.",
-            "image": {
-              "src": "/imgs/features/7.png",
-              "alt": "usage"
-            }
+            "title": "Set review direction",
+            "description": "Confirm the review side, signing country, output language, and anything the reviewer wants the AI to focus on.",
+            "icon": "RiFocus2Line"
           },
           {
-            "title": "Deploy to Production",
-            "description": "Deploy your project to production with a few steps and start serving customers immediately.",
-            "image": {
-              "src": "/imgs/features/8.png",
-              "alt": "usage"
-            }
+            "title": "Start full contract review",
+            "description": "After sign-in, the full review runs and produces ranked risks, clause evidence, recommendations, and a downloadable report.",
+            "icon": "RiFileCheckLine"
           }
         ],
         "className": "bg-muted"
-      },
-      "features": {
-        "id": "features",
-        "title": "Key Features of ShipAny",
-        "description": "Everything you need to launch your AI SaaS startup quickly and efficiently.",
-        "items": [
-          {
-            "title": "Next.js Boilerplate",
-            "description": "Production-ready Next.js templates with SEO-friendly structure and i18n support.",
-            "icon": "RiNextjsFill"
-          },
-          {
-            "title": "Authentication & Payments",
-            "description": "Integrated Google OAuth, one-tap login, and Stripe payment processing.",
-            "icon": "RiKey2Fill"
-          },
-          {
-            "title": "Data Infrastructure",
-            "description": "Built-in Supabase integration for reliable and scalable data storage.",
-            "icon": "RiDatabase2Line"
-          },
-          {
-            "title": "One-Click Deployment",
-            "description": "Seamless deployment to Vercel or Cloudflare with automated setup.",
-            "icon": "RiCloudy2Fill"
-          },
-          {
-            "title": "Business Analytics",
-            "description": "Integrated Google Analytics and Search Console for tracking growth.",
-            "icon": "RiBarChart2Line"
-          },
-          {
-            "title": "AI-Ready Infrastructure",
-            "description": "Pre-configured AI integration with built-in credits system and API sales.",
-            "icon": "RiRobot2Line"
-          }
-        ]
-      },
-      "stats": {
-        "id": "stats",
-        "title": "People Love ShipAny",
-        "description": "for it's easy to use and fast to ship.",
-        "items": [
-          {
-            "title": "999+",
-            "description": "Customers"
-          },
-          {
-            "title": "200+",
-            "description": "Blocks"
-          },
-          {
-            "title": "50+",
-            "description": "Templates"
-          }
-        ],
-        "className": "bg-muted"
-      },
-      "testimonials": {
-        "id": "testimonials",
-        "title": "What Users Say About ShipAny",
-        "description": "Hear from developers and founders who launched their AI startups with ShipAny.",
-        "items": [
-          {
-            "name": "David Chen",
-            "role": "Founder of AIWallpaper.shop",
-            "quote": "ShipAny saved us months of development time. We launched our AI wallpaper business in just 2 days and got our first paying customer within a week!",
-            "image": {
-              "src": "/imgs/avatars/1.png",
-              "alt": "david"
-            }
-          },
-          {
-            "name": "Rachel Kim",
-            "role": "CTO at HeyBeauty.ai",
-            "quote": "The pre-built AI infrastructure is a game-changer. We didn't have to worry about architecture - just focused on our AI beauty tech and went live fast.",
-            "image": {
-              "src": "/imgs/avatars/2.png",
-              "alt": "rachel"
-            }
-          },
-          {
-            "name": "Marcus Thompson",
-            "role": "Solo Developer",
-            "quote": "As a solo developer, ShipAny gave me everything I needed - auth, payments, AI integration, and beautiful UI. Launched my SaaS in a weekend!",
-            "image": {
-              "src": "/imgs/avatars/3.png",
-              "alt": "marcus"
-            }
-          },
-          {
-            "name": "Sofia Garcia",
-            "role": "CEO of Melodisco",
-            "quote": "The templates are production-ready and highly customizable. We built our AI music platform in hours instead of months. Incredible time-to-market!",
-            "image": {
-              "src": "/imgs/avatars/4.png",
-              "alt": "sofia"
-            }
-          },
-          {
-            "name": "James Wilson",
-            "role": "Tech Lead at GPTs.works",
-            "quote": "ShipAny's infrastructure is rock-solid. We scaled from 0 to 10k users without touching the backend. Best investment for our AI startup.",
-            "image": {
-              "src": "/imgs/avatars/5.png",
-              "alt": "james"
-            }
-          },
-          {
-            "name": "Anna Zhang",
-            "role": "Startup Founder",
-            "quote": "From idea to launch in 3 days! ShipAny's templates and deployment tools made it possible to test our AI business concept incredibly fast.",
-            "image": {
-              "src": "/imgs/avatars/6.png",
-              "alt": "anna"
-            }
-          }
-        ]
       },
       "faq": {
         "id": "faq",
-        "title": "Frequently Asked Questions About ShipAny",
-        "description": "Have another question? Contact us on Discord or by email.",
+        "title": "Frequently asked questions about AI contract review",
+        "description": "Common questions from legal and business teams before they upload a contract.",
         "items": [
           {
-            "question": "What exactly is ShipAny and how does it work?",
-            "answer": "ShipAny is a comprehensive NextJS boilerplate designed specifically for building AI SaaS startups. It provides ready-to-use templates, infrastructure setup, and deployment tools that help you launch your AI business in hours instead of days."
+            "question": "Can this AI review contracts under different signing countries?",
+            "answer": "Yes. The review workflow collects the signing country and uses it as part of the final review context so the analysis can adapt its focus to that jurisdiction."
           },
           {
-            "question": "Do I need advanced technical skills to use ShipAny?",
-            "answer": "While basic programming knowledge is helpful, ShipAny is designed to be developer-friendly. Our templates and documentation make it easy to get started, even if you're not an expert in AI or cloud infrastructure."
+            "question": "What kinds of contract risks are included in the output?",
+            "answer": "The result focuses on ranked contract risks, clause-level concerns, and suggested revisions. High, medium, and low risks are grouped for faster review."
           },
           {
-            "question": "What types of AI SaaS can I build with ShipAny?",
-            "answer": "ShipAny supports a wide range of AI applications, from content generation to data analysis tools. Our templates cover popular use cases like AI chatbots, content generators, image processing apps, and more."
+            "question": "Can I upload a PDF or Word contract?",
+            "answer": "Yes. The landing page supports common contract formats such as PDF and Word documents, and also allows you to paste contract text directly."
           },
           {
-            "question": "How long does it typically take to launch with ShipAny?",
-            "answer": "With ShipAny, you can have a working prototype in hours and a production-ready application in hours. Our one-click deployment and pre-configured infrastructure significantly reduce the traditional months-long development cycle."
+            "question": "Will my contract data be used for model training?",
+            "answer": "No. Contract data is handled as sensitive business information and is not used to train public AI models."
           },
           {
-            "question": "What's included in the ShipAny infrastructure?",
-            "answer": "ShipAny provides a complete infrastructure stack including authentication, database setup, API integration, payment processing, and scalable cloud deployment. Everything is pre-configured following industry best practices."
+            "question": "What happens if the file is not actually a contract?",
+            "answer": "The pre-analysis step can stop the workflow and explain why the document does not look like a contract, then guide the user to upload another file or paste contract text instead."
           },
           {
-            "question": "Can I customize the templates to match my brand?",
-            "answer": "Absolutely! All ShipAny templates are fully customizable. You can modify the design, features, and functionality to match your brand identity and specific business requirements while maintaining the robust underlying infrastructure."
+            "question": "What can I export after the review is complete?",
+            "answer": "You can export a PDF that includes the overall risk summary, detailed findings, the contract summary, and the review settings used to produce the result."
           }
         ]
       },
       "cta": {
         "id": "cta",
-        "title": "Ship your first AI SaaS Startup",
-        "description": "Start from here, ship with ShipAny.",
+        "title": "Start your contract review workflow",
+        "description": "Upload a contract, confirm the review direction, and generate a structured legal risk report.",
         "buttons": [
           {
-            "title": "Get ShipAny",
-            "url": "https://shipany.ai",
-            "target": "_blank",
+            "title": "Upload contract",
+            "url": "#hero",
+            "target": "_self",
             "icon": "Zap"
           },
           {
-            "title": "Read Document",
-            "url": "/docs",
-            "target": "_blank",
+            "title": "Read FAQ",
+            "url": "#faq",
+            "target": "_self",
             "variant": "outline",
             "icon": "BookOpenText"
           }
         ],
-        "className": "bg-muted"
-      },
-      "subscribe": {
-        "id": "subscribe",
-        "title": "Subscribe to our newsletter",
-        "description": "Get the latest news and updates from ShipAny.",
-        "submit": {
-          "input": {
-            "placeholder": "Enter your email"
-          },
-          "button": {
-            "title": "Subscribe"
-          },
-          "action": "/api/subscribe"
-        },
         "className": "bg-muted"
       }
     }

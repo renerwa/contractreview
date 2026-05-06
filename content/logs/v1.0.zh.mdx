@@ -1,51 +1,18 @@
 ---
-title: 'ShipAny One 发布'
-description: '一小时上线你的 AI SaaS 项目'
-date: '2024-11-24'
-tags: ['ShipAny One', 'Next.js 15', 'AI SaaS', 'Boilerplate']
-version: '1.0.0'
+title: '合同工作区上线'
+description: 'ContractReview AI 已支持合同上传、解析、预分析和审核设置。'
+tags: ['合同审查', '文档解析', '法务 AI']
+version: '1.0'
+created_at: 2026-04-29
 ---
 
-![ShipAny Two](/imgs/features/one.png)
+ContractReview AI 已上线核心合同工作区，支持 AI 辅助合同审查的主流程。
 
-ShipAny 是一个基于 NextJS 的 AI SaaS 开发框架，内置丰富的组件和 AI SDK，帮助你快速完成 AI SaaS 项目开发。
+## 主要更新
 
-<Accordion type="multiple" className="not-prose w-full">
-    <AccordionItem value="features">
-        <AccordionTrigger>核心功能</AccordionTrigger>
-        <AccordionContent className="flex flex-col gap-4 text-balance">
-        <ul className="list-disc space-y-2 pl-4">
-            <li>一个精美的 Landing Page</li>
-            <li>20+ 页面组件</li>
-            <li>用户登录（谷歌登录 / Github 登录）</li>
-            <li>数据统计（Google Analytics / OpenPanel）</li>
-            <li>i18n 多语言</li>
-            <li>数据存储（基于 Supabase）</li>
-            <li>支付（基于 Stripe）</li>
-            <li>部署（支持 Vercel / Cloudflare）</li>
-        </ul>
-        </AccordionContent>
-    </AccordionItem>
+- 支持从首页上传合同或粘贴合同文本。
+- 支持解析合同内容并生成初步分析摘要。
+- 支持识别明显不是合同的文档。
+- 支持配置审核视角、签署国家、输出语言和关注重点。
 
-    <AccordionItem value="admin">
-        <AccordionTrigger>管理后台</AccordionTrigger>
-        <AccordionContent className="flex flex-col gap-4 text-balance">
-        <ul className="list-disc space-y-2 pl-4">
-            <li>用户管理</li>
-            <li>用户积分管理</li>
-            <li>支付订单管理</li>
-            <li>API Keys 管理</li>
-            <li>CMS（内容管理系统）</li>
-        </ul>
-        </AccordionContent>
-    </AccordionItem>
-
-</Accordion>
-
-> 快速开始
-
-```bash
-git clone git@github.com:shipanyai/shipany-template-one.git
-```
-
-[ShipAny One 文档](https://docs.shipany.ai/zh)
+本次更新建立了从合同进入系统到审核设置的主流程。

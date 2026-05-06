@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { ArrowRight, FileText, Loader2, Upload } from 'lucide-react';
 import { toast } from 'sonner';
 
-import { Link } from '@/core/i18n/navigation';
+import { Link, useRouter } from '@/core/i18n/navigation';
 import { Button } from '@/shared/components/ui/button';
 import { Highlighter } from '@/shared/components/ui/highlighter';
 import { Tabs, TabsList, TabsTrigger } from '@/shared/components/ui/tabs';
@@ -22,6 +22,7 @@ export function Hero({
   section: Section;
   className?: string;
 }) {
+  const router = useRouter();
   const [tab, setTab] = useState('upload');
   const [dragActive, setDragActive] = useState(false);
   const [fileName, setFileName] = useState('');
@@ -31,16 +32,6 @@ export function Hero({
   const [parsing, setParsing] = useState(false);
   const [parsingHint, setParsingHint] = useState('');
   const [preAnalyzing, setPreAnalyzing] = useState(false);
-  const [summary, setSummary] = useState<{
-    contractType?: string;
-    contractSubtype?: string;
-    language?: string;
-    signingPlaceCountry?: string;
-    signingPlaceCity?: string;
-    userParty?: string;
-    keyPoints?: string[];
-    summary?: string;
-  } | null>(null);
   const [pastedText, setPastedText] = useState('');
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -99,7 +90,6 @@ export function Hero({
     setUploading(true);
     setUploadedDocumentId('');
     setUploadedFileUrl('');
-    setSummary(null);
 
     try {
       const uploaded = await uploadContractFile(file);
@@ -183,67 +173,6 @@ export function Hero({
     return data;
   };
 
-  const pollParseTask = async (documentId: string, taskId: string) => {
-    const startedAt = Date.now();
-    while (true) {
-      if (Date.now() - startedAt > 10 * 60 * 1000) {
-        throw new Error('parse timeout');
-      }
-
-      await sleep(2000);
-      let data: {
-        taskId: string;
-        state: string;
-        errMsg?: string;
-        progress?: {
-          extractedPages: number;
-          totalPages: number;
-          startTime: string;
-        };
-        analysisResultId?: string;
-        markdownContent?: string;
-      } | null = null;
-
-      try {
-        data = await requestData('/api/contracts/parse/query', {
-          method: 'POST',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ documentId, taskId }),
-        });
-      } catch (e: any) {
-        setParsingHint('Parsing document... (retrying)');
-        continue;
-      }
-
-      if (!data) {
-        setParsingHint('Parsing document... (retrying)');
-        continue;
-      }
-
-      const state = String(data.state || '');
-      if (state === 'failed') {
-        throw new Error(String(data.errMsg || 'parse failed'));
-      }
-
-      if (data.progress?.totalPages) {
-        setParsingHint(
-          `Parsing document... (${data.progress.extractedPages}/${data.progress.totalPages})`
-        );
-      } else {
-        setParsingHint('Parsing document...');
-      }
-
-      if (state === 'done') {
-        const markdown = String(data.markdownContent || '').trim();
-        if (!markdown) {
-          setParsingHint('Finalizing parse result...');
-          continue;
-        }
-        return { markdown };
-      }
-    }
-  };
-
   const runPreAnalysis = async ({
     content,
     format,
@@ -273,7 +202,6 @@ export function Hero({
         fileUrl,
       }),
     });
-    setSummary(data.summary || null);
     return data;
   };
 
@@ -291,39 +219,95 @@ export function Hero({
     try {
       setParsingHint('');
       setPreAnalyzing(false);
-      setSummary(null);
 
       if (tab === 'upload') {
+        toast.info(
+          'Contract analysis can take a little longer for complex files. We will keep preparing it in your contract workspace.'
+        );
         setParsing(true);
         setParsingHint('Starting parse task...');
         const started = await startParseTask();
-        const { markdown } = await pollParseTask(
-          started.documentId,
-          started.taskId
-        );
+        let readyMarkdown = '';
+
+        for (let attempt = 0; attempt < 5; attempt += 1) {
+          await sleep(2000);
+          const data = await requestData<{
+            taskId: string;
+            state: string;
+            errMsg?: string;
+            progress?: {
+              extractedPages: number;
+              totalPages: number;
+              startTime: string;
+            };
+            analysisResultId?: string;
+            markdownContent?: string;
+          }>('/api/contracts/parse/query', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({
+              documentId: started.documentId,
+              taskId: started.taskId,
+            }),
+          });
+
+          if (data.state === 'failed') {
+            throw new Error(String(data.errMsg || 'parse failed'));
+          }
+
+          if (data.progress?.totalPages) {
+            setParsingHint(
+              `Analyzing contract... (${data.progress.extractedPages}/${data.progress.totalPages})`
+            );
+          } else {
+            setParsingHint('Analyzing contract...');
+          }
+
+          if (
+            String(data.state) === 'done' &&
+            String(data.markdownContent || '').trim()
+          ) {
+            readyMarkdown = String(data.markdownContent || '').trim();
+            break;
+          }
+        }
+
+        if (readyMarkdown) {
+          setParsing(false);
+          setPreAnalyzing(true);
+          await runPreAnalysis({
+            content: readyMarkdown,
+            format: 'markdown',
+            documentId: started.documentId,
+            fileUrl: started.fileUrl,
+          });
+          setPreAnalyzing(false);
+          toast.success(
+            'Contract pre-analysis is ready. Opening your workspace.'
+          );
+          router.push(`/contracts/${started.documentId}`);
+          return;
+        }
+
         setParsing(false);
-        setPreAnalyzing(true);
-        await runPreAnalysis({
-          content: markdown,
-          format: 'markdown',
-          documentId: started.documentId,
-          fileUrl: started.fileUrl,
-        });
-        setPreAnalyzing(false);
-        toast.success('Pre-analysis completed');
+        toast.info(
+          'Contract analysis is still running. Opening your workspace so you can continue there.'
+        );
+        router.push(`/contracts/${started.documentId}`);
         return;
       }
 
       const text = pastedText.trim();
       setPreAnalyzing(true);
-      await runPreAnalysis({
+      const data = await runPreAnalysis({
         content: text,
         format: 'text',
         documentId: '',
         fileUrl: '',
       });
       setPreAnalyzing(false);
-      toast.success('Pre-analysis completed');
+      toast.success('Contract pre-analysis is ready. Opening your workspace.');
+      router.push(`/contracts/${String(data.document?.id || '')}`);
     } catch (e: any) {
       setParsing(false);
       setPreAnalyzing(false);
@@ -503,20 +487,6 @@ export function Hero({
             >
               {parsing ? 'Parsing...' : preAnalyzing ? 'Analyzing...' : ctaText}
             </Button>
-
-            {summary?.summary && (
-              <div className="border-border bg-muted/30 text-foreground mt-4 rounded-xl border p-4 text-sm">
-                <div className="font-medium">
-                  {summary.contractType || 'Contract'}{' '}
-                  {summary.contractSubtype
-                    ? `- ${summary.contractSubtype}`
-                    : ''}
-                </div>
-                <div className="text-muted-foreground mt-1 line-clamp-3">
-                  {summary.summary}
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </div>

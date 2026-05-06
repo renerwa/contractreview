@@ -1,15 +1,15 @@
 {
   "metadata": {
-    "title": "博客",
-    "description": "阅读我们最新的产品功能、解决方案和更新内容。"
+    "title": "AI 合同审查博客",
+    "description": "阅读 AI 合同审查、合同风险分析、条款审查和法务流程自动化相关实务指南。"
   },
   "page": {
-    "title": "ShipAny 博客",
+    "title": "AI 合同审查博客",
     "sections": {
       "blog": {
         "id": "blog",
-        "title": "博客",
-        "description": "阅读我们最新的产品功能、解决方案和更新内容。"
+        "title": "合同审查洞察",
+        "description": "面向法务、采购、销售和商务团队的 AI 合同审查实务文章。"
       }
     }
   },

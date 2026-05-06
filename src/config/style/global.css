@@ -117,3 +117,87 @@ pre {
     @apply bg-background text-foreground;
   }
 }
+
+@media print {
+  @page {
+    size: A4;
+    margin: 16mm 14mm;
+  }
+
+  html,
+  body {
+    background: white !important;
+  }
+
+  body {
+    color: #0f172a !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .contract-report-page {
+    max-width: none !important;
+    padding: 0 !important;
+  }
+
+  .contract-report-page .container,
+  .contract-report-page .mx-auto,
+  .contract-report-page .max-w-6xl {
+    max-width: none !important;
+  }
+
+  .contract-report-page .print\:hidden {
+    display: none !important;
+  }
+
+  .contract-report-page .print\:block {
+    display: block !important;
+  }
+
+  .contract-report-page .print\:grid {
+    display: grid !important;
+  }
+
+  .contract-report-page .print\:border-slate-200 {
+    border-color: #e2e8f0 !important;
+  }
+
+  .contract-report-page .print\:shadow-none {
+    box-shadow: none !important;
+  }
+
+  .contract-report-page .card,
+  .contract-report-page [data-slot='card'] {
+    break-inside: avoid;
+  }
+
+  .contract-report-page .break-inside-avoid {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .contract-report-page .contract-report-print-header {
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e2e8f0;
+  }
+
+  .contract-report-page .text-muted-foreground {
+    color: #475569 !important;
+  }
+
+  .contract-report-page .bg-muted\/20,
+  .contract-report-page .bg-muted {
+    background: #f8fafc !important;
+  }
+
+  .contract-report-page .border,
+  .contract-report-page [class*='border-'] {
+    border-color: #e2e8f0 !important;
+  }
+
+  .contract-report-page .rounded-xl,
+  .contract-report-page .rounded-lg {
+    border-radius: 12px !important;
+  }
+}

@@ -2,206 +2,226 @@
   "page": {
     "show_sections": [
       "hero",
-      "logos",
-      "introduce",
-      "benefits",
+      "contract_types",
+      "trustworthy_review",
+      "sample_output",
       "usage",
-      "features",
-      "stats",
-      "testimonials",
       "faq",
       "cta"
     ],
     "sections": {
       "hero": {
         "id": "hero",
-        "title": "一小时快速上线你的 AI 创业项目",
-        "highlight_text": "一小时",
-        "description": "ShipAny 是用于构建 AI SaaS 创业项目的 NextJS 项目模板。<br/>集成常用功能，快速上线你的产品。",
+        "title": "为企业法务与业务团队打造的 AI 合同审核",
+        "highlight_text": "AI 合同审核",
+        "description": "围绕降低合同法律风险而设计。上传合同文件或直接粘贴合同内容，即可进入结构化审核流程，并结合签约国家完成正式审核。",
         "announcement": {
-          "badge": "全新",
-          "title": "🎉 ShipAny 模板二已发布",
-          "url": "/pricing"
+          "badge": "AI 法务审核",
+          "title": "上传合同，开始你的审核工作流",
+          "url": "/"
         },
-        "tip": "🎁 前 1000 名用户特价优惠",
+        "tip": "专业合同审核流程，兼顾审查质量与敏感数据安全",
         "buttons": [
           {
-            "title": "立即开始",
+            "title": "开始合同审核",
             "icon": "Zap",
-            "url": "/pricing",
+            "url": "#hero",
             "target": "_self",
             "variant": "default"
           },
           {
-            "title": "阅读文档",
+            "title": "查看审核流程",
             "icon": "BookOpenText",
-            "url": "/docs",
-            "target": "_blank",
+            "url": "#usage",
+            "target": "_self",
             "variant": "outline"
           }
         ],
         "upload_card": {
-          "tab_upload": "上传文件",
+          "tab_upload": "上传合同",
           "tab_paste_text": "粘贴文本",
-          "upload_title": "上传合同，立即风险扫描",
-          "upload_hint": "点击上传，或将合同文件拖拽到这里",
-          "upload_accepted_hint": "支持 PDF、DOCX、TXT",
-          "i_am_label": "我是",
+          "upload_title": "发起一次专业合同审核",
+          "upload_hint": "上传合同文件，开始基于签约地的法律风险审核",
+          "upload_accepted_hint": "支持 PDF、DOCX、DOC、TXT",
+          "i_am_label": "审核视角",
           "party_options": [
             {
               "value": "party_a",
-              "label": "甲方（Party A）"
+              "label": "甲方"
             },
             {
               "value": "party_b",
-              "label": "乙方（Party B）"
+              "label": "乙方"
             }
           ],
-          "paste_placeholder": "请粘贴合同全文或关键条款内容…",
-          "cta_title": "免费风险扫描"
+          "paste_placeholder": "请粘贴完整合同内容，或你希望优先审核的合同条款...",
+          "cta_title": "开始审核"
         },
         "show_avatars": true,
-        "avatars_tip": "999+ 用户在使用 ShipAny 上站",
+        "avatars_tip": "适用于法务、采购、销售、商务与管理团队",
         "show_award": false,
         "image": {
           "src": "/imgs/features/admin.png",
-          "alt": "hero",
+          "alt": "AI 合同审核工作台",
           "width": 1200,
           "height": 800
         },
         "image_invert": {
           "src": "/imgs/features/admin-dark.png",
-          "alt": "hero",
+          "alt": "AI 合同审核工作台",
           "width": 1200,
           "height": 800
         },
         "background_image": {
           "src": "/imgs/bg/tree.jpg",
-          "alt": "hero"
+          "alt": "背景图"
         }
       },
-      "logos": {
-        "title": "ShipAny 使用以下技术栈构建",
+      "contract_types": {
+        "block": "showcases",
+        "id": "contract_types",
+        "title": "支持的合同类型",
+        "description": "覆盖企业日常最常见的合同类型，并按业务语义分组展示，便于快速判断你的合同是否适合进入审核流程。",
+        "groups": [
+          {
+            "name": "commercial",
+            "title": "商业合同"
+          },
+          {
+            "name": "employment",
+            "title": "雇佣合同"
+          },
+          {
+            "name": "technology",
+            "title": "技术合同"
+          },
+          {
+            "name": "data",
+            "title": "数据与隐私"
+          }
+        ],
         "items": [
           {
-            "title": "Next.js",
+            "group": "commercial",
+            "title": "销售与采购合同",
+            "description": "适用于供应协议、分销协议、采购协议、供应商合同等高频商业合同。",
             "image": {
-              "src": "/imgs/logos/nextjs.svg",
-              "alt": "Next.js"
-            }
+              "src": "/imgs/features/1.png",
+              "alt": "销售与采购合同"
+            },
+            "url": "#hero"
           },
           {
-            "title": "React",
+            "group": "commercial",
+            "title": "服务与咨询协议",
+            "description": "覆盖咨询合同、专业服务协议、工作说明书、主服务协议等服务型合同。",
             "image": {
-              "src": "/imgs/logos/react.svg",
-              "alt": "React"
-            }
+              "src": "/imgs/features/2.png",
+              "alt": "服务与咨询协议"
+            },
+            "url": "#hero"
           },
           {
-            "title": "TailwindCSS",
+            "group": "employment",
+            "title": "雇佣与外包合同",
+            "description": "适用于劳动合同、offer、顾问协议、独立承包人协议及相关报酬条款。",
             "image": {
-              "src": "/imgs/logos/tailwindcss.svg",
-              "alt": "TailwindCSS"
-            }
+              "src": "/imgs/features/3.png",
+              "alt": "雇佣与外包合同"
+            },
+            "url": "#hero"
           },
           {
-            "title": "Shadcn/UI",
+            "group": "technology",
+            "title": "SaaS 与软件协议",
+            "description": "覆盖 SaaS 协议、软件许可协议、实施协议、支持服务条款与技术合作合同。",
             "image": {
-              "src": "/imgs/logos/shadcn.svg",
-              "alt": "Shadcn/UI"
-            }
+              "src": "/imgs/features/4.png",
+              "alt": "SaaS 与软件协议"
+            },
+            "url": "#hero"
           },
           {
-            "title": "Vercel",
+            "group": "data",
+            "title": "数据处理与保密协议",
+            "description": "适用于 DPA、NDA、隐私条款、信息安全义务与数据共享相关约定。",
             "image": {
-              "src": "/imgs/logos/vercel.svg",
-              "alt": "Vercel"
-            }
+              "src": "/imgs/features/5.png",
+              "alt": "数据处理与保密协议"
+            },
+            "url": "#hero"
+          },
+          {
+            "group": "technology",
+            "title": "平台与合作条款",
+            "description": "适用于平台合作协议、API 条款、市场入驻条款、收入分成与伙伴计划合同。",
+            "image": {
+              "src": "/imgs/features/6.png",
+              "alt": "平台与合作条款"
+            },
+            "url": "#hero"
           }
         ]
       },
-      "introduce": {
-        "block": "features-list",
-        "id": "introduce",
-        "title": "ShipAny 是什么？",
-        "label": "产品简介",
-        "description": "ShipAny 是专为 AI SaaS 创业项目打造的 NextJS 脚手架，包括丰富模板、组件及文档。",
-        "image": {
-          "src": "/imgs/features/landing-page.png",
-          "alt": "introduce"
-        },
+      "trustworthy_review": {
+        "id": "trustworthy_review",
+        "title": "为什么团队会信任这套合同审核",
+        "description": "首页不强调系统内部识别细节，而是直接强调法务和业务团队真正关心的结果：法律风险可见性、签约地法律适配、修改建议以及数据安全。",
         "items": [
           {
-            "title": "开箱即用的模板",
-            "description": "从数十款生产级 AI SaaS 模板中选择，快速开启你的项目。",
-            "icon": "RiNextjsFill",
-            "image": {
-              "src": "/imgs/features/1.png",
-              "alt": "introduce"
-            }
+            "title": "基于海量法律与合同文件训练",
+            "description": "不是泛化的文本总结工具，而是面向合同审查场景设计的结构化审核能力。",
+            "icon": "RiScaleLine"
           },
           {
-            "title": "基础设施搭建",
-            "description": "内置最佳实践，即刻拥有可扩展的基础设施。",
-            "icon": "RiDatabase2Line",
-            "image": {
-              "src": "/imgs/features/2.png",
-              "alt": "introduce"
-            }
+            "title": "结合签约地法律环境审核",
+            "description": "正式审核会把签约国家纳入上下文，动态调整重点关注的法律风险与条款判断。",
+            "icon": "RiGlobalLine"
           },
           {
-            "title": "极速部署",
-            "description": "AI SaaS 产品快速上线，助力小时级交付。",
-            "icon": "RiCloudyFill",
-            "image": {
-              "src": "/imgs/features/3.png",
-              "alt": "introduce"
-            }
+            "title": "按风险等级输出并给出修改建议",
+            "description": "从高到低列出风险点，附上原文、风险说明和建议修改方向，方便法务与业务团队快速处理。",
+            "icon": "RiAlarmWarningLine"
           },
           {
-            "title": "AI 集成",
-            "description": "通过内置的 AI SDK，轻松为你的项目集成 AI 能力。",
-            "icon": "RiRobot2Line",
-            "image": {
-              "src": "/imgs/features/4.png",
-              "alt": "introduce"
-            }
+            "title": "敏感合同数据安全处理",
+            "description": "合同数据按敏感业务信息处理，采用安全存储策略，并且不会用于公开模型训练。",
+            "icon": "RiShieldCheckLine"
           }
         ],
         "className": "bg-muted"
       },
-      "benefits": {
+      "sample_output": {
         "block": "features-accordion",
-        "id": "benefits",
-        "title": "为何选择 ShipAny",
-        "label": "产品优势",
-        "description": "你获得一切 AI 创业所需——从开箱即用的模板到专业技术支持。",
+        "id": "sample_output",
+        "title": "上传前先看清你会得到什么",
+        "description": "结果输出以真实产品感为主：先给总体判断，再给条款级风险证据和修改建议，适合企业法务实际使用。",
         "items": [
           {
-            "title": "全栈解决方案",
-            "description": "基于 Next.js，集成认证、支付、AI，一站式开箱即用。",
-            "icon": "RiNextjsFill",
+            "title": "总体风险总览",
+            "description": "先看到整体风险等级、关键结论，以及高、中、低风险的数量分布。",
+            "icon": "RiDashboardLine",
             "image": {
-              "src": "/imgs/features/user-billing.png",
-              "alt": "benefits"
+              "src": "/imgs/features/admin.png",
+              "alt": "总体风险总览"
             }
           },
           {
-            "title": "丰富模板库",
-            "description": "多样的 AI SaaS 模板，点击即用，涵盖聊天、图像生成等多场景。",
-            "icon": "RiClapperboardAiLine",
-            "image": {
-              "src": "/imgs/features/admin-settings.png",
-              "alt": "benefits"
-            }
-          },
-          {
-            "title": "专属技术指导",
-            "description": "享受专属技术支持与开发者社区，为你的成功保驾护航。",
-            "icon": "RiCodeFill",
+            "title": "条款级风险明细",
+            "description": "每个问题都包含原文、风险说明和建议修改方向，让用户快速判断是否需要谈判或重写条款。",
+            "icon": "RiFileSearchLine",
             "image": {
               "src": "/imgs/features/landing-page.png",
-              "alt": "benefits"
+              "alt": "条款级风险明细"
+            }
+          },
+          {
+            "title": "审核上下文可追溯",
+            "description": "审核立场、签约国家、输出语言和关注重点都会成为正式审核上下文，并体现在导出报告中。",
+            "icon": "RiSettings3Line",
+            "image": {
+              "src": "/imgs/features/admin-settings.png",
+              "alt": "审核上下文可追溯"
             }
           }
         ]
@@ -209,233 +229,83 @@
       "usage": {
         "block": "features-step",
         "id": "usage",
-        "title": "三步使用 ShipAny 极速上线",
-        "description": "只需三步，快速开启你的 AI SaaS 创业之路：",
-        "image": {
-          "src": "/imgs/features/1.png",
-          "alt": "usage"
-        },
-        "image_position": "left",
-        "text_align": "center",
+        "label": "流程",
+        "title": "合同审核如何工作",
+        "description": "产品体验采用前松后紧的转化节奏：先低门槛开始，再逐步收集正式审核所需上下文，最后生成结构化风险报告。",
         "items": [
           {
-            "title": "获取 ShipAny",
-            "description": "一次性购买 ShipAny，查收邮件获取代码与文档。",
-            "image": {
-              "src": "/imgs/features/5.png",
-              "alt": "usage"
-            }
+            "title": "上传合同或粘贴内容",
+            "description": "从 landing page 直接开始，系统会立即进入解析与预分析流程。",
+            "icon": "RiUploadCloud2Line"
           },
           {
-            "title": "启动你的项目",
-            "description": "阅读说明文档，克隆 ShipAny 代码，开始开发你的 AI SaaS 项目。",
-            "image": {
-              "src": "/imgs/features/6.png",
-              "alt": "usage"
-            }
+            "title": "AI 预分析准备工作台",
+            "description": "详情页会承接解析、判断是否为合同，并给出可用于后续审核设置的摘要信息。",
+            "icon": "RiSparkling2Line"
           },
           {
-            "title": "个性化定制",
-            "description": "根据需求修改模板内容和数据，配置专属 AI 能力。",
-            "image": {
-              "src": "/imgs/features/7.png",
-              "alt": "usage"
-            }
+            "title": "确认审核方向",
+            "description": "用户确认审核立场、签约国家、输出语言和关注重点，为正式审核补齐上下文。",
+            "icon": "RiFocus2Line"
           },
           {
-            "title": "部署上线",
-            "description": "简单几步将你的项目推向生产环境，立刻为客户提供服务。",
-            "image": {
-              "src": "/imgs/features/8.png",
-              "alt": "usage"
-            }
+            "title": "开始完整审核并导出结果",
+            "description": "登录后开始正式审核，得到风险排序、条款证据、修改建议与 PDF 报告。",
+            "icon": "RiFileCheckLine"
           }
         ],
         "className": "bg-muted"
-      },
-      "features": {
-        "id": "features",
-        "title": "ShipAny 核心功能",
-        "description": "一切你需要的工具，助力 AI SaaS 项目高效上线。",
-        "items": [
-          {
-            "title": "Next.js 项目模板",
-            "description": "生产就绪、支持 SEO 与多语言的 Next.js 脚手架。",
-            "icon": "RiNextjsFill"
-          },
-          {
-            "title": "身份认证与支付",
-            "description": "集成谷歌 OAuth、一键登录，以及 Stripe 支付。",
-            "icon": "RiKey2Fill"
-          },
-          {
-            "title": "数据基础设施",
-            "description": "内置 Supabase，稳定可靠的数据存储。",
-            "icon": "RiDatabase2Line"
-          },
-          {
-            "title": "一键部署",
-            "description": "自动化部署到 Vercel 或 Cloudflare，极速上线。",
-            "icon": "RiCloudy2Fill"
-          },
-          {
-            "title": "商业分析",
-            "description": "集成 Google Analytics、Search Console，助力业务增长。",
-            "icon": "RiBarChart2Line"
-          },
-          {
-            "title": "AI 原生基础设施",
-            "description": "预置 AI 集成、积分系统和 API 售卖能力。",
-            "icon": "RiRobot2Line"
-          }
-        ]
-      },
-      "stats": {
-        "id": "stats",
-        "title": "用户喜爱 ShipAny",
-        "description": "因其易用且上线飞快。",
-        "items": [
-          {
-            "title": "999+",
-            "description": "位用户"
-          },
-          {
-            "title": "200+",
-            "description": "组件块"
-          },
-          {
-            "title": "50+",
-            "description": "专业模板"
-          }
-        ],
-        "className": "bg-muted"
-      },
-      "testimonials": {
-        "id": "testimonials",
-        "title": "用户对 ShipAny 的评价",
-        "description": "听听开发者与创始人用 ShipAny 快速上线 AI 创业项目的故事。",
-        "items": [
-          {
-            "name": "David Chen",
-            "role": "AIWallpaper.shop 创始人",
-            "quote": "ShipAny 为我们节省了数月开发时间。2 天上线 AI 壁纸业务，一周内就收到了第一笔付费订单！",
-            "image": {
-              "src": "/imgs/avatars/1.png",
-              "alt": "david"
-            }
-          },
-          {
-            "name": "Rachel Kim",
-            "role": "HeyBeauty.ai CTO",
-            "quote": "内置 AI 基础设施颠覆了开发体验，无需担心架构，只需专注核心功能，极快落地。",
-            "image": {
-              "src": "/imgs/avatars/2.png",
-              "alt": "rachel"
-            }
-          },
-          {
-            "name": "Marcus Thompson",
-            "role": "独立开发者",
-            "quote": "作为独立开发者，ShipAny 满足了全部需求——认证、支付、AI 集成、美观界面，一个周末上线 SaaS！",
-            "image": {
-              "src": "/imgs/avatars/3.png",
-              "alt": "marcus"
-            }
-          },
-          {
-            "name": "Sofia Garcia",
-            "role": "Melodisco CEO",
-            "quote": "模板高度可定制且生产级。我们几小时内搭建出了 AI 音乐平台，上市周期大大缩短！",
-            "image": {
-              "src": "/imgs/avatars/4.png",
-              "alt": "sofia"
-            }
-          },
-          {
-            "name": "James Wilson",
-            "role": "GPTs.works 技术负责人",
-            "quote": "ShipAny 基础设施极其稳定。我们从 0 到 1 万用户，无需关心后端维护，是最棒的 AI 创业投资。",
-            "image": {
-              "src": "/imgs/avatars/5.png",
-              "alt": "james"
-            }
-          },
-          {
-            "name": "Anna Zhang",
-            "role": "创业者",
-            "quote": "从想法到上线，仅用 3 天！ShipAny 模板和部署工具让我们极快验证 AI 商业创意。",
-            "image": {
-              "src": "/imgs/avatars/6.png",
-              "alt": "anna"
-            }
-          }
-        ]
       },
       "faq": {
         "id": "faq",
-        "title": "关于 ShipAny 的常见问题",
-        "description": "还有其他问题？欢迎加入 Discord 或发邮件联系我们。",
+        "title": "AI 合同审核常见问题",
+        "description": "这些问题对应法务和业务团队在上传合同前最常见的顾虑。",
         "items": [
           {
-            "question": "ShipAny 是什么？怎么帮到我？",
-            "answer": "ShipAny 是专为 AI SaaS 创业设计的 NextJS 全套脚手架，内含开箱即用的模板、基础设施搭建和部署工具，让你数小时内上线 AI 产品。"
+            "question": "这套 AI 合同审核能处理不同签约国家吗？",
+            "answer": "可以。正式审核前会收集签约国家，并将其作为审核上下文的一部分，让模型根据对应法域动态调整审查重点。"
           },
           {
-            "question": "使用 ShipAny 需要很高的技术水平吗？",
-            "answer": "有基础编程知识即可上手。ShipAny 面向开发者友好，详细文档和模板让初学者也能轻松起步，不需深厚 AI 或云计算背景。"
+            "question": "结果里会包含哪些风险信息？",
+            "answer": "结果会按风险等级输出问题，并包含总体风险、关键结论、条款原文、风险说明和修改建议。"
           },
           {
-            "question": "ShipAny 支持哪些类型的 AI SaaS 项目？",
-            "answer": "ShipAny 支持内容生成、数据分析、AI 聊天机器人、图片/内容生成器等多种主流 AI 应用场景。"
+            "question": "可以直接上传 PDF 或 Word 合同吗？",
+            "answer": "可以。首页支持常见合同文件格式，也支持直接粘贴合同内容。"
           },
           {
-            "question": "用 ShipAny 一般多久能上线？",
-            "answer": "借助 ShipAny，可在数小时内拿到产品原型并上线生产环境，预配置的一键部署大幅缩短开发周期。"
+            "question": "合同数据会被拿去训练模型吗？",
+            "answer": "不会。合同数据按敏感业务信息处理，不用于公开模型训练。"
           },
           {
-            "question": "ShipAny 的基础设施包括哪些内容？",
-            "answer": "包含认证、数据库、API 集成、支付、云端部署等全栈解决方案，全部遵循业界最佳实践预配置。"
+            "question": "如果上传的文件其实不是合同，会发生什么？",
+            "answer": "预分析会在详情页中止主流程并说明原因，同时提供重新上传文件或改为粘贴文本的入口。"
           },
           {
-            "question": "模板是否支持定制自己的品牌？",
-            "answer": "当然支持！所有模板均可自定义设计、功能和品牌，既保持基础架构稳定，又能满足个性扩展需求。"
+            "question": "正式审核完成后可以导出什么？",
+            "answer": "可以导出 PDF，包含总体风险总览、风险明细、合同摘要，以及本次审核使用的设置信息。"
           }
         ]
       },
       "cta": {
         "id": "cta",
-        "title": "发布你的第一个 AI SaaS 项目",
-        "description": "从这里出发，用 ShipAny 极速交付。",
+        "title": "开始你的合同审核工作流",
+        "description": "上传合同、确认审核方向，然后生成结构化法律风险报告。",
         "buttons": [
           {
-            "title": "获取 ShipAny",
-            "url": "https://shipany.ai",
-            "target": "_blank",
+            "title": "上传合同",
+            "url": "#hero",
+            "target": "_self",
             "icon": "Zap"
           },
           {
-            "title": "阅读文档",
-            "url": "/docs",
-            "target": "_blank",
+            "title": "查看常见问题",
+            "url": "#faq",
+            "target": "_self",
             "variant": "outline",
             "icon": "BookOpenText"
           }
         ],
-        "className": "bg-muted"
-      },
-      "subscribe": {
-        "id": "subscribe",
-        "title": "订阅我们的邮件通知",
-        "description": "获取 ShipAny 最新资讯与产品动态。",
-        "submit": {
-          "input": {
-            "placeholder": "输入邮箱"
-          },
-          "button": {
-            "title": "订阅"
-          },
-          "action": "/api/subscribe"
-        },
         "className": "bg-muted"
       }
     }

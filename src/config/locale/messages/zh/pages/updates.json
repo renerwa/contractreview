@@ -1,14 +1,14 @@
 {
   "metadata": {
-    "title": "更新日志",
-    "description": "查看产品更新日志，了解产品最新功能和改进。"
+    "title": "ContractReview AI 产品更新",
+    "description": "查看 AI 合同审查、风险分析、文档解析和报告导出流程的产品更新。"
   },
   "page": {
     "sections": {
       "updates": {
         "id": "updates",
-        "title": "更新日志",
-        "description": "查看产品更新日志，了解产品最新功能和改进。"
+        "title": "产品更新",
+        "description": "了解合同解析、初步分析、正式审核、报告生成和导出流程的最新改进。"
       }
     }
   }
